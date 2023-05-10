@@ -1,0 +1,67 @@
+/* actions: [
+                  1 > 2
+                      ? Icon(
+                          Icons.circle,
+                          color: Colors.green,
+                        )
+                      : ActionChip(
+                          label: Icon(
+                            Icons.circle,
+                            color: Colors.red,
+                          ),
+                          avatar: reConnecting
+                              ? AnimatedBuilder(
+                                  animation: animationController,
+                                  builder: (_, child) {
+                                    return Transform.rotate(
+                                      angle: animationController.value * 2 * pi,
+                                      child: child,
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.refresh,
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.refresh,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                          /* */
+                          onPressed: () async {
+                            setState(() {
+                              reConnecting = true;
+                            });
+                            Future.delayed(const Duration(seconds: 3), () {
+                              setState(() {
+                                reConnecting = false;
+                              });
+                            });
+                          },
+                        ),
+                  SizedBox(
+                    width: 10,
+                  )
+                ],*/
+
+
+                  /*GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          reConnecting = true;
+                        });
+                        Future.delayed(const Duration(seconds: 5), () {
+                          setState(() {
+                            reConnecting = false;
+                          });
+                          setState(() {
+                            online = true;
+                          });
+                          Future.delayed(const Duration(seconds: 5), () {
+                            setState(() {
+                              online = false;
+                            });
+                          });
+                        });
+                      },
+                      child: connectionWidget(width)),*/
