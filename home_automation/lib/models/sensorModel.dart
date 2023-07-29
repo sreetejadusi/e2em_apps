@@ -7,7 +7,7 @@ class SensorModel {
   String code, name, image, deviceId;
   List<dynamic> data;
   SensorModel(
-      {this.id, this.image, this.data, this.deviceId, this.code, this.name});
+      {this.id=0, required this.image, required this.data, required this.deviceId, required this.code, required this.name});
 
   factory SensorModel.fromMap(Map<String, dynamic> json) {
     List<dynamic> d = [];

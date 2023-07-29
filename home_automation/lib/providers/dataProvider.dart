@@ -13,15 +13,15 @@ import '../models/index.dart';
 import '../utils/index.dart';
 
 class DataProvider extends ChangeNotifier {
-  Timer timer;
+  late Timer timer;
   double _hum = 0;
   double _temp = 0;
   double _aqi = 0;
   List<String> _deviceIds = [];
   List<String> _miscellaneousIds = [];
-  Position currentPosition;
+  late Position currentPosition;
   bool _online = false;
-  DateTime _lastConnectionCheck;
+  late DateTime _lastConnectionCheck;
   String _waitingDevice = '';
   List<String> get deviceIds => _deviceIds;
   List<String> get miscellaneousIds => _miscellaneousIds;
@@ -31,7 +31,7 @@ class DataProvider extends ChangeNotifier {
   double get aqi => _aqi;
   bool get online => _online;
   DateTime get lastConnectionCheck => _lastConnectionCheck;
-  DateTime wdt;
+  late DateTime wdt;
   Future<void> init() async {
     List<DeviceModel> allDevices = await DatabaseProvider.db.fetchDevices();
     List<MiscellaneousModel> allMiscellaneous =
@@ -133,8 +133,8 @@ class DataProvider extends ChangeNotifier {
             Weather w = await wf.currentWeatherByLocation(
                 position.latitude, position.longitude);
 
-            _temp = w.temperature.celsius.toDouble();
-            _hum = w.humidity;
+            _temp = w.temperature!.celsius!.toDouble();
+            _hum = w.humidity!;
             // aqi =w.a;
           });
           //loading = false;

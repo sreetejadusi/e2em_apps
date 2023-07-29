@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hub/widgets/appbar.dart';
 import 'package:provider/provider.dart';
 
 import 'index_files.dart';
@@ -60,72 +61,66 @@ class _AdminStartState extends State<AdminStart>
       },
       child: Scaffold(
         backgroundColor: backgroundColor,
-        appBar: AppBar(
-          backgroundColor: accentColor1,
-          elevation: 0,
-          title: const Text(
-            "EV2GO ADMIN",
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          actions: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () async {},
-                    tooltip: "Server Connection",
-                    icon: Icon(
-                      Icons.compass_calibration_outlined,
-                      color: up.serverConnection
-                          ? Colors.greenAccent
-                          : Colors.deepOrange,
-                    )),
-                IconButton(
-                    onPressed: () async {
-                      await mongoDB.init();
-                    },
-                    tooltip: "Refresh",
-                    icon: Icon(
-                      Icons.refresh,
-                      color: Colors.greenAccent,
-                    )),
-              ],
-            ),
-          ],
-        ),
+        appBar: GradientAppBar(
+            title: 'EV2GO Admin', automaticallyImplyLeading: false),
         body: up.serverConnection
             ? isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : tabs[currentTab]
             : const ConnectionMessageScreen(),
-        drawer: const MenuDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: accentColor1,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.greenAccent,
-          unselectedItemColor: Colors.white,
-          currentIndex: currentTab,
-          onTap: (int index) {
-            setState(() {
-              currentTab = index;
-            });
-          },
-          elevation: 0,
-          items: <BottomNavigationBarItem>[
-            navItem(icon: Icons.home, label: "Home"),
-            navItem(icon: Icons.home_repair_service, label: "Maintenance"),
-            navItem(icon: Icons.wallet, label: "Wallet"),
-          ],
+        // drawer: const MenuDrawer(),
+        bottomNavigationBar: Container(
+          child: NavigationBar(
+            backgroundColor: accentColor1,
+            elevation: 0,
+            destinations: <Widget>[
+              navItem(icon: Icons.home, label: "Home", tab: 0),
+              navItem(
+                  icon: Icons.home_repair_service,
+                  label: "Maintenance",
+                  tab: 1),
+              navItem(icon: Icons.wallet, label: "Wallet", tab: 2),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  BottomNavigationBarItem navItem(
-      {required IconData icon, required String label}) {
-    return BottomNavigationBarItem(
-      icon: Icon(icon),
-      label: label,
+  Widget navItem(
+      {required IconData icon, required String label, required int tab}) {
+    bool active = currentTab == tab;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 6),
+      decoration: BoxDecoration(
+          color: active ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(8)),
+      child: IconButton(
+        onPressed: () {
+          setState(() {
+            currentTab = tab;
+          });
+        },
+        icon: Container(
+          child: FittedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon),
+                active
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          label,
+                          style: TextStyle(color: accentColor1),
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

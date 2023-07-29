@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -35,51 +36,71 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //       left: 18, right: 18, top: 18, bottom: 8),
+            //   child: CustomContainer(
+            //     context: context,
+            //     widget: Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: ListTile(
+            //         onTap: () {
+            //           if (ap.loginType == LoginType.hub) {
+            //             Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => const HubProfile(
+            //                         appBar: true,
+            //                       )),
+            //             );
+            //           }
+            //         },
+            //         title: Text(
+            //           ap.displayName,
+            //           style:
+            //               TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            //         ),
+            //         subtitle: Padding(
+            //           padding: const EdgeInsets.only(top: 5),
+            //           child: Text(
+            //             ap.displayId,
+            //             //up.userDetails[1],
+            //             style: TextStyle(
+            //                 fontSize: 15, fontWeight: FontWeight.bold),
+            //           ),
+            //         ),
+            //         leading: Icon(
+            //           Icons.admin_panel_settings,
+            //           size: 35,
+            //           color: Colors.black,
+            //         ),
+            //         trailing: Icon(
+            //           Icons.arrow_forward_ios,
+            //           color: Colors.black,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 18, right: 18, top: 18, bottom: 8),
-              child: CustomContainer(
-                context: context,
-                widget: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    onTap: () {
-                      if (ap.loginType == LoginType.hub) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HubProfile(
-                                    appBar: true,
-                                  )),
-                        );
-                      }
-                    },
-                    title: Text(
-                      ap.displayName,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Text(
-                        ap.displayId,
-                        //up.userDetails[1],
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    leading: Icon(
-                      Icons.admin_panel_settings,
-                      size: 35,
-                      color: Colors.black,
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.black,
-                    ),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Logged in as',
+                    style: TextStyle(color: Color(0xAA8c8c8c), fontSize: 16),
                   ),
-                ),
+                  Text(
+                    capitalize(ap.displayName),
+                    style: TextStyle(
+                        color: accentColor2,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w600),
+                  )
+                ],
               ),
             ),
             if (ap.loginType == LoginType.hub) ...[
@@ -88,19 +109,26 @@ class _HomeState extends State<Home> {
                 isScrollable: false,
                 indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
                 indicatorWeight: 2.5,
+                indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 2.0, color: accentColor1),
+                    insets: EdgeInsets.symmetric(horizontal: 24.0)),
                 tabs: const [
                   Tab(
                     child: Text(
-                      "VEHICLE INFO",
+                      "Vehicle Info",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 18),
                     ),
                   ),
                   Tab(
                     child: Text(
-                      "BATTERY INFO",
+                      "Battery Info",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 18),
                     ),
                   ),
                 ],
@@ -152,21 +180,22 @@ class _HomeState extends State<Home> {
                             ],
                           ),*/
                               Expanded(
-                                child: GridView(
+                                child: ListView(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 18, vertical: 15),
                                   physics: const BouncingScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 12,
-                                    crossAxisSpacing: 12,
-                                  ),
+                                  // gridDelegate:
+                                  //     const SliverGridDelegateWithFixedCrossAxisCount(
+                                  //   crossAxisCount: 2,
+                                  //   mainAxisSpacing: 12,
+                                  //   crossAxisSpacing: 12,
+                                  // ),
                                   children: [
                                     cardItem(
+                                        context: context,
                                         num: hubManager.vehicles.length,
                                         title: "Total Vehicles",
-                                        icon: Icons.bike_scooter,
+                                        icon: FontAwesomeIcons.car,
                                         onTap: () {
                                           Navigator.push(
                                             context,
@@ -180,6 +209,7 @@ class _HomeState extends State<Home> {
                                           );
                                         }),
                                     cardItem(
+                                        context: context,
                                         num: hubManager.vehicles
                                             .where((element) =>
                                                 element.getVS() ==
@@ -187,7 +217,8 @@ class _HomeState extends State<Home> {
                                             .toList()
                                             .length,
                                         title: "Maintenance",
-                                        icon: Icons.battery_0_bar,
+                                        icon:
+                                            FontAwesomeIcons.screwdriverWrench,
                                         onTap: () {
                                           Navigator.push(
                                             context,
@@ -203,6 +234,7 @@ class _HomeState extends State<Home> {
                                           );
                                         }),
                                     cardItem(
+                                        context: context,
                                         num: hubManager.vehicles
                                             .where((element) =>
                                                 element.getVS() ==
@@ -210,7 +242,7 @@ class _HomeState extends State<Home> {
                                             .toList()
                                             .length,
                                         title: "Total Assigned",
-                                        icon: Icons.featured_play_list_outlined,
+                                        icon: FontAwesomeIcons.clipboardCheck,
                                         onTap: () {
                                           Navigator.push(
                                             context,
@@ -225,6 +257,7 @@ class _HomeState extends State<Home> {
                                           );
                                         }),
                                     cardItem(
+                                        context: context,
                                         num: hubManager.vehicles
                                             .where((element) =>
                                                 element.getVS() ==
@@ -232,7 +265,7 @@ class _HomeState extends State<Home> {
                                             .toList()
                                             .length,
                                         title: "Vehicles Parking",
-                                        icon: Icons.park_outlined,
+                                        icon: FontAwesomeIcons.squareParking,
                                         onTap: () {
                                           Navigator.push(
                                             context,
@@ -255,21 +288,22 @@ class _HomeState extends State<Home> {
                             hubManager.driversLoading ||
                             hubManager.batteriesLoading)
                         ? const Center(child: CircularProgressIndicator())
-                        : GridView(
+                        : ListView(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 18, vertical: 25),
                             physics: const BouncingScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                            ),
+                            // gridDelegate:
+                            //     const SliverGridDelegateWithFixedCrossAxisCount(
+                            //   crossAxisCount: 2,
+                            //   mainAxisSpacing: 12,
+                            //   crossAxisSpacing: 12,
+                            // ),
                             children: [
                               cardItem(
+                                  context: context,
                                   num: hubManager.batteries.length,
                                   title: "Total Batteries",
-                                  icon: Icons.earbuds_battery,
+                                  icon: FontAwesomeIcons.batteryFull,
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -282,6 +316,7 @@ class _HomeState extends State<Home> {
                                     );
                                   }),
                               cardItem(
+                                  context: context,
                                   num: hubManager.batteries
                                       .where((element) =>
                                           element.getBS() ==
@@ -289,7 +324,7 @@ class _HomeState extends State<Home> {
                                       .toList()
                                       .length,
                                   title: "Maintenance",
-                                  icon: Icons.battery_full,
+                                  icon: FontAwesomeIcons.carBattery,
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -304,6 +339,7 @@ class _HomeState extends State<Home> {
                                     );
                                   }),
                               cardItem(
+                                  context: context,
                                   num: hubManager.batteries
                                       .where((element) =>
                                           element.getBS() ==
@@ -326,6 +362,7 @@ class _HomeState extends State<Home> {
                                     );
                                   }),
                               cardItem(
+                                  context: context,
                                   num: hubManager.batteries
                                       .where((element) =>
                                           element.getBS() ==
@@ -464,65 +501,6 @@ class _HomeState extends State<Home> {
         trailing: Padding(
           padding: const EdgeInsets.only(right: 10),
           child: Text(subtitle),
-        ),
-      ),
-    );
-  }
-
-  Widget cardItem(
-      {required int num,
-      required String title,
-      required IconData icon,
-      required Function() onTap}) {
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
-    return Padding(
-      padding: const EdgeInsets.all(0.0),
-      child: CustomContainer(
-        context: context,
-        widget: InkWell(
-          onTap: onTap,
-          radius: largeRadius,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(smallRadius),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Icon(
-                          icon,
-                          color: Colors.black,
-                        ),
-                      )),
-                ),
-                Center(
-                  child: Text(
-                    num.toString(),
-                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10, top: 10),
-                    child: Text(
-                      title,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

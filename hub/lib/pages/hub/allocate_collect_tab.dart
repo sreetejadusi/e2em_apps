@@ -22,51 +22,61 @@ class _AllocateCollectTabState extends State<AllocateCollectTab> {
     VehiclesProvider vp = context.watch<VehiclesProvider>();
     AuthenticationProvider ap = context.watch<AuthenticationProvider>();
     HubManager hubManager = context.watch<HubManager>();
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-          elevation: 0,
-          flexibleSpace: TabBar(
-            indicatorColor: accentColor1,
-            isScrollable: false,
-            indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
-            indicatorWeight: 2.5,
-            tabs: const [
-              Tab(
-                child: Text(
-                  "ALLOCATE",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            flexibleSpace: TabBar(
+              indicatorColor: accentColor1,
+              isScrollable: false,
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
+              indicatorWeight: 2.5,
+              indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(width: 2.0, color: accentColor1),
+                  insets: EdgeInsets.symmetric(horizontal: 24.0)),
+              tabs: const [
+                Tab(
+                  child: Text(
+                    "Allocate",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  ),
                 ),
+                Tab(
+                  child: Text(
+                    "Collect",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              AllocateVehicle(
+                vehicleId: null,
+                tabChange: (int index) {
+                  widget.tabChange(index);
+                },
               ),
-              Tab(
-                child: Text(
-                  "COLLECT",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
+              CollectVehicle(
+                vehicleId: null,
+                tabChange: (int index) {
+                  widget.tabChange(index);
+                },
               ),
             ],
           ),
-        ),
-        body: TabBarView(
-          children: [
-            AllocateVehicle(
-              vehicleId: null,
-              tabChange: (int index) {
-                widget.tabChange(index);
-              },
-            ),
-            CollectVehicle(
-              vehicleId: null,
-              tabChange: (int index) {
-                widget.tabChange(index);
-              },
-            ),
-          ],
         ),
       ),
     );

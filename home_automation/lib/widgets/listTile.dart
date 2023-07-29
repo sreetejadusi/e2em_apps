@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:row_collection/row_collection.dart';
 
 class ListCell extends StatelessWidget {
-  final Widget leading, trailing;
+  final Widget? leading, trailing;
   final String title, subtitle;
   final VoidCallback onTap;
   final EdgeInsets contentPadding;
@@ -10,23 +9,26 @@ class ListCell extends StatelessWidget {
   const ListCell({
     this.leading,
     this.trailing,
-    @required this.title,
-    this.subtitle,
-    this.onTap,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
     this.contentPadding = const EdgeInsets.symmetric(
       horizontal: 17,
     ),
   });
 
   factory ListCell.icon({
-    @required IconData icon,
-    Widget trailing,
-    @required String title,
-    String subtitle,
-    VoidCallback onTap,
+    required IconData icon,
+    Widget? trailing,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
   }) {
     return ListCell(
-      leading: Icon(icon,size: 30,),
+      leading: Icon(
+        icon,
+        size: 30,
+      ),
       trailing: trailing,
       title: title,
       subtitle: subtitle,
@@ -44,14 +46,14 @@ class ListCell extends StatelessWidget {
           Text(
             title,
           ),
-          if (subtitle != null) Separator.spacer(space: 4),
+          if (subtitle != null) SizedBox(height: 8),
         ],
       ),
       subtitle: subtitle == null
           ? null
           : Text(
-        subtitle,
-      ),
+              subtitle,
+            ),
       trailing: trailing,
       contentPadding: contentPadding,
       onTap: onTap,

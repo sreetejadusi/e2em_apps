@@ -18,6 +18,16 @@ String dateFromString(String dt) {
       .toString();
 }
 
-String capitalize(String s) {
-  return "${s[0].toUpperCase()}${s.substring(1).toLowerCase()}";
+// String capitalize(String s) {
+//   return "${s[0].toUpperCase()}${s.substring(1).toLowerCase()}";
+// }
+
+String capitalize(String sentence) {
+  String capital = '';
+  String text = sentence.replaceAll('  ', ' ');
+  for (String element in text.trim().split(' ')) {
+    capital +=
+        '${element.trim()[0].toUpperCase()}${element.trim().substring(1)} ';
+  }
+  return capital;
 }

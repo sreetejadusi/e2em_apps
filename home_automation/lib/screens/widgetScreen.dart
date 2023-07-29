@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/index.dart';
-import 'package:row_collection/row_collection.dart';
 import 'package:provider/provider.dart';
 import '../widgets/index.dart';
 import '../providers/index.dart';
@@ -11,7 +10,7 @@ import '../providers/index.dart';
 class WidgetScreen extends StatefulWidget {
   final String title;
   final Widget widget;
-  WidgetScreen({this.title, this.widget});
+  WidgetScreen({required this.title, required this.widget});
   @override
   _WidgetScreenState createState() => _WidgetScreenState();
 }
@@ -35,7 +34,7 @@ class _WidgetScreenState extends State<WidgetScreen>
           widget.title,
           style: GoogleFonts.breeSerif(
             textStyle: TextStyle(
-                color: Theme.of(context).textTheme.caption.color,
+                color: Theme.of(context).textTheme.bodySmall!.color,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold),
           ),

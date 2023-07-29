@@ -3,20 +3,21 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-Widget loaderSpin(BuildContext context){
-  double h=MediaQuery.of(context).size.height;
-  double w=MediaQuery.of(context).size.width;
+
+Widget loaderSpin(BuildContext context) {
+  double h = MediaQuery.of(context).size.height;
+  double w = MediaQuery.of(context).size.width;
   return Container(
-    height: w*0.40,
-    width: w*0.40,
+    height: w * 0.40,
+    width: w * 0.40,
     color: Colors.transparent,
     child: Center(
         child: LoadingIndicator(
-          indicatorType: Indicator.ballSpinFadeLoader,
-          color: Theme.of(context).accentColor,
-        )
-      // CircularProgressIndicator()
-    ),
+      indicatorType: Indicator.ballSpinFadeLoader,
+      colors: [Theme.of(context).colorScheme.primary],
+    )
+        // CircularProgressIndicator()
+        ),
   );
 }
 
@@ -46,11 +47,11 @@ class LoaderCircular extends StatefulWidget {
 
 class _LoaderCircularState extends State<LoaderCircular>
     with SingleTickerProviderStateMixin {
-  Animation<double> animation_1;
-  Animation<double> animation_2;
-  Animation<double> animation_3;
-  Animation<double> animation_4;
-  AnimationController controller;
+  late Animation<double> animation_1;
+  late Animation<double> animation_2;
+  late Animation<double> animation_3;
+  late Animation<double> animation_4;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -179,7 +180,11 @@ class Dot extends StatelessWidget {
   final DotType type;
   final Icon icon;
 
-  Dot({this.radius, this.color, this.type, this.icon});
+  Dot(
+      {required this.radius,
+      required this.color,
+      required this.type,
+      required this.icon});
 
   @override
   Widget build(BuildContext context) {

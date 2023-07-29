@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../utils/index.dart';
 import '../providers/index.dart';
@@ -34,6 +35,7 @@ class _ControlScreenState extends State<ControlScreen>
   int SOC = 0;
   int SOH = 0;
   int KM = 0;
+  double speed = 0;
   // bool locked = true;
   bool durationWaiting = false;
   durationTrue() async {
@@ -54,6 +56,7 @@ class _ControlScreenState extends State<ControlScreen>
   late StreamSubscription<BleService> _serviceDiscoveryStream;
   late StreamSubscription<DeviceState> _stateStream;
   late StreamSubscription<DeviceSignalResult> _deviceSignalResultStream;
+
   load() async {
     setState(() {
       isLoading = true;
@@ -79,6 +82,14 @@ class _ControlScreenState extends State<ControlScreen>
     BluetoothDevicesProvider bdp = context.read<BluetoothDevicesProvider>();
     lu.addListener(onLockUnlock);
     //load();
+    DataProvider dataProvider = context.read<DataProvider>();
+    dataProvider.init();
+    Geolocator.getPositionStream().listen((event) {
+      setState(() {
+        speed = event.speed;
+      });
+      print(speed);
+    });
     super.initState();
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 900))
@@ -223,6 +234,7 @@ class _ControlScreenState extends State<ControlScreen>
     bool connected = deviceState == DeviceState.connected;
     bool connecting = deviceState == DeviceState.connecting;
     bool disconnected = deviceState == DeviceState.disconnected;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
@@ -231,10 +243,25 @@ class _ControlScreenState extends State<ControlScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              helloTile(context, true),
-              temp(context),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  helloTile(context),
+                  Spacer(),
+                  temp(context),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
               stats(SOH, SOC, KM),
-              sm(context, 200),
+              Spacer(),
+              sm(context, speed),
+              SizedBox(
+                height: 24,
+              ),
               Container(
                 decoration: BoxDecoration(
                   color: accentColor,
@@ -261,15 +288,19 @@ class _ControlScreenState extends State<ControlScreen>
                   ),
                   trailing: deviceState == DeviceState.connecting
                       ? const CircularProgressIndicator()
-                      : FlatButton(
+                      : TextButton(
+                          style: ButtonStyle(
+                              backgroundColor: connected
+                                  ? MaterialStatePropertyAll(Colors.red)
+                                  : MaterialStatePropertyAll(
+                                      Colors.transparent)),
                           child: Text(
                             connected ? "Disconnect" : "Connect",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          //
-                          color:
-                              connected ? Color(0xFFEB5353) : Color(0xFF70CFA3),
-                          textColor: Colors.white,
+                          // color:
+                          //     connected ? Color(0xFFEB5353) : Color(0xFF70CFA3),
+                          // textColor: Colors.white,
                           onPressed: () {
                             if (connected) {
                               widget.device.disConnect();
@@ -285,6 +316,18 @@ class _ControlScreenState extends State<ControlScreen>
                   tileColor: Colors.transparent,
                 ),
               ),
+
+              // Text(
+              //   deviceState == DeviceState.connected
+              //       ? "Connected"
+              //       : deviceState == DeviceState.connecting
+              //           ? "Connecting"
+              //           : "Not Connected",
+              //   style: TextStyle(
+              //     fontSize: 18,
+              //   ),
+              // ),
+              Spacer()
             ],
           ),
         ),

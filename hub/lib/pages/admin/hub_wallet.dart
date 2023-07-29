@@ -128,9 +128,11 @@ class _HubWalletState extends State<HubWallet> {
                   left: 18, right: 18, top: 18, bottom: 8),
               child: Column(
                 children: [
-                  CustomContainer(
-                    context: context,
-                    widget: Padding(
+                  Container(
+                    decoration: BoxDecoration(
+                        color: accentColor1,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5),
                       child: ListTile(
                         title: Text(
@@ -218,9 +220,8 @@ class _HubWalletState extends State<HubWallet> {
                   const SizedBox(
                     height: 5,
                   ),
-                  CustomContainer(
-                    context: context,
-                    widget: Padding(
+                  Container(
+                    child: Padding(
                       padding: EdgeInsets.all(0.0),
                       child: Row(
                         children: [],
@@ -231,58 +232,62 @@ class _HubWalletState extends State<HubWallet> {
                     height: 12,
                   ),
                   Expanded(
-                    child: CustomContainer(
-                      context: context,
-                      widget: Padding(
-                        padding: EdgeInsets.symmetric(vertical: largeRadius),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: accentColor1),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
                         child: Scrollbar(
                           thumbVisibility: true,
                           child: ListView(
                             physics: BouncingScrollPhysics(),
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 18),
-                                child: ListTile(
-                                  title: Text(
-                                    "Pending Wallet Transactions",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+                              ListTile(
+                                title: Text(
+                                  "Pending Wallet Transactions",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: accentColor1),
                                 ),
                               ),
                               for (var i = 0; i < tWallet.length; i++) ...[
                                 if (tWallet[i].status == "pending") ...[
                                   walletTransactionItem(
-                                    title: tWallet[i].status,
-                                    description: "",
-                                    amount: tWallet[i].amount.toString(),
-                                    subtitle:
-                                        dateFromString(tWallet[i].timestamp),
-                                  ),
+                                      title: tWallet[i].status,
+                                      description: "",
+                                      amount: tWallet[i].amount.toString(),
+                                      subtitle:
+                                          dateFromString(tWallet[i].timestamp),
+                                      leading: walletTransactions[i]
+                                          .metadata
+                                          .toString()
+                                          .toUpperCase()),
                                 ],
                               ],
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 18),
-                                child: ListTile(
-                                  title: Text(
-                                    "Wallet Transactions",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+                              ListTile(
+                                title: Text(
+                                  "Wallet Transactions",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: accentColor1),
                                 ),
                               ),
                               for (var i = 0;
                                   i < walletTransactions.length;
                                   i++) ...[
                                 walletTransactionItem(
-                                  title: walletTransactions[i].type,
-                                  description:
-                                      walletTransactions[i].description,
-                                  amount:
-                                      walletTransactions[i].amount.toString(),
-                                  subtitle: dateFromString(
-                                      walletTransactions[i].timestamp),
-                                ),
+                                    title: walletTransactions[i].type,
+                                    description:
+                                        walletTransactions[i].description,
+                                    amount:
+                                        walletTransactions[i].amount.toString(),
+                                    subtitle: dateFromString(
+                                        walletTransactions[i].timestamp),
+                                    leading: walletTransactions[i]
+                                        .metadata
+                                        .toString()
+                                        .toUpperCase()),
                               ],
                             ],
                           ),
@@ -296,52 +301,52 @@ class _HubWalletState extends State<HubWallet> {
     );
   }
 
-  Widget walletTransactionItem({
-    required String title,
-    required String description,
-    required String amount,
-    required String subtitle,
-  }) {
+  Widget walletTransactionItem(
+      {required String title,
+      required String description,
+      required String amount,
+      required String subtitle,
+      required String leading}) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: ListTile(
-          tileColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(largeRadius),
-          ),
-          trailing: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Text(
-              amount,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: title == "credit"
-                    ? Colors.green
-                    : title == "debit"
-                        ? Colors.red
-                        : Colors.black,
-              ),
-            ),
-          ),
-          title: Text(
-            capitalize(title),
-            style: TextStyle(
+    return ListTile(
+      tileColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(largeRadius),
+      ),
+      trailing: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Text(
+          (title == "credit" ? '+' : '-') + amount,
+          style: TextStyle(
+              fontSize: 16,
               fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (description.isNotEmpty) ...[
-                Text(description),
-              ],
-              Text(subtitle),
-            ],
-          )),
+              color: title == "credit"
+                  ? Colors.green
+                  : title == "debit"
+                      ? Colors.red
+                      : Colors.black),
+        ),
+      ),
+
+      title: Text(
+        capitalize(description),
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+      ),
+
+      // subtitle: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   mainAxisSize: MainAxisSize.min,
+      //   children: [
+      //     if (description.isNotEmpty) ...[
+      //       Text(description),
+      //     ],
+      //     Text(subtitle),
+      //   ],
+      // )),
+      subtitle: Text(
+        subtitle + '\n' + leading,
+      ),
     );
   }
 

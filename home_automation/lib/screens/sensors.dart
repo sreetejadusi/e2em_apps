@@ -70,7 +70,7 @@ class _SensorsState extends State<Sensors> {
         builder:
             (BuildContext context, AsyncSnapshot<List<SensorModel>> snapshot) {
           if (snapshot.hasData) {
-            sensors = snapshot.data;
+            sensors = snapshot.data!;
           }
           return WillPopScope(
             onWillPop: () async {
@@ -140,14 +140,14 @@ class SensorsItems extends StatelessWidget {
   final String img;
   final Function onTap;
 
-  const SensorsItems({this.text1, this.img, this.onTap});
+  const SensorsItems({required this.text1, required this.img, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       splashColor: Colors.red,
-      onTap: onTap,
+      onTap: onTap(),
       child: Container(
         decoration: BoxDecoration(
             //   color: Color(color),

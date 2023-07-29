@@ -9,7 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import '../utils/index.dart';
 import '../widgets/index.dart';
 import '../providers/index.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State, Center;
 import 'package:provider/provider.dart';
 import '../sidebar/index.dart';
 
@@ -21,9 +21,9 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String name, username, password;
+  late String name, username, password;
   bool _secureText = true;
-  List<dynamic> val;
+  late List<dynamic> val;
   showHide() {
     setState(() {
       _secureText = !_secureText;
@@ -169,10 +169,10 @@ class _LoginState extends State<Login> {
                                 0.5,
                                 TextFormField(
                                   keyboardType: TextInputType.text,
-                                  onSaved: (value) => name = value,
+                                  onSaved: (value) => name = value!,
                                   onChanged: (value) {},
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return "Name field cannot be empty";
                                     }
                                     return null;
@@ -196,10 +196,10 @@ class _LoginState extends State<Login> {
                                 0.5,
                                 TextFormField(
                                   keyboardType: TextInputType.text,
-                                  onSaved: (value) => username = value,
+                                  onSaved: (value) => username = value!,
                                   onChanged: (value) {},
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return "Username field cannot be empty";
                                     }
                                     return null;
@@ -222,10 +222,10 @@ class _LoginState extends State<Login> {
                               FadeAnimation(
                                 0.5,
                                 TextFormField(
-                                  onSaved: (value) => password = value,
+                                  onSaved: (value) => password = value!,
                                   onChanged: (value) {},
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return "Password field cannot be empty";
                                     }
                                     return null;
@@ -243,7 +243,7 @@ class _LoginState extends State<Login> {
                                               : Icons.visibility_off,
                                           color: Theme.of(context)
                                               .textTheme
-                                              .caption
+                                              .bodySmall!
                                               .color),
                                     ),
                                     border: border,
@@ -263,19 +263,15 @@ class _LoginState extends State<Login> {
                                 1.2,
                                 Container(
                                   height: 50,
-                                  child: FlatButton(
+                                  child: TextButton(
                                     onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
+                                      if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
                                         SystemChannels.textInput
                                             .invokeMethod('TextInput.hide');
                                         await login();
                                       }
                                     },
-                                    padding: EdgeInsets.all(0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
                                     child: Ink(
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(

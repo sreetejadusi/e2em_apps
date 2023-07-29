@@ -4,7 +4,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 class CategoryModel {
   String code;
-  CategoryModel({this.code});
+  CategoryModel({required this.code});
 
   factory CategoryModel.fromMap(Map<String, dynamic> json) {
     return new CategoryModel(

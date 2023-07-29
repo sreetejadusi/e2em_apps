@@ -34,78 +34,85 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        textFieldTitle(labelText),
-        TextFormField(
-          readOnly: !readOnly
-              ? ((type == TextFieldType.textarea ||
-                      type == TextFieldType.normal)
-                  ? false
-                  : true)
-              : readOnly,
-          enabled: enabled,
-          keyboardType: keyBoardType,
-          cursorColor: cursorColor,
-          minLines: type == TextFieldType.textarea ? 4 : 1,
-          maxLines: type == TextFieldType.textarea ? 10 : 1,
-          controller: controller,
-          onTap: () async {
-            if (type == TextFieldType.dropdown) {
-              showDropdownSearchDialog(
-                context: context,
-                items: items,
-                addEnabled: true,
-                onChanged: onChanged,
-              );
-            } else if (type == TextFieldType.date) {
-              final DateTime? selected = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2010),
-                lastDate: DateTime(2025),
-              );
-              if (selected != null) {
-                onChanged(selected.toString());
-              }
-            }
-            else if (type == TextFieldType.datetime) {
-              final DateTime? selected = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2010),
-                lastDate: DateTime(2025),
-              );
-              if (selected != null) {
-                final TimeOfDay? selectedTime = await showTimePicker(
+        // textFieldTitle(labelText),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(width: 1, color: accentColor1),
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white),
+          margin: EdgeInsets.symmetric(vertical: 4),
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: TextFormField(
+            readOnly: !readOnly
+                ? ((type == TextFieldType.textarea ||
+                        type == TextFieldType.normal)
+                    ? false
+                    : true)
+                : readOnly,
+            enabled: enabled,
+            keyboardType: keyBoardType,
+            cursorColor: cursorColor,
+            minLines: type == TextFieldType.textarea ? 4 : 1,
+            maxLines: type == TextFieldType.textarea ? 10 : 1,
+            controller: controller,
+            onTap: () async {
+              if (type == TextFieldType.dropdown) {
+                showDropdownSearchDialog(
+                  context: context,
+                  items: items,
+                  addEnabled: true,
+                  onChanged: onChanged,
+                );
+              } else if (type == TextFieldType.date) {
+                final DateTime? selected = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2010),
+                  lastDate: DateTime(2025),
+                );
+                if (selected != null) {
+                  onChanged(selected.toString());
+                }
+              } else if (type == TextFieldType.datetime) {
+                final DateTime? selected = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2010),
+                  lastDate: DateTime(2025),
+                );
+                if (selected != null) {
+                  final TimeOfDay? selectedTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+                  if (selectedTime != null) {
+                    onChanged(selected.toString());
+                  }
+                } else {}
+              } else if (type == TextFieldType.time) {
+                final TimeOfDay? selected = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
                 );
-                if (selectedTime != null) {
+                if (selected != null) {
                   onChanged(selected.toString());
                 }
-              }else{}
-            } else if (type == TextFieldType.time) {
-              final TimeOfDay? selected = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              );
-              if (selected != null) {
-                onChanged(selected.toString());
               }
-            }
-          },
-          validator: validator,
-          decoration: InputDecoration(
-            suffixIcon: Icon(
-              suffixIcon,
-              color: Colors.black45,
+            },
+            validator: validator,
+            decoration: InputDecoration(
+              // suffixIcon: Icon(
+              //   suffixIcon,
+              //   color: Colors.black45,
+              // ),
+              border: border,
+              enabledBorder: border,
+              errorBorder: errorBorder,
+              focusedBorder: focusedBorder,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              // hintStyle: hintStyle,
+              hintText: hintText,
             ),
-            border: border,
-            enabledBorder: border,
-            errorBorder: errorBorder,
-            focusedBorder: focusedBorder,
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-            //hintStyle: hintStyle,
-            hintText: hintText,
           ),
         ),
       ],

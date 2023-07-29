@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -575,7 +575,7 @@ class _RideScreenState extends State<RideScreen> {
                               CardStatus2(
                                 iconName: Icons.delivery_dining,
                                 colorCard: Colors.orangeAccent,
-                                //colorCard: Theme.of(context).accentColor,
+                                //colorCard: Theme.of(context).colorScheme.secondary,
                                 totalCases: KM,
                                 status: "KM",
                               ),
@@ -593,7 +593,7 @@ class _RideScreenState extends State<RideScreen> {
                             context: context,
                             text: onOffProvider.on ? 'ON' : 'OFF',
                             filled: onOffProvider.on ? true : false,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             onTap: () async {
                               await onOffProvider.onPressed();
                               await MQTTConnection.mqtt
@@ -622,7 +622,7 @@ class _RideScreenState extends State<RideScreen> {
     WalletProvider walletProvider = context.read<WalletProvider>();
     fullScreenYesOrNoDialog(
         context: context,
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         icon: Icons.legend_toggle,
         title: 'End Ride',
         subtitle: 'Are you sure you want to end ride',
@@ -653,7 +653,7 @@ class _RideScreenState extends State<RideScreen> {
           );
           fullScreenMessageDialog(
               context: context,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
               icon: Icons.verified,
               title: 'Congrats',
               subtitle: 'Ride Successful',
@@ -688,7 +688,7 @@ class CardStatus2 extends StatelessWidget {
             color: Colors.transparent,
             //border: Border.all(
             //  width: 1.2,
-            //color: Theme.of(context).accentColor.withOpacity(0.2)
+            //color: Theme.of(context).colorScheme.secondary.withOpacity(0.2)
             // ),
             borderRadius: BorderRadius.circular(20)),
         child: Padding(

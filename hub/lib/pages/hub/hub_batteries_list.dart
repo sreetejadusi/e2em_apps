@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hub/widgets/appbar.dart';
 import 'package:provider/provider.dart';
 
 import '../../index_files.dart';
@@ -20,20 +22,8 @@ class _HubBatteriesListState extends State<HubBatteriesList> {
     HubManager hubManager = context.watch<HubManager>();
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: accentColor1,
-        title: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            widget.title,
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        //iconTheme:
-        centerTitle: true,
-        actions: [],
-      ),
+      appBar:
+          GradientAppBar(title: widget.title, automaticallyImplyLeading: true),
       body: hubManager.batteriesLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -59,56 +49,55 @@ class _HubBatteriesListState extends State<HubBatteriesList> {
 
   Widget tile({required BatteryModel battery}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Card(
-        elevation: 2,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(largeRadius),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Color(0xFF9a9a9a).withOpacity(0.25),
+                offset: Offset(1, 2),
+                blurRadius: 12,
+                spreadRadius: 0)
+          ],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: clg,
+        child: ListTile(
+          onTap: () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => HubBatteryDetail(
+            //             battery: battery,
+            //           )),
+            // );
+          },
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(largeRadius),
           ),
-          child: ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HubBatteryDetail(
-                          battery: battery,
-                        )),
-              );
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(largeRadius),
-            ),
-            leading: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(smallRadius),
+          leading: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(smallRadius),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Icon(
+                  battery.getBS() == BatteryStatus.ideal
+                      ? FontAwesomeIcons.squareParking
+                      : battery.getBS() == BatteryStatus.assigned
+                          ? FontAwesomeIcons.clipboardCheck
+                          : FontAwesomeIcons.screwdriverWrench,
+                  color: Colors.black,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Icon(
-                    Icons.sticky_note_2_outlined,
-                    color: Colors.black,
-                  ),
-                )),
-            title: Text(
-              battery.batteryId,
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-                batteryStatusMap(battery.getBS())),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-              size: 15,
-            ),
+              )),
+          title: Text(
+            battery.batteryId,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
+          // subtitle: Text(vehicleStatusMap(vehicle.getVS())),
+          trailing: Text(batteryStatusMap(battery.getBS())),
         ),
       ),
     );

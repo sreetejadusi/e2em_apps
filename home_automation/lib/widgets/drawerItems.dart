@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,10 +12,9 @@ class DrawerItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 15),
       child: ListTile(
-        onTap: onTap,
-        title: AutoSizeText(
+        onTap: onTap(),
+        title: Text(
           text1,
-          minFontSize: 10,
           style: GoogleFonts.breeSerif(
             textStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           ),

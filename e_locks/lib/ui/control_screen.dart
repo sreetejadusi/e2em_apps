@@ -152,7 +152,6 @@ class _ControlScreenState extends State<ControlScreen>
       onMessage(data);
     });
   }
-
   sendUnlock() async {
     DataProvider dp = context.read<DataProvider>();
     String mes = "el:0:0:0:14:";

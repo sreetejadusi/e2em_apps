@@ -13,8 +13,8 @@ class IconBadge extends StatelessWidget {
   final int maxCount;
 
   const IconBadge({
-    Key key,
-    @required this.icon,
+    key,
+    required this.icon,
     this.itemCount = 0,
     this.hideZero = false,
     this.badgeColor = Colors.red,
@@ -22,8 +22,8 @@ class IconBadge extends StatelessWidget {
     this.maxCount = 99,
     this.top = 0.0,
     this.right = 0.0,
-    this.bottom,
-    this.left,
+    this.bottom = 0,
+    this.left = 0,
   }) : super(key: key);
 
   @override

@@ -71,7 +71,7 @@ class App extends StatelessWidget {
           // scaffoldBackgroundColor: Color.fromRGBO(3, 9, 23, 1.0),
           scaffoldBackgroundColor: Colors.black,
           primaryColor: primaryColor,
-          accentColor: accentColor,
+          // accentColor: accentColor,
           cardColor: cardColor,
           canvasColor: canvasColor,
           dividerColor: dividerColor,

@@ -53,39 +53,35 @@ class _SGViewState extends State<SGView> {
         ),
         body: Container(
           margin: EdgeInsets.all(12),
-          child:  StaggeredGridView.countBuilder(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 12,
-              itemCount: imageList.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(15))
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(15)),
-                        child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: imageList[index],fit: BoxFit.cover,),
+          child: StaggeredGrid.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 12,
+            children: List.generate(imageList.length, (index) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: imageList[index],
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Text('Image'),
-                    ),
-                  ],
-                );
-              },
-              staggeredTileBuilder: (index) {
-                return StaggeredTile.count(1, index.isEven ? 1.2 : 1.8);
-              }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text('Image'),
+                  ),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );

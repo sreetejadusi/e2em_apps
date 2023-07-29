@@ -10,7 +10,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class MdDecode extends StatefulWidget {
   final String title;
   final String data;
-  MdDecode({this.title, this.data});
+  MdDecode({required this.title, required this.data});
   @override
   _MdDecodeState createState() => _MdDecodeState();
 }
@@ -55,7 +55,7 @@ class _MdDecodeState extends State<MdDecode> {
           ),
           p: TextStyle(
             fontSize: 17,
-            color: Theme.of(context).textTheme.caption.color,
+            color: Theme.of(context).textTheme.bodySmall!.color,
           ),
         ),
       ),

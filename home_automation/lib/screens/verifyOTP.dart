@@ -14,14 +14,14 @@ import '../widgets/index.dart';
 class VerifyOTP extends StatefulWidget {
   final String phoneNumber;
   final Function(bool) val;
-  VerifyOTP({this.phoneNumber, this.val});
+  VerifyOTP({required this.phoneNumber, required this.val});
   @override
   VerifyOTPState createState() => VerifyOTPState();
 }
 
 class VerifyOTPState extends State<VerifyOTP> with TickerProviderStateMixin {
   bool isLoading = false;
-  String verificationId;
+  late String verificationId;
   bool otpSent = false;
   TextEditingController otp = new TextEditingController(text: '');
   String OTP = '';
@@ -52,28 +52,28 @@ class VerifyOTPState extends State<VerifyOTP> with TickerProviderStateMixin {
       print(authException);
     };
 
-    PhoneCodeSent codeSent =
-        (String verificationId1, [int forceResendingToken]) async {
-      setState(() {
-        verificationId = verificationId1;
-        otpSent = true;
-      });
-      loadingFalse();
-      showDialog(
-          context: context,
-          builder: (context) {
-            return CustomDialog(
-                icon: Icons.confirmation_number_outlined,
-                text: 'OTP sent to ' + widget.phoneNumber,
-                buttonlabel: 'Ok',
-                buttonPressed: () async {
-                  Navigator.pop(context);
-                });
-          });
-      //alertDialog(context, "OTP", 'OTP sent to ' + widget.phoneNumber, 'Ok');
-      print('verificationId');
-      print(verificationId);
-    };
+    // PhoneCodeSent codeSent =
+    //     (String verificationId1, [int forceResendingToken]) async {
+    //   setState(() {
+    //     verificationId = verificationId1;
+    //     otpSent = true;
+    //   });
+    //   loadingFalse();
+    //   showDialog(
+    //       context: context,
+    //       builder: (context) {
+    //         return CustomDialog(
+    //             icon: Icons.confirmation_number_outlined,
+    //             text: 'OTP sent to ' + widget.phoneNumber,
+    //             buttonlabel: 'Ok',
+    //             buttonPressed: () async {
+    //               Navigator.pop(context);
+    //             });
+    //       });
+    //   //alertDialog(context, "OTP", 'OTP sent to ' + widget.phoneNumber, 'Ok');
+    //   print('verificationId');
+    //   print(verificationId);
+    // };
 
     PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {};
@@ -84,7 +84,7 @@ class VerifyOTPState extends State<VerifyOTP> with TickerProviderStateMixin {
           timeout: const Duration(seconds: 30),
           verificationCompleted: verificationCompleted,
           verificationFailed: verificationFailed,
-          codeSent: codeSent,
+          codeSent: (a,b){},
           codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
     } catch (e) {
       print(e);
@@ -116,7 +116,7 @@ class VerifyOTPState extends State<VerifyOTP> with TickerProviderStateMixin {
           title: Text(
             "OTP Verification",
             style: TextStyle(
-                color: Theme.of(context).textTheme.caption.color,
+                color: Theme.of(context).textTheme.bodySmall!.color,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold),
           ),
@@ -187,8 +187,8 @@ class VerifyOTPState extends State<VerifyOTP> with TickerProviderStateMixin {
                                   border: Border.all(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .caption
-                                        .color,
+                                        .bodySmall!
+                                        .color!,
                                   ),
                                   borderRadius: BorderRadius.circular(10.0)),
                               child: Center(
@@ -228,11 +228,11 @@ class VerifyOTPState extends State<VerifyOTP> with TickerProviderStateMixin {
                           autofocus: true,
                           enabled: false,
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.caption.color,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
                           ),
                           controller: otp,
                           cursorColor:
-                              Theme.of(context).textTheme.caption.color,
+                              Theme.of(context).textTheme.bodySmall!.color,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), hintText: "OTP"),
                           maxLines: 1,

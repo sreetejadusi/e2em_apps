@@ -5,12 +5,12 @@ class MenuItem extends StatelessWidget {
   final String title;
   final Function onTap;
 
-  const MenuItem({Key key, this.icon, this.title, this.onTap}) : super(key: key);
+  const MenuItem({key, required this.icon, required this.title, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap(),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(

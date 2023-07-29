@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State ,Center;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/index.dart';
 import '../utils/index.dart';
@@ -25,18 +25,18 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  AnimationController _scaleController;
-  AnimationController _scale2Controller;
-  AnimationController _widthController;
-  AnimationController _positionController;
+  late AnimationController _scaleController;
+  late AnimationController _scale2Controller;
+  late AnimationController _widthController;
+  late AnimationController _positionController;
 
-  Animation<double> _scaleAnimation;
-  Animation<double> _scale2Animation;
-  Animation<double> _widthAnimation;
-  Animation<double> _positionAnimation;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _scale2Animation;
+  late Animation<double> _widthAnimation;
+  late Animation<double> _positionAnimation;
   bool isLoading = false;
   bool hideIcon = false;
-  Timer internetCheckTimer;
+  late Timer internetCheckTimer;
   /*Future<void> checkConnectivity() async {
     setState(() {
       isLoading = true;
@@ -66,7 +66,7 @@ class _WelcomeState extends State<Welcome>
   Future<void> load() async {
     internetCheckTimer = Timer.periodic(Duration(seconds: 1), (Timer t) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool internetError = prefs.get('internetError') ?? true;
+      bool internetError = prefs.getBool('internetError') ?? true;
       var connectivityResult = await (Connectivity().checkConnectivity());
       bool i = connectivityResult == ConnectivityResult.mobile ||
           connectivityResult == ConnectivityResult.wifi;
@@ -176,13 +176,13 @@ class _WelcomeState extends State<Welcome>
       //print(message.notification.title);
       //print(message.notification.body);
       alertDialog(
-          context, message.notification.title, message.notification.body, "Ok");
+          context, message.notification!.title!, message.notification!.body!, "Ok");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       //print(message.notification.title);
       //print(message.notification.body);
       alertDialog(
-          context, message.notification.title, message.notification.body, "Ok");
+          context, message.notification!.title!, message.notification!.body!, "Ok");
     });
     /* final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     FirebaseMessaging.instance.configure(

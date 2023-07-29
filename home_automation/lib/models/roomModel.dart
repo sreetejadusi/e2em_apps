@@ -6,7 +6,7 @@ class RoomModel {
   int id;
   String code, name, image;
   List<dynamic> devices;
-  RoomModel({this.id, this.image, this.code, this.name, this.devices});
+  RoomModel({this.id=0, required this.image, required this.code, required this.name, required this.devices});
 
   factory RoomModel.fromMap(Map<String, dynamic> json) {
     return new RoomModel(

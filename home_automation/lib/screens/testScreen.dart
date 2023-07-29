@@ -90,18 +90,21 @@ class GridDashboard extends StatelessWidget {
     img: "assets/imgs/map.png",
   );
   Items item4 = new Items(
+    icon: Icons.favorite,
     title: "Activity",
     subtitle: "Rose favirited your Post",
     event: "",
     img: "assets/imgs/festival.png",
   );
   Items item5 = new Items(
+    icon: Icons.favorite,
     title: "To do",
     subtitle: "Homework, Design",
     event: "4 Items",
     img: "assets/imgs/todo.png",
   );
   Items item6 = new Items(
+    icon: Icons.favorite,
     title: "Settings",
     subtitle: "",
     event: "2 Items",
@@ -194,5 +197,5 @@ class Items {
   String event;
   IconData icon;
   String img;
-  Items({this.title, this.subtitle, this.event, this.icon, this.img});
+  Items({required this.title, required this.subtitle, required this.event, required this.icon, required this.img});
 }

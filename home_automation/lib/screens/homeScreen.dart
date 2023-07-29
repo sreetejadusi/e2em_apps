@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<List<RoomModel>> snapshot) {
           if (snapshot.hasData) {
-            rooms = snapshot.data;
+            rooms = snapshot.data!;
           }
           return WillPopScope(
             onWillPop: () async {
@@ -323,7 +323,7 @@ class HomeScreenGridItems extends StatelessWidget {
   final String img;
   final Function onTap;
 
-  const HomeScreenGridItems({this.text1, this.text2, this.img, this.onTap});
+  const HomeScreenGridItems({required this.text1, required this.text2, required this.img, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -333,7 +333,7 @@ class HomeScreenGridItems extends StatelessWidget {
       //splashColor: Colors.transparent,
       //hoverColor: Colors.transparent,
       // highlightColor: Colors.transparent,
-      onTap: onTap,
+      onTap: onTap(),
       child: Container(
         decoration: BoxDecoration(
             //   color: Color(color),

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class PlayTimer extends StatefulWidget {
   final int hour;
   final int minute;
-  PlayTimer({this.hour, this.minute});
+  PlayTimer({required this.hour, required this.minute});
   @override
   _PlayTimerState createState() => _PlayTimerState();
 }
@@ -40,15 +40,15 @@ class _PlayTimerState extends State<PlayTimer> {
 
 class DigitalClock extends StatelessWidget {
   const DigitalClock({
-    Key key,
-    @required this.height,
-    @required this.width,
+    Key? key,
+    required this.height,
+    required this.width,
     this.hours = 0,
     this.minutes = 0,
   }) : super(key: key);
 
-  final num height;
-  final num width;
+  final double height;
+  final double width;
   final int hours;
   final int minutes;
 
@@ -67,7 +67,7 @@ class DigitalClock extends StatelessWidget {
             DigitalColon(height: height * 0.80, color: Colors.black),
             ...minuteNumber,
             //DigitalColon(height: height * 0.80, color: Colors.black),
-          //  ...secondNumber,
+            //  ...secondNumber,
           ],
         ),
       ),
@@ -98,19 +98,19 @@ class DigitalClock extends StatelessWidget {
 
 class DigitalNumberWithBG extends StatelessWidget {
   const DigitalNumberWithBG({
-    Key key,
+    Key? key,
     this.value = 0,
     this.padLeft,
-    this.height,
+    required this.height,
     this.color,
     this.backgroundValue = 8,
   }) : super(key: key);
 
   final int value;
   final int backgroundValue;
-  final int padLeft;
+  final int? padLeft;
   final double height;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +146,7 @@ class DigitalColon extends StatelessWidget {
   final double height;
   final Color color;
 
-  DigitalColon({Key key, @required this.height, @required this.color})
+  DigitalColon({Key? key, required this.height, required this.color})
       : assert(height != null),
         assert(color != null),
         super(key: key);
@@ -208,15 +208,12 @@ class DigitalNumber extends StatelessWidget {
   final Color color;
 
   DigitalNumber({
-    Key key,
-    @required this.value,
-    @required this.height,
-    @required this.color,
+    Key? key,
+    required this.value,
+    required this.height,
+    required this.color,
     this.padLeft = 0,
-  })  : assert(value != null),
-        assert(height != null),
-        assert(color != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

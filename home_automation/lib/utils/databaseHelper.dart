@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:home_automation/providers/dataProvider.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,10 +13,11 @@ import 'package:sqflite/sql.dart';
 import '../models/index.dart';
 
 class DatabaseProvider {
-  DatabaseProvider._();
+  // DatabaseProvider(this._database);
+  DatabaseProvider();
 
-  static final DatabaseProvider db = DatabaseProvider._();
-  Database _database;
+  static final DatabaseProvider db = DatabaseProvider();
+  late Database _database;
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -24,6 +26,7 @@ class DatabaseProvider {
   }
 
   Future<Database> getDatabaseInstance() async {
+    _database = await database;
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, "database.db");
     return await openDatabase(path, version: 1,
@@ -104,7 +107,7 @@ class DatabaseProvider {
     print(await fetchRooms());
   }
 
-  Future<void> addSensor(SensorModel data) async {
+  Future<int> addSensor(SensorModel data) async {
     final db = await database;
     var raw = await db.insert(
       "Sensors",
@@ -124,7 +127,7 @@ class DatabaseProvider {
     return raw;
   }
 
-  Future<void> addMiscellaneous(MiscellaneousModel data) async {
+  Future<int> addMiscellaneous(MiscellaneousModel data) async {
     final db = await database;
     var raw = await db.insert(
       "Miscellaneous",
@@ -140,14 +143,14 @@ class DatabaseProvider {
             ',' +
             data.data[2].toString(),
         "timer": data.timer ?? 0,
-        "timerTime": data.timerTime??'',
+        "timerTime": data.timerTime ?? '',
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     return raw;
   }
 
-  Future<void> addRoom(RoomModel data) async {
+  Future<int> addRoom(RoomModel data) async {
     final db = await database;
     var raw = await db.insert(
       "Rooms",
@@ -162,7 +165,7 @@ class DatabaseProvider {
     return raw;
   }
 
-  Future<void> addDevice(DeviceModel data) async {
+  Future<int> addDevice(DeviceModel data) async {
     final db = await database;
     var raw = await db.insert(
       "Devices",
@@ -224,14 +227,14 @@ class DatabaseProvider {
     return response;
   }
 
-  Future<void> changeDeviceParameters(int id, String parameters) async {
+  Future<int> changeDeviceParameters(int id, String parameters) async {
     final db = await database;
     var response = await db.rawUpdate(
         'UPDATE Devices SET parameters = ? WHERE id = ?', [parameters, id]);
     return response;
   }
 
-  Future<void> changeDeviceTimerTime(String deviceId, String timerTime) async {
+  Future<int> changeDeviceTimerTime(String deviceId, String timerTime) async {
     final db = await database;
     var response = await db.rawUpdate(
         'UPDATE Devices SET timerTime = ? WHERE deviceId = ?',
@@ -239,28 +242,30 @@ class DatabaseProvider {
     return response;
   }
 
-  Future<void> changeMiscellaneousTimerTime(String deviceId, String timerTime) async {
+  Future<int> changeMiscellaneousTimerTime(
+      String deviceId, String timerTime) async {
     final db = await database;
     var response = await db.rawUpdate(
         'UPDATE Miscellaneous SET timerTime = ? WHERE deviceId = ?',
         [timerTime, deviceId]);
     return response;
   }
-  Future<void> changeRoomTitle(int id, String title) async {
+
+  Future<int> changeRoomTitle(int id, String title) async {
     final db = await database;
     var response = await db
         .rawUpdate('UPDATE Rooms SET name = ? WHERE id = ?', [title, id]);
     return response;
   }
 
-  Future<void> changeDeviceData(String deviceId, String data) async {
+  Future<int> changeDeviceData(String deviceId, String data) async {
     final db = await database;
     var response = await db.rawUpdate(
         'UPDATE Devices SET data = ? WHERE deviceId = ?', [data, deviceId]);
     return response;
   }
 
-  Future<void> changeMiscellaneousData(String deviceId, String data) async {
+  Future<int> changeMiscellaneousData(String deviceId, String data) async {
     final db = await database;
     var response = await db.rawUpdate(
         'UPDATE Miscellaneous SET data = ? WHERE deviceId = ?',
@@ -271,7 +276,7 @@ class DatabaseProvider {
   Future<RoomModel> fetchRoom(int id) async {
     final db = await database;
     var response = await db.query("Rooms", where: "id = ?", whereArgs: [id]);
-    return response.isNotEmpty ? RoomModel.fromDatabase(response.first) : null;
+    return Future.value(RoomModel.fromDatabase(response.first));
   }
 
   deleteNote(int id) async {

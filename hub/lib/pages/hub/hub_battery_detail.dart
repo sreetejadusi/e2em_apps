@@ -130,7 +130,7 @@ class _HubBatteryDetailState extends State<HubBatteryDetail> {
       l = false;
     });
     Navigator.pop(context);
-    messageDialog(context, "Battery moved to maintenance");
+    messageDialog(context, "Battery moved to maintenance",true);
   }
 
   ideal() async {
@@ -152,7 +152,7 @@ class _HubBatteryDetailState extends State<HubBatteryDetail> {
       l = false;
     });
     Navigator.pop(context);
-    messageDialog(context, "Battery moved to ideal");
+    messageDialog(context, "Battery moved to ideal", true);
   }
 
   Widget divider() {

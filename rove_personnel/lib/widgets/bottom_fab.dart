@@ -1,6 +1,6 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rove_personnel/providers/index.dart';
 
 class FABBottomAppBarItem {
   FABBottomAppBarItem({required this.iconData});
@@ -37,8 +37,7 @@ class FABBottomAppBar extends StatefulWidget {
 
 class FABBottomAppBarState extends State<FABBottomAppBar> {
   int _selectedIndex = 0;
-
-  _updateIndex(int index) {
+  updateIndex(int index) {
     widget.onTabSelected(index);
     setState(() {
       _selectedIndex = index;
@@ -46,12 +45,20 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    BluetoothDevicesProvider bdp = context.watch<BluetoothDevicesProvider>();
+    _selectedIndex = bdp.tabIndex;
     List<Widget> items = List.generate(widget.items.length, (int index) {
       return _buildTabItem(
         item: widget.items[index],
         index: index,
-        onPressed: _updateIndex,
+        onPressed: updateIndex,
       );
     });
     items.insert(items.length >> 1, _buildMiddleTabItem());
@@ -117,7 +124,8 @@ class FabWithIcons extends StatefulWidget {
   State createState() => FabWithIconsState();
 }
 
-class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixin {
+class FabWithIconsState extends State<FabWithIcons>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -136,15 +144,16 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
       mainAxisSize: MainAxisSize.min,
       children: List.generate(widget.icons.length, (int index) {
         return _buildChild(index);
-      }).toList()..add(
-        _buildFab(),
-      ),
+      }).toList()
+        ..add(
+          _buildFab(),
+        ),
     );
   }
 
   Widget _buildChild(int index) {
     Color backgroundColor = Theme.of(context).cardColor;
-    Color foregroundColor = Theme.of(context).accentColor;
+    Color foregroundColor = Theme.of(context).colorScheme.secondary;
     return Container(
       height: 70.0,
       width: 56.0,
@@ -152,11 +161,8 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
       child: ScaleTransition(
         scale: CurvedAnimation(
           parent: _controller,
-          curve: Interval(
-              0.0,
-              1.0 - index / widget.icons.length / 2.0,
-              curve: Curves.easeOut
-          ),
+          curve: Interval(0.0, 1.0 - index / widget.icons.length / 2.0,
+              curve: Curves.easeOut),
         ),
         child: FloatingActionButton(
           backgroundColor: backgroundColor,
@@ -189,7 +195,6 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
   }
 }
 
-
 class AnchoredOverlay extends StatelessWidget {
   final bool showOverlay;
   final Widget Function(BuildContext, Offset anchor) overlayBuilder;
@@ -204,12 +209,14 @@ class AnchoredOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      child: new LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      child: new LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
         return new OverlayBuilder(
           showOverlay: showOverlay,
           overlayBuilder: (BuildContext overlayContext) {
             RenderBox box = context.findRenderObject() as RenderBox;
-            final center = box.size.center(box.localToGlobal(const Offset(0.0, 0.0)));
+            final center =
+                box.size.center(box.localToGlobal(const Offset(0.0, 0.0)));
 
             return overlayBuilder(overlayContext, center);
           },

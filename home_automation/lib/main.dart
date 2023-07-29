@@ -37,7 +37,6 @@ class _AppState extends State<App> with TickerProviderStateMixin {
       scaffoldBackgroundColor: backgroundColor,
       // scaffoldBackgroundColor: Color.fromRGBO(3, 9, 23, 1.0),
       primaryColor: primaryColor,
-      accentColor: accentColor,
       cardColor: cardColor,
       //canvasColor: canvasColor,
       //dividerColor: dividerColor,

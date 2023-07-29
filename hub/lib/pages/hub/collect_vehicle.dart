@@ -118,21 +118,21 @@ class _CollectVehicleState extends State<CollectVehicle> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor:
-            widget.vehicleId == null ? Colors.transparent : accentColor1,
-        title: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            "Collect Vehicle",
-            style: TextStyle(
-                color: widget.vehicleId == null ? Colors.black : Colors.white),
-          ),
-        ),
-        centerTitle: true,
-        actions: [],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor:
+      //       widget.vehicleId == null ? Colors.transparent : accentColor1,
+      //   title: Padding(
+      //     padding: EdgeInsets.symmetric(vertical: 15),
+      //     child: Text(
+      //       "Collect Vehicle",
+      //       style: TextStyle(
+      //           color: widget.vehicleId == null ? Colors.black : Colors.white),
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      //   actions: [],
+      // ),
       persistentFooterButtons: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -146,8 +146,8 @@ class _CollectVehicleState extends State<CollectVehicle> {
                 child: Container(
                   decoration: BoxDecoration(
                     //color: Color(0xFF0079E9),
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: accentColor1),
+                    borderRadius: const BorderRadius.all(Radius.circular(24)),
                   ),
                   height: 40,
                   width: w * 0.35,
@@ -206,7 +206,7 @@ class _CollectVehicleState extends State<CollectVehicle> {
                           });
                         }
                       });*/
-
+                      
                       for (int i = 0;
                           i < selectedVehiclesForCollection.length;
                           i++) {
@@ -218,13 +218,17 @@ class _CollectVehicleState extends State<CollectVehicle> {
                             where.eq(
                                 "vehicleId", selectedVehiclesForCollection[i]),
                             modify.set('vehicleStatus', "parking"));
+                            await vehicles.update(
+                            where.eq(
+                                "vehicleId", selectedVehiclesForCollection[i]),
+                            modify.set('unlocked', false));
                       }
                       clear();
                       await hubManager.init(context);
                       hubManager.vehicleCollectingState(false);
                       widget.tabChange(0);
-                     // await dp.updateCurrentTab(0);
-                      messageDialog(context, "Vehicle Collected");
+                      // await dp.updateCurrentTab(0);
+                      messageDialog(context, "Vehicle Collected", true);
                       if (widget.vehicleId != null) {
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -329,42 +333,106 @@ class _CollectVehicleState extends State<CollectVehicle> {
                           ),
                         ],*/
                         textFieldTitle("Select Collection"),
-                        Wrap(
-                          spacing: 10,
-                          alignment: WrapAlignment.center,
-                          children: [
-                            for (int i = 0;
-                                i < hubManager.vehicles.length;
-                                i++) ...[
-                              if (hubManager.vehicles[i].getVS() ==
-                                  VehicleStatus.assigned) ...[
-                                InputChip(
-                                  selected:
-                                      selectedVehiclesForCollection.contains(
-                                          hubManager.vehicles[i].vehicleId),
-                                  label: Text(hubManager.vehicles[i].vehicleId +
-                                      " - " +
-                                      hubManager.vehicles[i].driverId!),
-                                  onPressed: () {
-                                    String vid =
-                                        hubManager.vehicles[i].vehicleId;
-                                    if (selectedVehiclesForCollection
-                                        .contains(vid)) {
-                                      setState(() {
-                                        selectedVehiclesForCollection
-                                            .remove(vid);
-                                      });
-                                    } else {
-                                      setState(() {
-                                        selectedVehiclesForCollection.add(vid);
-                                      });
-                                    }
-                                  },
-                                ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF9F9F9),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0xFF7d7d7d).withOpacity(0.25),
+                                    offset: Offset(1, 2),
+                                    blurRadius: 10)
+                              ]),
+                          child: Theme(
+                            data: Theme.of(context)
+                                .copyWith(dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              iconColor: Color(0xFF4d4d4d),
+                              collapsedIconColor: Color(0xFF4d4d4d),
+                              textColor: Color(0xFF1d1d1d),
+                              collapsedTextColor: Color(0xFF1d1d1d),
+                              initiallyExpanded: true,
+                              title: Text(
+                                'Select collections here',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              children: [
+                                for (int i = 0;
+                                    i < hubManager.vehicles.length;
+                                    i++) ...[
+                                  if (hubManager.vehicles[i].getVS() ==
+                                      VehicleStatus.assigned) ...[
+                                    CheckboxListTile(
+                                      activeColor: accentColor1,
+                                      checkboxShape: CircleBorder(
+                                          side:
+                                              BorderSide(color: accentColor1)),
+                                      value: selectedVehiclesForCollection
+                                          .contains(
+                                              hubManager.vehicles[i].vehicleId),
+                                      title: Text(
+                                          hubManager.vehicles[i].vehicleId +
+                                              " - " +
+                                              hubManager.vehicles[i].driverId!),
+                                      onChanged: (_) {
+                                        String vid =
+                                            hubManager.vehicles[i].vehicleId;
+                                        if (selectedVehiclesForCollection
+                                            .contains(vid)) {
+                                          setState(() {
+                                            selectedVehiclesForCollection
+                                                .remove(vid);
+                                          });
+                                        } else {
+                                          setState(() {
+                                            selectedVehiclesForCollection
+                                                .add(vid);
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ],
                               ],
-                            ],
-                          ],
+                            ),
+                          ),
                         ),
+                        // Wrap(
+                        //   spacing: 10,
+                        //   alignment: WrapAlignment.center,
+                        //   children: [
+                        //     for (int i = 0;
+                        //         i < hubManager.vehicles.length;
+                        //         i++) ...[
+                        //       if (hubManager.vehicles[i].getVS() ==
+                        //           VehicleStatus.assigned) ...[
+                        //         InputChip(
+                        //           selected:
+                        //               selectedVehiclesForCollection.contains(
+                        //                   hubManager.vehicles[i].vehicleId),
+                        //           label: Text(hubManager.vehicles[i].vehicleId +
+                        //               " - " +
+                        //               hubManager.vehicles[i].driverId!),
+                        //           onPressed: () {
+                        //             String vid =
+                        //                 hubManager.vehicles[i].vehicleId;
+                        //             if (selectedVehiclesForCollection
+                        //                 .contains(vid)) {
+                        //               setState(() {
+                        //                 selectedVehiclesForCollection
+                        //                     .remove(vid);
+                        //               });
+                        //             } else {
+                        //               setState(() {
+                        //                 selectedVehiclesForCollection.add(vid);
+                        //               });
+                        //             }
+                        //           },
+                        //         ),
+                        //       ],
+                        //     ],
+                        //   ],
+                        // ),
                         SizedBox(
                           height: 25,
                         ),

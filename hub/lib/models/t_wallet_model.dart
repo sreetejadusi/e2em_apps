@@ -9,6 +9,7 @@ class TWalletModel {
     required this.utr,
     required this.status,
     required this.timestamp,
+    
   });
 
   factory TWalletModel.fromMap(Map<String, dynamic> json) {

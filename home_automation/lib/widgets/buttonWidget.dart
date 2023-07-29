@@ -1,13 +1,12 @@
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget button(
-    {@required BuildContext context ,@required String text,
-      @required bool filled,
-      @required Color color,
-      @required Function onTap}) {
+    {required BuildContext context ,required String text,
+      required bool filled,
+      required Color color,
+      required Function onTap}) {
   return Transform.scale(
     scale: 1.7,
     child: Container(
@@ -22,7 +21,7 @@ Widget button(
           heroTag: 'rhaeheah',
           backgroundColor:
           filled ? color : Theme.of(context).scaffoldBackgroundColor,
-          onPressed: onTap,
+          onPressed: onTap(),
           child: Transform.scale(
               scale: 0.8,
               child: Text(

@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/index.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:provider/provider.dart';
 import '../colors.dart';
 import '../providers/index.dart';

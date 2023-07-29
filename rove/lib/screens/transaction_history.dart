@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -152,7 +152,7 @@ class _TransactionHistoryState extends State<TransactionHistory>
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                   child: FloatingActionButton.extended(
                     elevation: 0,
-                    backgroundColor: Theme.of(context).accentColor,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
                     onPressed: () async {
                       if (walletProvider.wallet.balance! < 200) {
                         alertDialog(context, "Insufficient Balance",
@@ -179,7 +179,7 @@ class _TransactionHistoryState extends State<TransactionHistory>
                         transactionsProvider.init();
                         fullScreenMessageDialog(
                             context: context,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             icon: Icons.verified,
                             title: 'Congrats',
                             subtitle: 'Payment Successful',
@@ -208,7 +208,7 @@ class _TransactionHistoryState extends State<TransactionHistory>
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                   child: FloatingActionButton.extended(
                     elevation: 0,
-                    backgroundColor: Theme.of(context).accentColor,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
                     onPressed: () async {
                       await checkMongoDBConnection();
                       await payment(
@@ -234,7 +234,7 @@ class _TransactionHistoryState extends State<TransactionHistory>
                                 transactionsProvider.init();
                                 fullScreenMessageDialog(
                                     context: context,
-                                    color: Theme.of(context).accentColor,
+                                    color: Theme.of(context).colorScheme.secondary,
                                     icon: Icons.verified,
                                     title: 'Congrats',
                                     subtitle: 'Payment Successful',
@@ -263,7 +263,7 @@ class _TransactionHistoryState extends State<TransactionHistory>
                                 ExternalWalletResponse response = data;
                                 fullScreenMessageDialog(
                                     context: context,
-                                    color: Theme.of(context).accentColor,
+                                    color: Theme.of(context).colorScheme.secondary,
                                     icon: Icons.verified,
                                     title: 'Congrats',
                                     subtitle: 'Payment Successful',

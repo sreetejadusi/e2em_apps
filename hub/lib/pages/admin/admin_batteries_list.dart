@@ -112,7 +112,7 @@ class _AdminBatteriesListState extends State<AdminBatteriesList> {
                 await batteries.deleteMany({"batteryId": battery.batteryId});
                 Navigator.pop(context);
                 Navigator.pop(context);
-                messageDialog(context, "Battery Deleted");
+                messageDialog(context, "Battery Deleted", true);
               },
             ),
           ),

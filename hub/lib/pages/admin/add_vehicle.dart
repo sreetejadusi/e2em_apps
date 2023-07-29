@@ -111,17 +111,20 @@ class _AddVehicleState extends State<AddVehicle> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Vehicle ID Already Exists");
+                            messageDialog(
+                                context, "Vehicle ID Already Exists", false);
                           } else {
                             await vehicles.insertOne(VehicleModel(
-                              id: "",
-                              hubId: widget.hubId,
-                              vehicleId: vehicleIdController.text,
-                              driverId: null,
-                              batteryId: null,
-                              vehicleStatus: "parking",
-                              maintenanceId: null,
-                            ).toMap());
+                                    id: "",
+                                    hubId: widget.hubId,
+                                    vehicleId:
+                                        vehicleIdController.text.toUpperCase(),
+                                    driverId: null,
+                                    batteryId: null,
+                                    vehicleStatus: "parking",
+                                    maintenanceId: null,
+                                    unlocked: false)
+                                .toMap());
                             await am.loadHubs(context);
                             setState(() {
                               l = false;
@@ -129,7 +132,7 @@ class _AddVehicleState extends State<AddVehicle> {
                             // widget.added();
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            messageDialog(context, "Vehicle Added");
+                            messageDialog(context, "Vehicle Added", false);
                           }
                         }
                       }
@@ -152,25 +155,28 @@ class _AddVehicleState extends State<AddVehicle> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Vehicle ID Already Exists");
+                            messageDialog(
+                                context, "Vehicle ID Already Exists", false);
                           } else {
                             await vehicles.replaceOne(
                                 {"vehicleId": vehicleIdController.text},
                                 VehicleModel(
-                                  id: "",
-                                  hubId: widget.hubId,
-                                  vehicleId: vehicleIdController.text,
-                                  driverId: null,
-                                  batteryId: null,
-                                  vehicleStatus: "parking",
-                                  maintenanceId: null,
-                                ).toMap());
+                                        id: "",
+                                        hubId: widget.hubId,
+                                        vehicleId: vehicleIdController.text
+                                            .toUpperCase(),
+                                        driverId: null,
+                                        batteryId: null,
+                                        vehicleStatus: "parking",
+                                        maintenanceId: null,
+                                        unlocked: false)
+                                    .toMap());
                             setState(() {
                               l = false;
                             });
                             widget.added();
                             Navigator.pop(context);
-                            messageDialog(context, "Vehicle Updated");
+                            messageDialog(context, "Vehicle Updated", true);
                           }
                         }
                       },

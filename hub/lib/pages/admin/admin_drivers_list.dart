@@ -108,7 +108,7 @@ class _AdminDriversListState extends State<AdminDriversList> {
                 await drivers.deleteMany({"driverId": driver.driverId});
                 Navigator.pop(context);
                 Navigator.pop(context);
-                messageDialog(context, "Driver Deleted");
+                messageDialog(context, "Driver Deleted", true);
               },
             ),
           ),

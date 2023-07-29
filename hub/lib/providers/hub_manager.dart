@@ -188,11 +188,17 @@ class HubManager with ChangeNotifier {
       await mongoDB.maintainMongoDBConnection(context);
       _drivers = [];
       _driversLoading = true;
+
       notifyListeners();
       DbCollection drivers = mongoDB.db.collection('drivers');
       AuthenticationProvider ap = context.read<AuthenticationProvider>();
+
       await drivers.find().toList().then((t) async {
-        _drivers = [for (final item in t) DriverModel.fromMap(item)];
+        _drivers = [
+          for (final item in t)
+            // if (item['hubId'] == ap.hub!.hubId)
+            DriverModel.fromMap(item)
+        ];
       });
       notifyListeners();
       _driversLoading = false;
@@ -251,6 +257,8 @@ class HubManager with ChangeNotifier {
       print(e);
     }
   }
+
+  
 
   Future<void> reset() async {
     _vehicles = [];

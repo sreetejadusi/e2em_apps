@@ -216,7 +216,7 @@ class _HubVehicleDetailState extends State<HubVehicleDetail> {
       l = false;
     });
     Navigator.pop(context);
-    messageDialog(context, "Vehicle Moved to parking");
+    messageDialog(context, "Vehicle Moved to parking", true);
     hubManager.init(context);
   }
 

@@ -317,17 +317,22 @@ class _BulkAllocationState extends State<BulkAllocation> {
               child: Form(
                 key: _formKey,
                 child: ListView(
-                 // crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 10,
                     ),
-                    CustomContainer(
-                      context: context,
-                      widget: Padding(
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      decoration: BoxDecoration(
+                          gradient: lg,
+                          borderRadius: BorderRadius.circular(16)),
+                      // context: context,
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -337,11 +342,20 @@ class _BulkAllocationState extends State<BulkAllocation> {
                             textFieldTitle("Choose Drivers"),
                             Wrap(
                               spacing: 10,
-                              alignment: WrapAlignment.center,
+                              alignment: WrapAlignment.start,
                               children: [
                                 for (int i = 0; i < dl.length; i++) ...[
                                   InputChip(
-                                    label: Text(dl[i].driverId),
+                                    backgroundColor: Colors.white,
+                                    selectedColor: Color(0xFF1bb273),
+                                    checkmarkColor: Colors.white,
+                                    label: Text(
+                                      dl[i].driverId,
+                                      style: TextStyle(
+                                          color: sd.contains(dl[i])
+                                              ? Colors.white
+                                              : Color(0xFF1bb273)),
+                                    ),
                                     selected: (sd.contains(dl[i])),
                                     onPressed: () {
                                       if (sd.contains(dl[i])) {
@@ -367,7 +381,7 @@ class _BulkAllocationState extends State<BulkAllocation> {
                             textFieldTitle("Available Vehicles"),
                             Wrap(
                               spacing: 10,
-                              alignment: WrapAlignment.center,
+                              alignment: WrapAlignment.start,
                               children: [
                                 for (int i = 0; i < vl.length; i++) ...[
                                   if (allocationList.values
@@ -377,7 +391,12 @@ class _BulkAllocationState extends State<BulkAllocation> {
                                       .toList()
                                       .isEmpty) ...[
                                     Chip(
-                                      label: Text(vl[i].vehicleId),
+                                      backgroundColor: Colors.white,
+                                      label: Text(
+                                        vl[i].vehicleId,
+                                        style:
+                                            TextStyle(color: Color(0xFF1bb273)),
+                                      ),
                                     ),
                                   ],
                                 ],
@@ -386,7 +405,7 @@ class _BulkAllocationState extends State<BulkAllocation> {
                             textFieldTitle("Available Batteries"),
                             Wrap(
                               spacing: 10,
-                              alignment: WrapAlignment.center,
+                              alignment: WrapAlignment.start,
                               children: [
                                 for (int i = 0; i < bl.length; i++) ...[
                                   if (allocatedBatteries
@@ -396,7 +415,12 @@ class _BulkAllocationState extends State<BulkAllocation> {
                                       .toList()
                                       .isEmpty) ...[
                                     Chip(
-                                      label: Text(bl[i].batteryId),
+                                      backgroundColor: Colors.white,
+                                      label: Text(
+                                        bl[i].batteryId,
+                                        style:
+                                            TextStyle(color: Color(0xFF1bb273)),
+                                      ),
                                     ),
                                   ],
                                 ],
@@ -408,17 +432,16 @@ class _BulkAllocationState extends State<BulkAllocation> {
                     ),
                     textFieldTitle("Vehicles Bulk Allocation List"),
                     Column(
-                     // physics: const BouncingScrollPhysics(),
-                     // scrollDirection: Axis.vertical,
+                      // physics: const BouncingScrollPhysics(),
+                      // scrollDirection: Axis.vertical,
                       children: [
                         for (int i = 0; i < allocationList.length; i++) ...[
                           item(
                               driverId:
                                   allocationList.keys.toList()[i].driverId,
                               batteryId: allocatedBatteries.toList()[i],
-                              vehicle: allocationList.values
-                                  .toList()[i]
-                                  .vehicleId),
+                              vehicle:
+                                  allocationList.values.toList()[i].vehicleId),
                         ],
                         //allocationList
                         //item(driver: "D101", vehicle: "V103"),

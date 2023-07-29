@@ -66,8 +66,9 @@ class _ApproveTWalletState extends State<ApproveTWallet>
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: accentColor1,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
+        elevation: 0,
         /* elevation: 0,
 
         title: const Padding(
@@ -80,6 +81,9 @@ class _ApproveTWalletState extends State<ApproveTWallet>
         centerTitle: true,
         actions: [],*/
         flexibleSpace: TabBar(
+          labelColor: accentColor1,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: accentColor1,
           isScrollable: false,
           controller: tabController,
           onTap: (int index) {},
@@ -208,9 +212,12 @@ class _ApproveTWalletState extends State<ApproveTWallet>
     WalletProvider wp = context.read<WalletProvider>();
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    return CustomContainer(
-      context: context,
-      widget: Padding(
+    return Container(
+      margin: EdgeInsets.all(6),
+      decoration: BoxDecoration(
+          color: accentColor1.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(12)),
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Row(
           children: [
@@ -219,24 +226,24 @@ class _ApproveTWalletState extends State<ApproveTWallet>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Id: " + tWallet.userId,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    "Id: " + tWallet.userId.toUpperCase(),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
                     "UTR: " + tWallet.utr,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    DateFormat('yyyy-MM-dd – kk:mm')
+                    DateFormat('yyyy-MM-dd ~ kk:mm')
                         .format(DateTime.parse(tWallet.timestamp)),
                     style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -259,7 +266,7 @@ class _ApproveTWalletState extends State<ApproveTWallet>
                           'userId': tWallet.userId,
                           'timestamp': tWallet.timestamp
                         }, modify.set('status', "approved"));
-                         DbCollection wallet = mongoDB.db.collection('wallet');
+                        DbCollection wallet = mongoDB.db.collection('wallet');
                         await wallet.insertOne({
                           'userId': tWallet.userId,
                           'amount': tWallet.amount,
@@ -275,10 +282,11 @@ class _ApproveTWalletState extends State<ApproveTWallet>
                             amount: tWallet.amount,
                             credit: true);
                         if (success) {
-                          messageDialog(context, "T Wallet Approved");
+                          messageDialog(context, "T Wallet Approved", true);
                           print("T Wallet Approved");
                         } else {
-                          messageDialog(context, "Error in updating TWallet");
+                          messageDialog(
+                              context, "Error in updating TWallet", false);
                         }
 
                         load();
@@ -302,7 +310,7 @@ class _ApproveTWalletState extends State<ApproveTWallet>
                             'userId': tWallet.userId,
                             'timestamp': tWallet.timestamp
                           }, modify.set('status', "rejected"));
-                          messageDialog(context, "T Wallet Rejected");
+                          messageDialog(context, "T Wallet Rejected", false);
                           print("T Wallet Rejected");
                           load();
                         } catch (e) {

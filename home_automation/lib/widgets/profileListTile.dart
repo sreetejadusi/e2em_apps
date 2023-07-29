@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../utils/index.dart';
-import 'package:row_collection/row_collection.dart';
 
 class ProfileListTile extends StatelessWidget {
   final String title;
@@ -37,7 +35,7 @@ class ProfileListTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
-          Separator.spacer(space: 4),
+          SizedBox(height: 4),
         ],
       ),
       subtitle: Text(
@@ -45,7 +43,7 @@ class ProfileListTile extends StatelessWidget {
         style: GoogleFonts.breeSerif(
           textStyle: TextStyle(
             fontSize: 18,
-            color: Theme.of(context).textTheme.caption.color,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
       ),

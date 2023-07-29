@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_blue_elves/flutter_blue_elves.dart';
+import 'package:hub/widgets/appbar.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide State;
 import 'package:provider/provider.dart';
 
@@ -31,6 +33,8 @@ class _AddHubState extends State<AddHub> {
   var minRechargeController = TextEditingController();
   var allocationCostController = TextEditingController();
   var batterySwapCostController = TextEditingController();
+  var blacklisted = false;
+  var dateOperative = 0;
 
   @override
   void initState() {
@@ -50,8 +54,11 @@ class _AddHubState extends State<AddHub> {
             widget.hubModel!.allocationCost.toString();
         batterySwapCostController.text =
             widget.hubModel!.batterySwapCost.toString();
+        blacklisted = widget.hubModel!.blacklisted;
+        dateOperative = widget.hubModel!.dateOperative;
       });
     }
+
     super.initState();
   }
 
@@ -62,19 +69,7 @@ class _AddHubState extends State<AddHub> {
     final h = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: accentColor1,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            widget.hubModel == null ? "Add Hub" : "Edit Hub",
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
-        centerTitle: true,
-        actions: [],
-      ),
+      appBar: GradientAppBar(title: 'Add Hub', automaticallyImplyLeading: true),
       persistentFooterButtons: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -141,30 +136,35 @@ class _AddHubState extends State<AddHub> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Hub ID Already Exists");
+                            messageDialog(
+                                context, "Hub ID Already Exists", false);
                           } else if (ul.contains(hubUsernameController.text)) {
                             setState(() {
                               l = false;
                             });
                             messageDialog(
-                                context, "Hub Username Already Exists");
+                                context, "Hub Username Already Exists", false);
                           } else {
                             await hubs.insertOne(HubModel(
-                              hubId: hubIdController.text,
-                              name: hubNameController.text,
-                              username: hubUsernameController.text,
-                              address: addressController.text,
-                              pinCode: pinCodeController.text,
-                              password: passwordController.text,
-                              wallet: int.parse((walletController.text) ?? "0"),
-                              minBalance: int.parse(minBalanceController.text),
-                              minRecharge:
-                                  int.parse(minRechargeController.text),
-                              allocationCost:
-                                  int.parse(allocationCostController.text),
-                              batterySwapCost:
-                                  int.parse(batterySwapCostController.text),
-                            ).toMap());
+                                    hubId: hubIdController.text,
+                                    name: hubNameController.text,
+                                    username: hubUsernameController.text,
+                                    address: addressController.text,
+                                    pinCode: pinCodeController.text,
+                                    password: passwordController.text,
+                                    wallet: int.parse(
+                                        (walletController.text) ?? "0"),
+                                    minBalance:
+                                        int.parse(minBalanceController.text),
+                                    minRecharge:
+                                        int.parse(minRechargeController.text),
+                                    allocationCost: int.parse(
+                                        allocationCostController.text),
+                                    batterySwapCost: int.parse(
+                                        batterySwapCostController.text),
+                                    blacklisted: blacklisted,
+                                    dateOperative: DateTime.now().day)
+                                .toMap());
                             await am.loadHubs(context);
                             setState(() {
                               l = false;
@@ -172,7 +172,7 @@ class _AddHubState extends State<AddHub> {
 
                             //widget.added();
                             Navigator.pop(context);
-                            messageDialog(context, "Hub Added");
+                            messageDialog(context, "Hub Added", true);
                           }
                         }
                       }
@@ -197,35 +197,37 @@ class _AddHubState extends State<AddHub> {
                               l = false;
                             });
                             messageDialog(
-                                context, "Hub Username Already Exists");
+                                context, "Hub Username Already Exists", false);
                           } else {
                             await hubs.replaceOne(
                                 {"hubId": hubIdController.text},
                                 HubModel(
-                                  hubId: hubIdController.text,
-                                  name: hubNameController.text,
-                                  username: hubUsernameController.text,
-                                  address: addressController.text,
-                                  pinCode: pinCodeController.text,
-                                  password: passwordController.text,
-                                  wallet:
-                                      int.parse((walletController.text) ?? "0"),
-                                  minBalance:
-                                      int.parse(minBalanceController.text),
-                                  minRecharge:
-                                      int.parse(minRechargeController.text),
-                                  allocationCost:
-                                      int.parse(allocationCostController.text),
-                                  batterySwapCost:
-                                      int.parse(batterySwapCostController.text),
-                                ).toMap());
+                                        hubId: hubIdController.text,
+                                        name: hubNameController.text,
+                                        username: hubUsernameController.text,
+                                        address: addressController.text,
+                                        pinCode: pinCodeController.text,
+                                        password: passwordController.text,
+                                        wallet: int.parse(
+                                            (walletController.text) ?? "0"),
+                                        minBalance: int.parse(
+                                            minBalanceController.text),
+                                        minRecharge: int.parse(
+                                            minRechargeController.text),
+                                        allocationCost: int.parse(
+                                            allocationCostController.text),
+                                        batterySwapCost: int.parse(
+                                            batterySwapCostController.text),
+                                        blacklisted: blacklisted,
+                                        dateOperative: dateOperative)
+                                    .toMap());
                             await am.loadHubs(context);
                             setState(() {
                               l = false;
                             });
                             widget.added();
                             Navigator.pop(context);
-                            messageDialog(context, "Hub Updated");
+                            messageDialog(context, "Hub Updated", true);
                           }
                         }
                       },
@@ -523,6 +525,21 @@ class _AddHubState extends State<AddHub> {
                             });
                           },
                         ),
+                        SizedBox(
+                          height: h * 0.01,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: blacklisted,
+                                onChanged: (value) {
+                                  setState(() {
+                                    blacklisted = value!;
+                                  });
+                                }),
+                            Text('Blacklisted')
+                          ],
+                        )
                       ],
                     ),
                   ),

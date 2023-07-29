@@ -1,84 +1,84 @@
 {
-  "project_info": {
-    "project_number": "60051570532",
-    "project_id": "hopp-16750",
-    "storage_bucket": "hopp-16750.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:60051570532:android:f8b283b065c6b7f8724471",
-        "android_client_info": {
-          "package_name": "com.app.hopp.hopp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "60051570532-e09seu5056vbohemrhi9mtj2brel05vj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.hopp.hopp",
-            "certificate_hash": "005c1b0771f8b5b2a72b696dc422e3f65f877b47"
-          }
-        },
-        {
-          "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBUcu_SA_nM-Ym_cPn9tS6wWr1nlJZNTSE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+    "project_info": {
+        "project_number": "60051570532",
+        "project_id": "hopp-16750",
+        "storage_bucket": "hopp-16750.appspot.com"
     },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:60051570532:android:39bd2c65da1138c7724471",
-        "android_client_info": {
-          "package_name": "com.e2em.rove"
-        }
-      },
-      "oauth_client": [
+    "client": [
         {
-          "client_id": "60051570532-36h7tep2ho9bg4i7sn5to7e5n7a88avv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.e2em.rove",
-            "certificate_hash": "005c1b0771f8b5b2a72b696dc422e3f65f877b47"
-          }
+            "client_info": {
+                "mobilesdk_app_id": "1:60051570532:android:f8b283b065c6b7f8724471",
+                "android_client_info": {
+                    "package_name": "com.app.hopp.hopp"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "60051570532-e09seu5056vbohemrhi9mtj2brel05vj.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.app.hopp.hopp",
+                        "certificate_hash": "005c1b0771f8b5b2a72b696dc422e3f65f877b47"
+                    }
+                },
+                {
+                    "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyBUcu_SA_nM-Ym_cPn9tS6wWr1nlJZNTSE"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
         },
         {
-          "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBUcu_SA_nM-Ym_cPn9tS6wWr1nlJZNTSE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
-              "client_type": 3
+            "client_info": {
+                "mobilesdk_app_id": "1:60051570532:android:39bd2c65da1138c7724471",
+                "android_client_info": {
+                    "package_name": "com.e2em.rove"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "60051570532-36h7tep2ho9bg4i7sn5to7e5n7a88avv.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.e2em.rove",
+                        "certificate_hash": "005c1b0771f8b5b2a72b696dc422e3f65f877b47"
+                    }
+                },
+                {
+                    "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyBUcu_SA_nM-Ym_cPn9tS6wWr1nlJZNTSE"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "60051570532-nthsitpue46qp1tti5i79qeq7om9v1ph.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
             }
-          ]
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    ],
+    "configuration_version": "1"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hub/widgets/appbar.dart';
 import 'package:provider/provider.dart';
 
 import '../../index_files.dart';
@@ -33,20 +34,8 @@ class _HubDetailState extends State<HubDetail>
   Widget build(BuildContext context) {
     AdminManager am = context.watch<AdminManager>();
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: accentColor1,
-        title: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            widget.hubId,
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        //iconTheme:
-        centerTitle: true,
-        actions: [],
-      ),
+      appBar:
+          GradientAppBar(title: widget.hubId, automaticallyImplyLeading: true),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -60,29 +49,25 @@ class _HubDetailState extends State<HubDetail>
               Tab(
                 child: Text(
                   "VEHICLE INFO",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               Tab(
                 child: Text(
                   "BATTERY INFO",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               Tab(
                 child: Text(
                   "DRIVERS",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               Tab(
                 child: Text(
                   "WALLET",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ],
@@ -152,7 +137,7 @@ class _HubDetailState extends State<HubDetail>
                                         .toList()
                                         .length,
                                     title: "Maintenance",
-                                    icon: Icons.battery_0_bar,
+                                    icon: Icons.home_repair_service,
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -174,7 +159,7 @@ class _HubDetailState extends State<HubDetail>
                                         .toList()
                                         .length,
                                     title: "Total Assigned",
-                                    icon: Icons.featured_play_list_outlined,
+                                    icon: Icons.person_add,
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -196,7 +181,7 @@ class _HubDetailState extends State<HubDetail>
                                         .toList()
                                         .length,
                                     title: "Vehicles Parking",
-                                    icon: Icons.park_outlined,
+                                    icon: Icons.local_parking,
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -399,9 +384,10 @@ class _HubDetailState extends State<HubDetail>
       onTap: () {
         add();
       },
-      child: CustomContainer(
-        context: context,
-        widget: Padding(
+      child: Container(
+        decoration: BoxDecoration(
+            color: accentColor1, borderRadius: BorderRadius.circular(12)),
+        child: Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: ListTile(
             title: Text(
@@ -430,9 +416,10 @@ class _HubDetailState extends State<HubDetail>
     final h = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.all(0.0),
-      child: CustomContainer(
-        context: context,
-        widget: InkWell(
+      child: Container(
+        decoration: BoxDecoration(
+            color: accentColor1, borderRadius: BorderRadius.circular(24)),
+        child: InkWell(
           onTap: onTap,
           radius: largeRadius,
           child: Padding(
@@ -442,12 +429,11 @@ class _HubDetailState extends State<HubDetail>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 15),
+                  padding: const EdgeInsets.only(left: 4),
                   child: Container(
+                      padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(smallRadius),
-                      ),
+                          color: Colors.white, shape: BoxShape.circle),
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Icon(
@@ -459,7 +445,7 @@ class _HubDetailState extends State<HubDetail>
                 Center(
                   child: Text(
                     num.toString(),
-                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.w600),
                   ),
                 ),
                 Center(
@@ -467,8 +453,7 @@ class _HubDetailState extends State<HubDetail>
                     padding: const EdgeInsets.only(bottom: 10, top: 10),
                     child: Text(
                       title,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: TextStyle(fontSize: 15),
                     ),
                   ),
                 ),

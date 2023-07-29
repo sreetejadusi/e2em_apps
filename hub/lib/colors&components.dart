@@ -2,28 +2,27 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-Color accentColor1 = const Color(0XFF5176eb);
-Color accentColor2 = const Color(0XFF6ca4f9);
+Color accentColor1 = const Color(0XFF64E3C8);
+Color accentColor2 = Color(0xFF7AE49D);
 
-
-Color accentDark = const Color(0XFF3F8DCE);
-Color accentLight = const Color(0XFF69B4F8);
+Color accentDark = Color(0xFF64E3C8);
+Color accentLight = Color(0xFF7AE49D);
 Color cardColor = const Color(0XFFe4e4e4);
 //Color backgroundColor  = const Color(0XFFf6fbff);
 Color backgroundColor = Colors.white;
 //Color backgroundColor = const Color(0XFFe6e8f6);
 
 LinearGradient lg = LinearGradient(
-  begin: Alignment.topRight,
-  end: Alignment.bottomLeft,
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+  transform: GradientRotation(274.12),
   colors: [
     //accentColor2,
     accentColor1,
-    accentColor1,
+    accentColor2,
     //accentColor1
     //Color(0XFFD7E1EC),
     //Color(0XFFFFFFFF)
-
   ],
 );
 LinearGradient clg = const LinearGradient(
@@ -32,30 +31,24 @@ LinearGradient clg = const LinearGradient(
   colors: [
     Color(0XFFFFFFFF),
     Color(0XFFD7E1EC),
-
   ],
 );
-double smallRadius = 5;
-double largeRadius = 10;
+double smallRadius = 6;
+double largeRadius = 16;
 
 Color cursorColor = Colors.black45;
-InputBorder border = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(7),
-  borderSide: const BorderSide(color: Colors.black, width: 1.5),
-);
-InputBorder enabledBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(7),
-  borderSide: const BorderSide(color: Colors.black, width: 1.5),
-);
-InputBorder focusedBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(7),
-  borderSide: const BorderSide(color: Colors.black, width: 1.5),
-);
-InputBorder errorBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(7),
-  borderSide: const BorderSide(color: Colors.red, width: 1.5),
-);
-TextStyle hintStyle =
-const TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+InputBorder border = InputBorder.none;
+InputBorder enabledBorder = InputBorder.none;
+InputBorder focusedBorder = InputBorder.none;
+InputBorder errorBorder = InputBorder.none;
+BoxDecoration formDecoration = BoxDecoration(boxShadow: [
+  BoxShadow(
+    color: Colors.grey.withOpacity(0.5),
+    spreadRadius: 0,
+    blurRadius: 2,
+    offset: Offset(0, 3), // changes position of shadow
+  ),
+], color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(12)));
+TextStyle hintStyle = const TextStyle(fontSize: 2);
 TextStyle labelStyle =
     const TextStyle(color: Colors.black, fontWeight: FontWeight.w600);

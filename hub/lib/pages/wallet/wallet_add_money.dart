@@ -104,7 +104,7 @@ class _WalletAddMoneyState extends State<WalletAddMoney> {
                     ).toMap());
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    messageDialog(context, "Wallet money add requested");
+                    messageDialog(context, "Wallet money add requested", true);
                   }
                 },
                 child: Container(

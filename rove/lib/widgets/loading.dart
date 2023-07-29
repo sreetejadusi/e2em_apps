@@ -13,7 +13,7 @@ Widget loaderSpin(BuildContext context){
     child: Center(
         child: LoadingIndicator(
           indicatorType: Indicator.ballSpinFadeLoader,
-          colors: [Theme.of(context).accentColor],
+          colors: [Theme.of(context).colorScheme.secondary],
         )
       // CircularProgressIndicator()
     ),

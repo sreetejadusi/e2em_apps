@@ -23,17 +23,17 @@ flutterToast(BuildContext context, String msg, int time, ToastGravity gravity) {
 
 class CustomDialog extends StatelessWidget {
   final IconData icon;
-  final String text;
-  final Widget widget;
+  final String? text;
+  final Widget? widget;
   final String buttonlabel;
   final Function() buttonPressed;
 
   const CustomDialog({
-    this.icon,
+    required this.icon,
     this.text,
     this.widget,
-    this.buttonlabel,
-    this.buttonPressed,
+    required this.buttonlabel,
+    required this.buttonPressed,
   });
 
   @override
@@ -56,7 +56,7 @@ class CustomDialog extends StatelessWidget {
         if (text != null) ...[
           Center(
             child: Text(
-              text,
+              text!,
               textAlign: TextAlign.center,
               style: GoogleFonts.breeSerif(
                 textStyle: TextStyle(
@@ -67,7 +67,7 @@ class CustomDialog extends StatelessWidget {
             ),
           )
         ],
-        if (widget != null) ...[widget],
+        if (widget != null) ...[widget!],
         SizedBox(
           height: 15,
         ),
@@ -99,16 +99,16 @@ class YesNoDialog extends StatelessWidget {
   final Function() yesPressed;
   final Function() noPressed;
   const YesNoDialog({
-    @required this.icon,
-    @required this.text,
-    @required this.yesPressed,
-    @required this.noPressed,
+    @required required this.icon,
+    @required required this.text,
+    @required required this.yesPressed,
+    @required required this.noPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-    //  backgroundColor: Color(0xFFBB86FC),
+      //  backgroundColor: Color(0xFFBB86FC),
       title: null,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       children: [
@@ -145,7 +145,7 @@ class YesNoDialog extends StatelessWidget {
             Transform.scale(
               scale: 1.2,
               child: ActionChip(
-                 // backgroundColor: Color(0xFF121212),
+                  // backgroundColor: Color(0xFF121212),
                   label: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 13),
                     child: Text("No"),
@@ -178,8 +178,14 @@ Future messageDialog(BuildContext context, String content) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Icon(Icons.wifi_off,size: 50,),
-        content: Text(content,textAlign: TextAlign.center,),
+        title: Icon(
+          Icons.wifi_off,
+          size: 50,
+        ),
+        content: Text(
+          content,
+          textAlign: TextAlign.center,
+        ),
         actions: [
           Center(
             child: Transform.scale(
@@ -249,8 +255,8 @@ class RoundDialog extends StatelessWidget {
   final List<Widget> children;
 
   const RoundDialog({
-    this.title,
-    @required this.children,
+    required this.title,
+    @required required this.children,
   });
 
   @override

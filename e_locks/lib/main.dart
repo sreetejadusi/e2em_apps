@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:mongo_dart/mongo_dart.dart' hide State;
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
+// import 'package:package_info_plus/package_info_plus.dart';
 import 'widgets/index.dart';
 import 'utils/index.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class _ExtendState extends State<Extend> {
     setState(() {
       loading = true;
     });
-   /* try {
+    /* try {
       internetCheckTimer =
           Timer.periodic(const Duration(seconds: 2), (Timer t) async {
         bool conn = await checkInternetConnectivity();
@@ -106,19 +106,19 @@ class _ExtendState extends State<Extend> {
   }
 
   Future<void> checkUpdate() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String currentVersion = packageInfo.version;
+    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // String currentVersion = packageInfo.version;
     DbCollection apps_versions = mongoDB.db.collection('apps_versions');
 
     await apps_versions.find({'name': 'e-locks'}).toList().then((value) async {
           String newVersion = value.first["version"];
           bool mandatory = value.first["mandatory"];
-          if (currentVersion == newVersion) {
-          } else {
-            setState(() {
-              updateAvailable = true;
-            });
-          }
+          // if (currentVersion == newVersion) {
+          // } else {
+          //   setState(() {
+          //     updateAvailable = true;
+          //   });
+          // }
           setState(() {
             updateMandatory = mandatory;
           });
@@ -152,9 +152,10 @@ class _ExtendState extends State<Extend> {
           )),
         ),
       );
-    }/* else if (!connection) {
+    } /* else if (!connection) {
       return const NetworkError();
-    } */else if (!dp.skipUpdate && updateAvailable) {
+    } */
+    else if (!dp.skipUpdate && updateAvailable) {
       return imgBackground(
         UpdateScreen(
           mandatory: updateMandatory,

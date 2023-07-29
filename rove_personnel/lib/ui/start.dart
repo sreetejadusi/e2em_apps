@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_elves/flutter_blue_elves.dart';
 import 'package:rove_personnel/ui/index.dart';
+import 'package:rove_personnel/ui/settings_screen.dart';
 import '../utils/index.dart';
 import '../widgets/index.dart';
 import '../providers/index.dart';
@@ -55,13 +56,11 @@ class _StartState extends State<Start> {
     BluetoothProvider bp = context.watch<BluetoothProvider>();
     BluetoothDevicesProvider bdp = context.watch<BluetoothDevicesProvider>();
     List<Widget> tabs = [
-      if (bdp.connectedDevice != null) ...[
-        ControlScreen(device: bdp.connectedDevice!),
-      ] else ...[
-        NoDeviceControlScreen(),
-      ],
+      bdp.connectedDevice != null
+          ? ControlScreen(device: bdp.connectedDevice!)
+          : NoDeviceControlScreen(),
       Devices(),
-      Container(),
+      SettingsScreen(),
       Container()
     ];
     return WillPopScope(
@@ -74,13 +73,15 @@ class _StartState extends State<Start> {
           title: Image.asset(
             "assets/vh_logo.png",
             //fit: BoxFit.,
-            height: 40,
+            height: 48,
           ),
           actions: [
             if (bdp.tabIndex == 0) ...[
               IconButton(
                 icon: Icon(
-                  Icons.refresh,
+                  Icons.notifications_none_outlined,
+                  size: 30,
+                  color: greenAccentColor,
                 ),
                 onPressed: () {
                   bdp.changeTabIndex(0);
@@ -137,20 +138,20 @@ class _StartState extends State<Start> {
           onTabSelected: (int index) {
             BluetoothDevicesProvider bdp =
                 context.read<BluetoothDevicesProvider>();
-            if (index == 0) {
-              bdp.changeConnectedDevice(null);
-            } else {}
+            // if (index == 0) {
+            //   // bdp.changeConnectedDevice(null);
+            // } else {}
             bdp.changeTabIndex(index);
           },
           items: [
             FABBottomAppBarItem(
-              iconData: Icons.home,
+              iconData: Icons.home_rounded,
             ),
             FABBottomAppBarItem(
-              iconData: Icons.dashboard,
+              iconData: Icons.bluetooth,
             ),
-            FABBottomAppBarItem(iconData: Icons.notifications),
-            FABBottomAppBarItem(iconData: Icons.settings),
+            FABBottomAppBarItem(iconData: Icons.dashboard_rounded),
+            FABBottomAppBarItem(iconData: Icons.person),
           ],
           backgroundColor: accentColor,
         ),

@@ -1,5 +1,5 @@
 String getRoomImage(String code) {
-  String image;
+  late String image;
   switch (code) {
     case 'k':
       image = 'assets/rooms/kitchen.png';
@@ -28,8 +28,8 @@ String getRoomImage(String code) {
   return image;
 }
 
-String getDeviceImage(String code) {
-  String image;
+String? getDeviceImage(String code) {
+  String? image;
   switch (code) {
     case 'tl':
       image = 'assets/devices/tube_light.png';
@@ -71,6 +71,7 @@ String getDeviceImage(String code) {
       image = 'assets/devices/water_heater.png';
       break;
     default:
+      image = null;
       break;
   }
   return image;

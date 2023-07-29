@@ -20,7 +20,7 @@ class ImagesUrlProvider extends BaseProvider {
   List<Uint8List> _homeScreenImages = [];
   List<Uint8List> get rideScreenImages => _rideScreenImages.reversed.toList();
   List<Uint8List> _rideScreenImages = [];
-  UserModel _user = UserModel();
+  late UserModel _user;
 
   @override
   Future<void> init() async {
@@ -30,7 +30,10 @@ class ImagesUrlProvider extends BaseProvider {
       List<dynamic> fetched1 = [];
       List<dynamic> fetched2 = [];
       DbCollection other = mongoDB.db.collection('other');
-      await other.find({'type': 'homeScreenImagesURL'}).toList().then((value) async {
+      await other
+          .find({'type': 'homeScreenImagesURL'})
+          .toList()
+          .then((value) async {
             if (value.length != 0) {
               fetched1 = value.first['data'];
             }
@@ -41,14 +44,17 @@ class ImagesUrlProvider extends BaseProvider {
         final Uint8List bytes = imageData.buffer.asUint8List();
         _homeScreenImages.add(bytes);
       }
-      await other.find({'type': 'rideScreenImagesURL'}).toList().then((value) async {
-        if (value.length != 0) {
-          fetched2 = value.first['data'];
-        }
-      });
+      await other
+          .find({'type': 'rideScreenImagesURL'})
+          .toList()
+          .then((value) async {
+            if (value.length != 0) {
+              fetched2 = value.first['data'];
+            }
+          });
       for (var i = 0; i < fetched2.length; i++) {
         final ByteData imageData =
-        await NetworkAssetBundle(Uri.parse(fetched2[i])).load("");
+            await NetworkAssetBundle(Uri.parse(fetched2[i])).load("");
         final Uint8List bytes = imageData.buffer.asUint8List();
         _rideScreenImages.add(bytes);
       }

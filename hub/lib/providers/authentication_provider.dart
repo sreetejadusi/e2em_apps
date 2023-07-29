@@ -26,6 +26,12 @@ class AuthenticationProvider with ChangeNotifier {
   bool get signInLoading => _signInLoading;
   bool _signInLoading = false;
 
+  bool get blacklisted => _blacklisted;
+  bool _blacklisted = false;
+
+  int? get dateOperative => _dateOperative;
+  int? _dateOperative;
+
   Future<void> signInLoadingState(bool status) async {
     _signInLoading = status;
     notifyListeners();
@@ -134,13 +140,17 @@ class AuthenticationProvider with ChangeNotifier {
           .then((value) async {
             if (value.isEmpty) {
               signInLoadingState(false);
-              messageDialog(context, "Invalid Credentials");
+              messageDialog(context, "Invalid Credentials", false);
             } else {
               if (lt == LoginType.hub) {
                 updateHub(HubModel.fromMap(value.first));
               }
 
               _displayName = value.first['name'];
+              if (lt == LoginType.hub) {
+                _blacklisted = value.first['blacklisted'];
+                _dateOperative = value.first['dateOperative'];
+              }
               _displayId = value.first[lt == LoginType.driver
                   ? 'driverId'
                   : lt == LoginType.hub

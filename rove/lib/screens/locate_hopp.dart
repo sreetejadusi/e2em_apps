@@ -157,21 +157,21 @@ class LocateHOPPState extends State<LocateHOPP> {
               ),
         floatingActionButton: Container(
           height: 50,
-          child: FlatButton(
+          child: ElevatedButton(
             onPressed: () async {
               String url =
                   "http://maps.google.com/maps?saddr=${_currentPosition.latitude},${_currentPosition.longitude}&daddr=${vehiclePosition.latitude},${vehiclePosition.longitude}";
               url.launchUrl;
               //await moveToMyLocation();
             },
-            padding: EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
+            // padding: EdgeInsets.all(0),
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(6),
+            // ),
             child: Ink(
               decoration: BoxDecoration(
                 color: Color(0xFF26352e),
-                // color: Theme.of(context).accentColor.withOpacity(0.3),
+                // color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                 /* gradient: LinearGradient(
                                           begin: Alignment.centerLeft,
                                           end: Alignment.centerRight,
@@ -192,7 +192,7 @@ class LocateHOPPState extends State<LocateHOPP> {
                   children: [
                     Icon(
                       Icons.delivery_dining,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     SizedBox(
                       width: 5,

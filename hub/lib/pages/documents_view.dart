@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hub/widgets/appbar.dart';
 
 import '../index_files.dart';
 
@@ -22,22 +24,25 @@ class _DocumentsViewState extends State<DocumentsView> {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
+    // return Scaffold(
+    //   backgroundColor: backgroundColor,
+    //   appBar: AppBar(
+    //     elevation: 0,
+    //     backgroundColor: accentColor1,
+    //     title: const Padding(
+    //       padding: EdgeInsets.symmetric(vertical: 15),
+    //       child: Text(
+    //         "Documents View",
+    //         style: TextStyle(color: Colors.white),
+    //       ),
+    //     ),
+    //     //iconTheme:
+    //     centerTitle: true,
+    //     actions: [],
+    //   ),
+    //   body:
+    // );
     return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: accentColor1,
-        title: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            "Documents View",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        //iconTheme:
-        centerTitle: true,
-        actions: [],
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: ListView(
@@ -47,25 +52,54 @@ class _DocumentsViewState extends State<DocumentsView> {
             SizedBox(
               height: h * 0.02,
             ),
-            CustomTextField(
-              labelText: 'Vehicle No',
-              controller: vehicleNoController,
-              items: vehiclesNos,
-              hintText: 'Select Vehicle No',
-              suffixIcon: Icons.arrow_drop_down,
-              type: TextFieldType.dropdown,
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return "Vehicle No cannot be empty";
-                }
-                return null;
-              },
-              onChanged: (String value) {
-                setState(() {
-                  vehicleNoController = TextEditingController(text: value);
-                });
-              },
+            textFieldTitle('Vehicle No'),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  // border: Border.all(color: Colors.black),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color(0xFF7d7d7d).withOpacity(0.25),
+                        blurRadius: 10)
+                  ],
+                  color: Colors.white),
+              child: DropdownMenu(
+                inputDecorationTheme:
+                    InputDecorationTheme(border: InputBorder.none),
+                width: w * 0.9,
+                controller: vehicleNoController,
+                hintText: 'Select Vehicle No',
+                onSelected: (value) {
+                  setState(() {
+                    vehicleNoController =
+                        TextEditingController(text: value.toString());
+                  });
+                },
+                dropdownMenuEntries: vehiclesNos
+                    .map((e) => DropdownMenuEntry(value: e, label: e))
+                    .toList(),
+              ),
             ),
+            // CustomTextField(
+            //   labelText: 'Vehicle No',
+            //   controller: vehicleNoController,
+            //   items: vehiclesNos,
+            //   hintText: 'Select Vehicle No',
+            //   suffixIcon: Icons.arrow_drop_down,
+            //   type: TextFieldType.dropdown,
+            //   validator: (String? value) {
+            //     if (value!.isEmpty) {
+            //       return "Vehicle No cannot be empty";
+            //     }
+            //     return null;
+            //   },
+            //   onChanged: (String value) {
+            //     setState(() {
+            //       vehicleNoController = TextEditingController(text: value);
+            //     });
+            //   },
+            // ),
             SizedBox(
               height: h * 0.01,
             ),
@@ -74,10 +108,10 @@ class _DocumentsViewState extends State<DocumentsView> {
                 height: h * 0.01,
               ),
               textFieldTitle("Documents"),
-              tile(title: "Aadhaar Card", icon: Icons.picture_as_pdf),
-              tile(title: "RC", icon: Icons.picture_as_pdf),
-              tile(title: "Insurance", icon: Icons.picture_as_pdf),
-              tile(title: "Fitness", icon: Icons.picture_as_pdf),
+              tile(title: "Aadhaar Card", icon: FontAwesomeIcons.file),
+              tile(title: "RC", icon: FontAwesomeIcons.file),
+              tile(title: "Insurance", icon: FontAwesomeIcons.file),
+              tile(title: "Fitness", icon: FontAwesomeIcons.file),
             ],
           ],
         ),
@@ -91,9 +125,16 @@ class _DocumentsViewState extends State<DocumentsView> {
       required IconData icon}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: CustomContainer(
-        context: context,
-        widget: ListTile(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            // border: Border.all(color: Colors.black),
+            boxShadow: [
+              BoxShadow(
+                  color: Color(0xFF7d7d7d).withOpacity(0.25), blurRadius: 7)
+            ],
+            color: Colors.white),
+        child: ListTile(
           tileColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(largeRadius),

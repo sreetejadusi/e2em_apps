@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_elves/flutter_blue_elves.dart';
 import 'package:rove_personnel/utils/index.dart';
 import 'package:provider/provider.dart';
+import 'package:rove_personnel/widgets/bottom_fab.dart';
 import '../providers/index.dart';
 
 class Devices extends StatefulWidget {
@@ -56,6 +57,16 @@ class _DevicesState extends State<Devices> {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             children: <Widget>[
+              // ListTile(
+              //   title: Text(
+              //     "Connected Device: ",
+              //     style: TextStyle(
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.w500,
+              //       color: Color(0xFFA8ADB7),
+              //     ),
+              //   ),
+              // ),
               ListTile(
                 title: Text(
                   "Available Devices",
@@ -88,7 +99,7 @@ class _DevicesState extends State<Devices> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: ListTile(
-        leading: Icon(Icons.electric_moped),
+        leading: Icon(Icons.bluetooth),
         trailing: ActionChip(
           backgroundColor: accentColor,
           onPressed: () async {
@@ -98,6 +109,7 @@ class _DevicesState extends State<Devices> {
             String s = ss.trim();
             bdp.changeLastDevice(s);
             bdp.changeTabIndex(0);
+            FABBottomAppBarState().updateIndex(0);
           },
           label: const Text("Connect"),
         ),
@@ -114,10 +126,7 @@ class _DevicesState extends State<Devices> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: ListTile(
-        leading: Chip(
-          backgroundColor: Colors.transparent,
-          label: Text(sr.rssi.toString()),
-        ),
+        leading: Icon(Icons.bluetooth),
         trailing: ActionChip(
           onPressed: () async {
             Device toConnectDevice = sr.connect(connectTimeout: 10000);
@@ -126,6 +135,7 @@ class _DevicesState extends State<Devices> {
             String s = ss.trim();
             bdp.changeLastDevice(s);
             bdp.changeTabIndex(0);
+            FABBottomAppBarState().updateIndex(0);
           },
           backgroundColor: accentColor,
           label: const Text("Connect"),

@@ -71,7 +71,7 @@ class WalletProvider with ChangeNotifier {
           updated = true;
         } else {
           updated = false;
-          messageDialog(context, "Insufficient Balance");
+          messageDialog(context, "Insufficient Balance", false);
         }
         await hubs.update(
             where.eq("hubId", loginId), modify.set('wallet', updatedAmount));

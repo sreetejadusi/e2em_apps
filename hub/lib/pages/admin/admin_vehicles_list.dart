@@ -113,7 +113,7 @@ class _AdminVehiclesListState extends State<AdminVehiclesList> {
                 await vehicles.deleteMany({"vehicleId": vehicle.vehicleId});
                 Navigator.pop(context);
                 Navigator.pop(context);
-                messageDialog(context, "Vehicle Deleted");
+                messageDialog(context, "Vehicle Deleted", true);
               },
             ),
           ),

@@ -87,15 +87,15 @@ class MQTTConnection {
       print('socket exception - $e');
       client.disconnect();
     }
-    if (client.connectionStatus.state == MqttConnectionState.connected) {
+    if (client.connectionStatus!.state == MqttConnectionState.connected) {
       print('MQTT client connected');
     } else {
       print(
           'ERROR MQTT client connection failed - disconnecting, status is ${client.connectionStatus}');
       client.disconnect();
     }
-    client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
-      MQTTMessageModel mqttMessageModel = MQTTMessageModel();
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      MQTTMessageModel mqttMessageModel = MQTTMessageModel(topic: '',message: '');
       final recMess = c[0].payload as MqttPublishMessage;
       final pt =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
@@ -133,7 +133,7 @@ class MQTTConnection {
       for (var i = 0; i < messages.length; i++) {
         builder.addString(messages[i]);
       }
-      client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload);
+      client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
     } catch (e) {
       print(e);
     }

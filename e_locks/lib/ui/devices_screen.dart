@@ -3,7 +3,7 @@ import 'package:e_locks/ui/index.dart';
 
 import '../widgets/index.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_elves/flutter_blue_elves.dart';

@@ -1,6 +1,6 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rove/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/index.dart';
@@ -10,7 +10,7 @@ import 'package:page_transition/page_transition.dart';
 import '../utils/index.dart';
 import '../widgets/index.dart';
 import '../providers/index.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
@@ -105,38 +105,40 @@ class _SignInState extends State<SignIn> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(''),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Welcome()),
-              );
-            },
-          ),
-          elevation: 0,
-        ),
+        // appBar: ,
         body: isLoading
             ? Center(child: LoaderCircular())
             : SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
                 child: SafeArea(
                   child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/bg.png"),
+                            fit: BoxFit.cover)),
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Image.asset(
-                            'assets/rove.png',
-                            alignment: Alignment.centerLeft,
-                            height: MediaQuery.of(context).size.width * 0.22,
-                            width: MediaQuery.of(context).size.width * 0.22,
+                          AppBar(
+                            backgroundColor: Colors.transparent,
+                            title: Text(''),
+                            leading: IconButton(
+                              icon: Icon(Icons.arrow_back),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Welcome()),
+                                );
+                              },
+                            ),
+                            elevation: 0,
                           ),
                           SizedBox(
                             height: 10,
@@ -144,20 +146,22 @@ class _SignInState extends State<SignIn> {
                           FadeAnimation(
                               1,
                               Text(
-                                "ROVE",
+                                "Login",
                                 style: GoogleFonts.gugi(
-                                  textStyle: TextStyle(color: Colors.white, fontSize: 37),
+                                  textStyle: TextStyle(
+                                      color: Colors.white, fontSize: 37),
                                 ),
                               )),
                           FadeAnimation(
                               1.3,
                               Text(
-                                "Let's ride the future",
+                                "Please enter your details.",
                                 // "A Promise of The Most Fuss-Free And Refreshing Ride Ever With Us",
                                 textAlign: TextAlign.justify,
                                 style: GoogleFonts.breeSerif(
                                   textStyle: TextStyle(
-                                      color: Colors.white.withOpacity(1), fontSize: 17),
+                                      color: Colors.white.withOpacity(1),
+                                      fontSize: 17),
                                 ),
                               )),
                           SizedBox(
@@ -171,19 +175,21 @@ class _SignInState extends State<SignIn> {
                                   child: TextFormField(
                                     keyboardType: TextInputType.phone,
                                     onSaved: (value) => phoneNumber = value,
-                                    cursorColor: cursorColor ,
+                                    cursorColor: cursorColor,
                                     onChanged: (value) {},
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return "Phone Number field cannot be empty";
-                                      } else if (value.toString().length != 10) {
+                                      } else if (value.toString().length !=
+                                          10) {
                                         return "Phone Number should be 10 digit number";
                                       }
                                       return null;
                                     },
                                     decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.phone,color: Theme.of(context).accentColor,),
-                                     /* prefix: Text(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 14),
+                                      /* prefix: Text(
                                         '+91',
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 16.0),
@@ -205,64 +211,71 @@ class _SignInState extends State<SignIn> {
                               ),
                               FadeAnimation(
                                 0.5,
-                                TextFieldOuter(child:TextFormField(
-                                  onSaved: (value) => password = value,
-                                  cursorColor: cursorColor ,
-                                  onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Password field cannot be empty";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.text,
-                                  obscureText: _secureText,
-                                  decoration: InputDecoration(
-                                    hintText: "Password",
-                                    prefixIcon: Icon(Icons.lock,color: Theme.of(context).accentColor,),
-                                    suffixIcon: IconButton(
-                                      alignment: Alignment.center,
-                                      onPressed: showHide,
-                                      icon: Icon(
-                                          _secureText
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .caption!
-                                              .color!),
+                                TextFieldOuter(
+                                  child: TextFormField(
+                                    onSaved: (value) => password = value,
+                                    cursorColor: cursorColor,
+                                    onChanged: (value) {},
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Password field cannot be empty";
+                                      }
+                                      return null;
+                                    },
+                                    keyboardType: TextInputType.text,
+                                    obscureText: _secureText,
+                                    decoration: InputDecoration(
+                                      hintText: "Password",
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 14),
+                                      suffixIcon: IconButton(
+                                        alignment: Alignment.center,
+                                        onPressed: showHide,
+                                        icon: Icon(
+                                            _secureText
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .caption!
+                                                .color!),
+                                      ),
+                                      border: border,
+                                      labelStyle: labelStyle,
+                                      errorBorder: errorBorder,
+                                      enabledBorder: enabledBorder,
+                                      focusedBorder: focusedBorder,
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.auto,
                                     ),
-                                    border: border,
-                                    labelStyle: labelStyle,
-                                    errorBorder: errorBorder,
-                                    enabledBorder: enabledBorder,
-                                    focusedBorder: focusedBorder,
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.auto,
                                   ),
                                 ),
-                              ),),
-                              SizedBox(
-                                height: 10,
                               ),
-                              FadeAnimation(
-                                0.5,
-                                TextButton(
-                                  child: Text(
-                                    "Forgot Password ?",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context).accentColor,
-                                        fontWeight: FontWeight.w600),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: FadeAnimation(
+                                  0.5,
+                                  TextButton(
+                                    child: Text(
+                                      "Forgot Password ?",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: accentColor2,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EnterPhoneNumber()),
+                                      );
+                                    },
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              EnterPhoneNumber()),
-                                    );
-                                  },
                                 ),
                               ),
                               SizedBox(
@@ -272,7 +285,12 @@ class _SignInState extends State<SignIn> {
                                 1.2,
                                 Container(
                                   height: 50,
-                                  child: FlatButton(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                accentColor2)),
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
                                         _formKey.currentState!.save();
@@ -281,36 +299,16 @@ class _SignInState extends State<SignIn> {
                                         await signIn();
                                       }
                                     },
-                                    padding: EdgeInsets.all(0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Ink(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).accentColor,
-                                       /* gradient: LinearGradient(
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                          colors: [
-                                            Colors.blue,
-                                            Colors.greenAccent,
-                                          ],
-                                        ),*/
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        constraints: BoxConstraints(
-                                            minHeight: 75,
-                                            maxWidth: MediaQuery.of(context).size.width*0.50),
-                                        child: Text(
-                                          "Login",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
+                                    // padding: EdgeInsets.all(0),
+                                    // shape: RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.circular(6),
+                                    // ),
+                                    child: Text(
+                                      "Login",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
@@ -326,7 +324,7 @@ class _SignInState extends State<SignIn> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  "I'm a new user.",
+                                  "Don't have an account?",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 TextButton(
@@ -341,7 +339,7 @@ class _SignInState extends State<SignIn> {
                                     "Sign up",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).accentColor),
+                                        color: accentColor2),
                                   ),
                                 )
                               ],

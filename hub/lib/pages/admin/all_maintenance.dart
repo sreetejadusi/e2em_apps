@@ -68,9 +68,9 @@ class _AllMaintenanceState extends State<AllMaintenance>
       backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: accentColor1,
-        /* elevation: 0,
-
+        backgroundColor: Colors.white,
+        elevation: 0,
+/*
         title: const Padding(
           padding: EdgeInsets.symmetric(vertical: 15),
           child: Text(
@@ -81,6 +81,9 @@ class _AllMaintenanceState extends State<AllMaintenance>
         centerTitle: true,
         actions: [],*/
         flexibleSpace: TabBar(
+          labelColor: Colors.black,
+          indicatorColor: accentColor1,
+          indicatorSize: TabBarIndicatorSize.label,
           isScrollable: false,
           controller: tabController,
           onTap: (int index) {},
@@ -176,9 +179,12 @@ class _AllMaintenanceState extends State<AllMaintenance>
     WalletProvider wp = context.read<WalletProvider>();
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    return CustomContainer(
-      context: context,
-      widget: Padding(
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: accentColor1),
+          color: accentColor1.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(12)),
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Row(
           children: [
@@ -188,45 +194,45 @@ class _AllMaintenanceState extends State<AllMaintenance>
                 children: [
                   Text(
                     "Id: " + maintenanceData.maintenanceId,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
                     "Issue: " + maintenanceData.issue,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
                     "Description: " + maintenanceData.description,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "Hub Id: " + maintenanceData.hubId,
+                    "Hub ID: " + maintenanceData.hubId,
                     style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "VNo: " + maintenanceData.vehicleId,
+                    "Vehicle ID: " + maintenanceData.vehicleId.toUpperCase(),
                     style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "DT: " + dateFromString(maintenanceData.datetime),
+                    "Date: " + dateFromString(maintenanceData.datetime),
                     style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -236,6 +242,8 @@ class _AllMaintenanceState extends State<AllMaintenance>
               children: [
                 if (maintenanceData.status == "pending") ...[
                   FloatingActionButton.small(
+                    foregroundColor: accentColor1,
+                    elevation: 5,
                     onPressed: () async {
                       try {
                         await mongoDB.maintainMongoDBConnection(context);
@@ -244,13 +252,14 @@ class _AllMaintenanceState extends State<AllMaintenance>
                         await maintenance.updateMany(
                             {'maintenanceId': maintenanceData.maintenanceId},
                             modify.set('status', "complete"));
-                        messageDialog(context, "Maintenance moved to complete");
+                        messageDialog(
+                            context, "Maintenance moved to complete", true);
                         load();
                       } catch (e) {
                         print(e);
                       }
                     },
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.white,
                     child: const Icon(
                       Icons.touch_app_rounded,
                     ),

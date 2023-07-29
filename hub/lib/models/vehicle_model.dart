@@ -5,16 +5,17 @@ import '../index_files.dart';
 class VehicleModel {
   String id, vehicleId, vehicleStatus;
   String? hubId, driverId, maintenanceId, batteryId;
+  bool unlocked;
 
-  VehicleModel({
-    required this.id,
-    required this.vehicleId,
-    required this.maintenanceId,
-    required this.driverId,
-    required this.hubId,
-    required this.vehicleStatus,
-    required this.batteryId,
-  });
+  VehicleModel(
+      {required this.id,
+      required this.vehicleId,
+      required this.maintenanceId,
+      required this.driverId,
+      required this.hubId,
+      required this.vehicleStatus,
+      required this.batteryId,
+      required this.unlocked});
 
   factory VehicleModel.fromMap(Map<String, dynamic> json) {
     ObjectId oId = json['_id'];
@@ -26,6 +27,7 @@ class VehicleModel {
       hubId: json["hubId"],
       vehicleStatus: json["vehicleStatus"],
       batteryId: json["batteryId"],
+      unlocked: json['unlocked']
     );
   }
 
@@ -36,6 +38,7 @@ class VehicleModel {
         "hubId": hubId,
         "vehicleStatus": vehicleStatus,
         "batteryId": batteryId,
+        "unlocked":unlocked
       };
 
   VehicleStatus getVS() {

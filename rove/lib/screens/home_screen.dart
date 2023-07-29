@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rove/screens/ride_instructions.dart';
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onWillPop: () async {
         fullScreenYesOrNoDialog(
             context: context,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             icon: Icons.fullscreen_exit,
             title: 'Exit App',
             subtitle: 'Sure you want to exit the app',
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? null
             : Container(
                 height: 50,
-                child: FlatButton(
+                child: ElevatedButton(
                   onPressed: () async {
                     bool lse = await Geolocator.isLocationServiceEnabled();
                     print('isLocationServiceEnabled : ' + lse.toString());
@@ -178,31 +178,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       await Geolocator.openLocationSettings();
                     } else {
                       print('yes');
-                      if (transactionsProvider.transactions[0].from ==
-                          "pending") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TransactionHistory(),
-                          ),
-                        );
-                      } else if (pendingRide) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Scan()),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Scan()),
-                        );
-                      }
+                      // if (transactionsProvider.transactions[0].from ==
+                      //     "pending") {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const TransactionHistory(),
+                      //     ),
+                      //   );
+                      // } else if (pendingRide) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => Scan()),
+                      //   );
+                      // } else {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => Scan()),
+                      //   );
+                      // }
                     }
                   },
-                  padding: EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
+                  // padding: EdgeInsets.all(0),
+                  // shape: RoundedRectangleBorder(
+                  //   borderRadius: BorderRadius.circular(6),
+                  // ),
                   child: Ink(
                     decoration: BoxDecoration(
                       color: Color(0xFF26352e),
@@ -218,14 +218,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Icon(
                             LineIcons.qrcode,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Text(
-                            transactionsProvider.transactions[0].from ==
-                                    "pending"
+                            transactionsProvider.transactions.isNotEmpty &&
+                                    transactionsProvider.transactions[0].from ==
+                                        "pending"
                                 ? "Pending Payment"
                                 : pendingRide
                                     ? 'Continue Ride'
@@ -524,8 +525,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           },
                                           iconName: Icons
                                               .account_balance_wallet_outlined,
-                                          colorCard:
-                                              Theme.of(context).accentColor,
+                                          colorCard: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           text: "My\nWallet",
                                         ),
                                         SizedBox(
@@ -541,8 +543,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             );
                                           },
                                           iconName: Icons.monetization_on,
-                                          colorCard:
-                                              Theme.of(context).accentColor,
+                                          colorCard: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           text: "My\nPayments",
                                         ),
                                         SizedBox(
@@ -552,8 +555,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ontap: () {},
                                           iconName:
                                               Icons.monetization_on_outlined,
-                                          colorCard:
-                                              Theme.of(context).accentColor,
+                                          colorCard: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           text: "Refer \n& Earn",
                                         ),
                                       ],
@@ -565,8 +569,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         RowItem1(
                                           ontap: () {},
                                           iconName: Icons.history,
-                                          colorCard:
-                                              Theme.of(context).accentColor,
+                                          colorCard: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           text: "Your\nHistory",
                                         ),
                                         SizedBox(
@@ -582,8 +587,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             );
                                           },
                                           iconName: Icons.delivery_dining,
-                                          colorCard:
-                                              Theme.of(context).accentColor,
+                                          colorCard: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           text: "Riding\nInstructions",
                                         ),
                                         SizedBox(
@@ -599,8 +605,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             );
                                           },
                                           iconName: Icons.info,
-                                          colorCard:
-                                              Theme.of(context).accentColor,
+                                          colorCard: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           text: "T & C\n for User",
                                         ),
                                       ],
@@ -619,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context: context,
                             text: onOffProvider.on ? 'ON' : 'OFF',
                             filled: onOffProvider.on ? true : false,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             onTap: () async {
                               await onOffProvider.onPressed();
                               await MQTTConnection.mqtt

@@ -115,11 +115,11 @@ class _AboutVehicleState extends State<AboutVehicle>
                 width: 10,
                 decoration: BoxDecoration(
                   color: selected == index
-                      ? Theme.of(context).accentColor
+                      ? Theme.of(context).colorScheme.secondary
                       : Colors.white70,
                   border: Border.all(
                       color: selected == index
-                          ? Theme.of(context).accentColor
+                          ? Theme.of(context).colorScheme.secondary
                           : Colors.white70),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),

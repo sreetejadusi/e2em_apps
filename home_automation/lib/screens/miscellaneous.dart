@@ -73,7 +73,7 @@ class _MiscellaneousState extends State<Miscellaneous> {
         builder: (BuildContext context,
             AsyncSnapshot<List<MiscellaneousModel>> snapshot) {
           if (snapshot.hasData) {
-            miscellaneous = snapshot.data;
+            miscellaneous = snapshot.data!;
           }
           return WillPopScope(
             onWillPop: () async {
@@ -347,14 +347,14 @@ class MiscellaneousItems1 extends StatelessWidget {
   final Function onClick;
 
   const MiscellaneousItems1(
-      {this.miscellaneous,
-      this.text1,
-      this.text2,
-      this.img,
-      this.on,
-      this.deviceOnLoad,
-      this.onTap,
-      this.onClick});
+      {required this.miscellaneous,
+      required this.text1,
+      required this.text2,
+      required this.img,
+      required this.on,
+      required this.deviceOnLoad,
+      required this.onTap,
+      required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -376,7 +376,7 @@ class MiscellaneousItems1 extends StatelessWidget {
                       bottomLeft: Radius.circular(20))),
               child: Container(
                 child: ListTile(
-                  onTap: onTap,
+                  onTap: onTap(),
                   isThreeLine: false,
                   // tileColor: Theme.of(context).cardColor,
                   title: Text(
@@ -441,7 +441,7 @@ class MiscellaneousItems1 extends StatelessWidget {
                 ? Center(child: CircularProgressIndicator())
                 : InkWell(
                     borderRadius: BorderRadius.circular(50),
-                    onTap: onClick,
+                    onTap: onClick(),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.transparent,
@@ -486,14 +486,14 @@ class MiscellaneousItems2 extends StatelessWidget {
   final String img;
   final Function onTap;
 
-  const MiscellaneousItems2({this.text1, this.img, this.onTap});
+  const MiscellaneousItems2({required this.text1, required this.img, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       splashColor: Colors.red,
-      onTap: onTap,
+      onTap: onTap(),
       child: Container(
         decoration: BoxDecoration(
             //   color: Color(color),

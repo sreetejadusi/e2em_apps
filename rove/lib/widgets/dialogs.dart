@@ -115,7 +115,7 @@ class CustomDialog extends StatelessWidget {
             child: Transform.scale(
               scale: 1.2,
               child: ActionChip(
-                  backgroundColor: Theme.of(context).accentColor,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                   //backgroundColor: Color(0xFF121212),
                   label: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 13),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hub/widgets/appbar.dart';
 
 import '../index_files.dart';
 
@@ -14,22 +16,9 @@ class _AlarmsState extends State<Alarms> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: accentColor1,
-        title: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            "Alarms",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        //iconTheme:
-        centerTitle: true,
-        actions: [],
-      ),
+      appBar: GradientAppBar(title: 'Alarms', automaticallyImplyLeading: true),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         child: ListView(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -46,14 +35,14 @@ class _AlarmsState extends State<Alarms> {
                 icon: Icons.account_balance_wallet),
             tile(
                 title: "Performance Issue",
-                subtitle: "Issue detected in vehicle performance",
+                subtitle: "Issues in vehicle performance",
                 iconColor: Colors.black,
-                icon: Icons.electric_rickshaw),
+                icon: FontAwesomeIcons.circleExclamation),
             tile(
                 title: "Wallet Approved",
                 subtitle: "Add amount to wallet approved",
                 iconColor: Colors.black,
-                icon: Icons.approval),
+                icon: FontAwesomeIcons.thumbsUp),
           ],
         ),
       ),
@@ -67,42 +56,51 @@ class _AlarmsState extends State<Alarms> {
       required IconData icon}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(largeRadius),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        decoration: BoxDecoration(
+          color: accentColor1,
+          borderRadius: BorderRadius.circular(16),
         ),
-        child:Container(
-          decoration: BoxDecoration(
-            gradient: clg,
-            borderRadius: BorderRadius.circular(largeRadius),
-          ),
-          child:   ListTile(
-          tileColor: Colors.white,
-          isThreeLine: true,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(largeRadius),
-          ),
-          leading: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(smallRadius),
+        child: Row(
+          children: [
+            Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Icon(
+                  icon,
+                  color: iconColor,
+                  size: 28,
+                )),
+            SizedBox(
+              width: 16,
+            ),
+            FittedBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                  Text(subtitle),
+                ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(icon, color: iconColor),
-              )),
-          title: Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(subtitle),
-          trailing: Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.black,
-            size: 15,
-          ),
-        ),),
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black,
+              size: 15,
+            )
+          ],
+        ),
       ),
     );
   }

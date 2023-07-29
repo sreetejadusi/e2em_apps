@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/index.dart';
 import '../utils/index.dart';
@@ -145,27 +145,34 @@ class _SignUpState extends State<SignUp> {
               physics: ClampingScrollPhysics(),
               child: SafeArea(
                 child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/bg.png"),
+                          fit: BoxFit.cover)),
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Image.asset(
-                          'assets/rove.png',
-                          alignment: Alignment.centerLeft,
-                          height: MediaQuery.of(context).size.width * 0.22,
-                          width: MediaQuery.of(context).size.width * 0.22,
-                        ),
                         SizedBox(
-                          height: 10,
+                          height: MediaQuery.of(context).size.height * 0.1,
                         ),
+                        // Image.asset(
+                        //   'assets/rove.png',
+                        //   alignment: Alignment.centerLeft,
+                        //   height: MediaQuery.of(context).size.width * 0.22,
+                        //   width: MediaQuery.of(context).size.width * 0.22,
+                        // ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
                         FadeAnimation(
                             1,
                             Text(
-                              "ROVE",
+                              "Sign Up",
                               style: GoogleFonts.gugi(
                                 textStyle: TextStyle(
                                     color: Colors.white, fontSize: 37),
@@ -174,7 +181,7 @@ class _SignUpState extends State<SignUp> {
                         FadeAnimation(
                             1.3,
                             Text(
-                              "Let's ride the future",
+                              "Please enter your details",
                               // "A Promise of The Most Fuss-Free And Refreshing Ride Ever With Us",
                               textAlign: TextAlign.justify,
                               style: GoogleFonts.breeSerif(
@@ -184,81 +191,75 @@ class _SignUpState extends State<SignUp> {
                               ),
                             )),
                         SizedBox(
+                          height: 40,
+                        ),
+                        FadeAnimation(
+                          0.5,
+                          TextFieldOuter(
+                            child: TextFormField(
+                              onSaved: (value) => name = value,
+                              cursorColor: cursorColor,
+                              onChanged: (value) {},
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Name field cannot be empty";
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.name,
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 16),
+                                hintText: "Name",
+                                border: border,
+                                labelStyle: labelStyle,
+                                errorBorder: errorBorder,
+                                enabledBorder: enabledBorder,
+                                focusedBorder: focusedBorder,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
                           height: 20,
                         ),
-                        Column(
-                          children: <Widget>[
-                            FadeAnimation(
-                              0.5,
-                              TextFieldOuter(
-                                child: TextFormField(
-                                  onSaved: (value) => name = value,
-                                  cursorColor: cursorColor,
-                                  onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Name field cannot be empty";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.name,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.person,
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                    hintText: "Name",
-                                    border: border,
-                                    labelStyle: labelStyle,
-                                    errorBorder: errorBorder,
-                                    enabledBorder: enabledBorder,
-                                    focusedBorder: focusedBorder,
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.auto,
-                                  ),
-                                ),
+                        FadeAnimation(
+                          0.5,
+                          TextFieldOuter(
+                            child: TextFormField(
+                              onSaved: (value) => phoneNumber = value,
+                              cursorColor: cursorColor,
+                              onChanged: (value) {},
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Phone Number field cannot be empty";
+                                } else if (value.toString().length != 10) {
+                                  return "Phone Number should be 10 digit number";
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 16),
+                                border: border,
+                                labelStyle: labelStyle,
+                                errorBorder: errorBorder,
+                                enabledBorder: enabledBorder,
+                                focusedBorder: focusedBorder,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                hintText: "Phone Number",
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              0.5,
-                              TextFieldOuter(
-                                child: TextFormField(
-                                  onSaved: (value) => phoneNumber = value,
-                                  cursorColor: cursorColor,
-                                  onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Phone Number field cannot be empty";
-                                    } else if (value.toString().length != 10) {
-                                      return "Phone Number should be 10 digit number";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.phone,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.phone,
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                    border: border,
-                                    labelStyle: labelStyle,
-                                    errorBorder: errorBorder,
-                                    enabledBorder: enabledBorder,
-                                    focusedBorder: focusedBorder,
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.auto,
-                                    hintText: "Phone Number",
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            /* FadeAnimation(
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        /* FadeAnimation(
                               0.5,
                               TextFieldOuter(
                                 child: TextFormField(
@@ -275,7 +276,7 @@ class _SignUpState extends State<SignUp> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.email,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                     hintText: "Email ID",
                                     border: border,
@@ -311,7 +312,7 @@ class _SignUpState extends State<SignUp> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.calendar_today,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                     hintText: "Age",
                                     border: border,
@@ -346,7 +347,7 @@ class _SignUpState extends State<SignUp> {
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
                                         Icons.work,
-                                        color: Theme.of(context).accentColor,
+                                        color: Theme.of(context).colorScheme.secondary,
                                       ),
                                       hintText: "Occupation",
                                       border: border,
@@ -390,7 +391,7 @@ class _SignUpState extends State<SignUp> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.location_city,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                     hintText: "City",
                                     border: border,
@@ -407,160 +408,135 @@ class _SignUpState extends State<SignUp> {
                             SizedBox(
                               height: 20,
                             ),*/
-                            FadeAnimation(
-                              0.5,
-                              TextFieldOuter(
-                                child: TextFormField(
-                                  onSaved: (value) => password = value,
-                                  cursorColor: cursorColor,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      pass = value;
-                                    });
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Password field cannot be empty";
-                                    } else if (value.toString().length < 8) {
-                                      return "Password length should be \natleast 8 characters";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.text,
-                                  obscureText: _secureText1,
-                                  decoration: InputDecoration(
-                                    hintText: "Password",
-                                    prefixIcon: Icon(
-                                      Icons.lock,
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                      alignment: Alignment.center,
-                                      onPressed: showHide1,
-                                      icon: Icon(
-                                          _secureText1
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .caption!
-                                              .color!),
-                                    ),
-                                    border: border,
-                                    labelStyle: labelStyle,
-                                    errorBorder: errorBorder,
-                                    enabledBorder: enabledBorder,
-                                    focusedBorder: focusedBorder,
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.auto,
-                                  ),
+                        FadeAnimation(
+                          0.5,
+                          TextFieldOuter(
+                            child: TextFormField(
+                              onSaved: (value) => password = value,
+                              cursorColor: cursorColor,
+                              onChanged: (value) {
+                                setState(() {
+                                  pass = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Password field cannot be empty";
+                                } else if (value.toString().length < 8) {
+                                  return "Password length should be \natleast 8 characters";
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.text,
+                              obscureText: _secureText1,
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 14),
+                                suffixIcon: IconButton(
+                                  alignment: Alignment.center,
+                                  onPressed: showHide1,
+                                  icon: Icon(
+                                      _secureText1
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .color!),
                                 ),
+                                border: border,
+                                labelStyle: labelStyle,
+                                errorBorder: errorBorder,
+                                enabledBorder: enabledBorder,
+                                focusedBorder: focusedBorder,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              0.5,
-                              TextFieldOuter(
-                                child: TextFormField(
-                                  onSaved: (value) => confirmPassword = value,
-                                  cursorColor: cursorColor,
-                                  onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value != pass || pass != value) {
-                                      return "password and confirm password should be same";
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.text,
-                                  obscureText: _secureText2,
-                                  decoration: InputDecoration(
-                                    hintText: "Confirm Password",
-                                    prefixIcon: Icon(
-                                      Icons.lock,
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                      alignment: Alignment.center,
-                                      onPressed: showHide2,
-                                      icon: Icon(
-                                          _secureText2
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .caption!
-                                              .color!),
-                                    ),
-                                    border: border,
-                                    labelStyle: labelStyle,
-                                    errorBorder: errorBorder,
-                                    enabledBorder: enabledBorder,
-                                    focusedBorder: focusedBorder,
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.auto,
-                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeAnimation(
+                          0.5,
+                          TextFieldOuter(
+                            child: TextFormField(
+                              onSaved: (value) => confirmPassword = value,
+                              cursorColor: cursorColor,
+                              onChanged: (value) {},
+                              validator: (value) {
+                                if (value != pass || pass != value) {
+                                  return "password and confirm password should be same";
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.text,
+                              obscureText: _secureText2,
+                              decoration: InputDecoration(
+                                hintText: "Confirm Password",
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 14),
+                                suffixIcon: IconButton(
+                                  alignment: Alignment.center,
+                                  onPressed: showHide2,
+                                  icon: Icon(
+                                      _secureText2
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .color!),
                                 ),
+                                border: border,
+                                labelStyle: labelStyle,
+                                errorBorder: errorBorder,
+                                enabledBorder: enabledBorder,
+                                focusedBorder: focusedBorder,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
                               ),
                             ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            FadeAnimation(
-                              1.2,
-                              Container(
-                                height: 50,
-                                child: FlatButton(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      _formKey.currentState!.save();
-                                      SystemChannels.textInput
-                                          .invokeMethod('TextInput.hide');
-                                      await signUp();
-                                    }
-                                  },
-                                  padding: EdgeInsets.all(0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Ink(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).accentColor,
-                                      /* gradient: LinearGradient(
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                          colors: [
-                                            Colors.blue,
-                                            Colors.greenAccent,
-                                          ],
-                                        ),*/
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      constraints: BoxConstraints(
-                                          minHeight: 75,
-                                          maxWidth: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.50),
-                                      child: Text(
-                                        "Sign up",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        FadeAnimation(
+                          1.2,
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(
+                                      Color(0xFF187498))),
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  SystemChannels.textInput
+                                      .invokeMethod('TextInput.hide');
+                                  await signUp();
+                                }
+                              },
+                              // padding: EdgeInsets.all(0),
+                              // shape: RoundedRectangleBorder(
+                              //   borderRadius: BorderRadius.circular(6),
+                              // ),
+                              child: Text(
+                                "Sign up",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                textAlign: TextAlign.center,
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
                         ),
                         FadeAnimation(
                           0.5,
@@ -570,7 +546,7 @@ class _SignUpState extends State<SignUp> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  "I'm already a member.",
+                                  "Already have an account?",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 TextButton(
@@ -585,7 +561,7 @@ class _SignUpState extends State<SignUp> {
                                     "Sign in",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).accentColor),
+                                        color: Color(0xFF187498)),
                                   ),
                                 )
                               ],

@@ -10,14 +10,14 @@ class NetworkError extends StatelessWidget {
         subtitle: Text('You are not connected to internet'),
         action: Text(
           'Re-Connect',
-          style: TextStyle(fontSize: 25, color: Theme.of(context).accentColor),
+          style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.secondary),
         ),
-        actionCallback: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Welcome()),
-          );
-        },
+        // actionCallback: () {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => Welcome()),
+        //   );
+        // },
         child: Icon(Icons.signal_cellular_connected_no_internet_4_bar),
       ),
     );

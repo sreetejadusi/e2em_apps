@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:provider/provider.dart';
 
 import '../providers/index.dart';
@@ -157,7 +157,7 @@ class _MyWalletState extends State<MyWallet> with TickerProviderStateMixin {
       child: Scaffold(
         floatingActionButton: SizedBox(
           height: 50,
-          child: FlatButton(
+          child: ElevatedButton(
             onPressed: () async {
               Color c = Colors.white;
               showDialog(
@@ -239,7 +239,7 @@ class _MyWalletState extends State<MyWallet> with TickerProviderStateMixin {
                                   transactionsProvider.init();
                                   fullScreenMessageDialog(
                                       context: context,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                       icon: Icons.verified,
                                       title: 'Congrats',
                                       subtitle: 'Payment Successful',
@@ -272,7 +272,7 @@ class _MyWalletState extends State<MyWallet> with TickerProviderStateMixin {
                                   Navigator.pop(context);
                                   fullScreenMessageDialog(
                                       context: context,
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                       icon: Icons.verified,
                                       title: 'Congrats',
                                       subtitle: 'Payment Successful',
@@ -289,14 +289,14 @@ class _MyWalletState extends State<MyWallet> with TickerProviderStateMixin {
                     );
                   });
             },
-            padding: EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
+            // padding: EdgeInsets.all(0),
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(6),
+            // ),
             child: Ink(
               decoration: BoxDecoration(
                 color: Color(0xFF26352e),
-                // color: Theme.of(context).accentColor.withOpacity(0.3),
+                // color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                 /* gradient: LinearGradient(
                                           begin: Alignment.centerLeft,
                                           end: Alignment.centerRight,
@@ -317,7 +317,7 @@ class _MyWalletState extends State<MyWallet> with TickerProviderStateMixin {
                   children: [
                     Icon(
                       Icons.add_to_photos,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     SizedBox(
                       width: 5,
@@ -389,7 +389,7 @@ class _MyWalletState extends State<MyWallet> with TickerProviderStateMixin {
                           HeaderText(text: 'My Wallet'),
                           Container(
                             decoration: BoxDecoration(
-                              // color: Theme.of(context).accentColor,
+                              // color: Theme.of(context).colorScheme.secondary,
                               color: Color(0xFF26352e),
                               borderRadius: BorderRadius.circular(15),
                             ),

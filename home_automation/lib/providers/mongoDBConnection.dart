@@ -6,7 +6,7 @@ MongoDBConnection mongoDB = MongoDBConnection();
 
 class MongoDBConnection {
   static final MongoDBConnection mongoDB = MongoDBConnection._internal();
-  Db db;
+  late Db db;
   factory MongoDBConnection() {
     return mongoDB;
   }

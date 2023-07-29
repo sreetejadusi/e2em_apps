@@ -1,10 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State, Center;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/index.dart';
@@ -20,9 +19,9 @@ class AddUser extends StatefulWidget {
 class _AddUserState extends State<AddUser> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String name, username, password;
+  late String name, username, password;
   bool _secureText = true;
-  List<dynamic> val;
+  late List<dynamic> val;
   showHide() {
     setState(() {
       _secureText = !_secureText;
@@ -75,10 +74,10 @@ class _AddUserState extends State<AddUser> {
                           children: <Widget>[
                             TextFormField(
                               keyboardType: TextInputType.text,
-                              onSaved: (value) => name = value,
+                              onSaved: (value) => name = value!,
                               onChanged: (value) {},
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Name field cannot be empty";
                                 }
                                 return null;
@@ -99,10 +98,10 @@ class _AddUserState extends State<AddUser> {
                             ),
                             TextFormField(
                               keyboardType: TextInputType.text,
-                              onSaved: (value) => username = value,
+                              onSaved: (value) => username = value!,
                               onChanged: (value) {},
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Username field cannot be empty";
                                 }
                                 return null;
@@ -122,10 +121,10 @@ class _AddUserState extends State<AddUser> {
                               height: 20,
                             ),
                             TextFormField(
-                              onSaved: (value) => password = value,
+                              onSaved: (value) => password = value!,
                               onChanged: (value) {},
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Password field cannot be empty";
                                 }
                                 return null;
@@ -143,7 +142,7 @@ class _AddUserState extends State<AddUser> {
                                           : Icons.visibility_off,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .caption
+                                          .bodySmall!
                                           .color),
                                 ),
                                 border: border,
@@ -160,8 +159,8 @@ class _AddUserState extends State<AddUser> {
                             ),
                             FloatingActionButton.extended(
                               onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  _formKey.currentState.save();
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
                                   SystemChannels.textInput
                                       .invokeMethod('TextInput.hide');
                                   setState(() {

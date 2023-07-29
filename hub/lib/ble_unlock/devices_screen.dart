@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_elves/flutter_blue_elves.dart';
+import 'package:hub/widgets/appbar.dart';
 import 'package:provider/provider.dart';
 
 import 'bluetooth_devices_provider.dart';
@@ -83,13 +84,9 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 ),
               )
             : null,
-        appBar: AppBar(
-          backgroundColor: accentColor1,
-          elevation: 0,
-          title: const Text(
-            "Devices",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
+        appBar: GradientAppBar(
+          title: 'Devices',
+          automaticallyImplyLeading: true,
           actions: [
             IconButton(
                 onPressed: () {
@@ -104,8 +101,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 },
                 icon: Icon(
                   Icons.bluetooth,
-                  color:
-                      bp.bluetoothOn ? Colors.greenAccent : Colors.deepOrange,
+                  color: bp.bluetoothOn ? Colors.black : Colors.deepOrange,
                 )),
             IconButton(
                 onPressed: () {
@@ -120,7 +116,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 },
                 icon: Icon(
                   Icons.location_on,
-                  color: bp.gpsOn ? Colors.greenAccent : Colors.deepOrange,
+                  color: bp.gpsOn ? Colors.black : Colors.deepOrange,
                 )),
             const SizedBox(
               width: 10,
@@ -171,7 +167,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
                             i < widget.devicesNames.length;
                             i++) ...[
                           Chip(
-                            label: Text(widget.devicesNames[i]),
+                            backgroundColor: accentColor1,
+                            label: Text(
+                              widget.devicesNames[i],
+                            ),
                           ),
                         ],
                       ],
@@ -183,12 +182,16 @@ class _DevicesScreenState extends State<DevicesScreen> {
                     textFieldTitle("Scanned Accessible Devices"),
                     //],
                     for (int i = 0; i < bdp.hideConnectedList.length; i++) ...[
-                      if (bdp.hideConnectedList[i].name != null) ...[
+                      if (bdp.hideConnectedList[i].name != null &&
+                          widget.devicesNames
+                              .contains(bdp.hideConnectedList[i].name)) ...[
                         tileHCD(bdp.hideConnectedList[i]),
                       ],
                     ],
                     for (int i = 0; i < bdp.scanResultList.length; i++) ...[
-                      if (bdp.scanResultList[i].name != null) ...[
+                      if (bdp.scanResultList[i].name != null &&
+                          widget.devicesNames
+                              .contains(bdp.scanResultList[i].name)) ...[
                         tileSR(bdp.scanResultList[i]),
                       ],
                     ],
@@ -233,24 +236,27 @@ class _DevicesScreenState extends State<DevicesScreen> {
     BluetoothDevicesProvider bdp = context.read<BluetoothDevicesProvider>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: CustomContainer(
-        context: context,
-        widget: Padding(
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: accentColor1, width: 2),
+            borderRadius: BorderRadius.circular(12)),
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             title: Text(
               sr.name ?? " ",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20),
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 5),
               child: Text(
                 sr.id,
                 //up.userDetails[1],
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15),
               ),
             ),
             trailing: ActionChip(
+              backgroundColor: accentColor1,
               onPressed: () async {
                 Device toConnectDevice = sr.connect(connectTimeout: 10000);
                 bdp.changeConnectedDevice(toConnectDevice);
@@ -262,8 +268,10 @@ class _DevicesScreenState extends State<DevicesScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          ControlScreen(device: bdp.connectedDevice!),
+                      builder: (context) => ControlScreen(
+                        device: bdp.connectedDevice!,
+                        name: sr.name.toString(),
+                      ),
                     ),
                   );
                 }
@@ -280,24 +288,24 @@ class _DevicesScreenState extends State<DevicesScreen> {
     BluetoothDevicesProvider bdp = context.read<BluetoothDevicesProvider>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: CustomContainer(
-        context: context,
-        widget: Padding(
+      child: Container(
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             title: Text(
               hcd.name ?? " ",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20),
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 5),
               child: Text(
                 hcd.id,
                 //up.userDetails[1],
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15),
               ),
             ),
             trailing: ActionChip(
+              backgroundColor: accentColor1,
               onPressed: () async {
                 Device toConnectDevice = hcd.connect(connectTimeout: 10000);
                 bdp.changeConnectedDevice(toConnectDevice);
@@ -309,8 +317,9 @@ class _DevicesScreenState extends State<DevicesScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          ControlScreen(device: bdp.connectedDevice!),
+                      builder: (context) => ControlScreen(
+                          device: bdp.connectedDevice!,
+                          name: hcd.name.toString()),
                     ),
                   );
                 }

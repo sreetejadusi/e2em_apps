@@ -137,7 +137,7 @@ class _EnterPhoneNumberState extends State<EnterPhoneNumber> {
                             },
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.phone,color: Theme.of(context).accentColor,),
+                              prefixIcon: Icon(Icons.phone,color: Theme.of(context).colorScheme.secondary,),
                              /* prefix: Text(
                                 '+91',
                                 style: TextStyle(
@@ -161,7 +161,7 @@ class _EnterPhoneNumberState extends State<EnterPhoneNumber> {
                         1.2,
                         Container(
                           height: 50,
-                          child: FlatButton(
+                          child: ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
@@ -170,13 +170,13 @@ class _EnterPhoneNumberState extends State<EnterPhoneNumber> {
                                 await getOTP();
                               }
                             },
-                            padding: EdgeInsets.all(0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
+                            // padding: EdgeInsets.all(0),
+                            // shape: RoundedRectangleBorder(
+                            //   borderRadius: BorderRadius.circular(6),
+                            // ),
                             child: Ink(
                               decoration: BoxDecoration(
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                                 /* gradient: LinearGradient(
                                           begin: Alignment.centerLeft,
                                           end: Alignment.centerRight,

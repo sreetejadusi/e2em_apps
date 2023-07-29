@@ -35,7 +35,7 @@ void fullScreenInfoDialog(
                   height: 50,
                   child: Ink(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Container(
@@ -52,7 +52,7 @@ void fullScreenInfoDialog(
                     ),
                   ),
                 ),
-                actionCallback: onClick,
+                // actionCallback: onClick,
                 child: Container(
                   height: 100,
                   width: 100,
@@ -103,7 +103,7 @@ void fullScreenYesOrNoDialog(
                   children: [
                     Container(
                       height: 50,
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -131,11 +131,11 @@ void fullScreenYesOrNoDialog(
                     ),
                     Container(
                       height: 50,
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: onYes,
                         child: Ink(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Container(
@@ -206,7 +206,7 @@ void fullScreenMessageDialog(
                   height: 50,
                   child: Ink(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Container(
@@ -225,7 +225,7 @@ void fullScreenMessageDialog(
                     ),
                   ),
                 ),
-                actionCallback: onBack,
+                // actionCallback: onBack,
                 child: Container(
                   height: 100,
                   width: 100,

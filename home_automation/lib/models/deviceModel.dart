@@ -10,16 +10,16 @@ class DeviceModel {
   List<dynamic> data;
   String category;
   DeviceModel(
-      {this.id,
-      this.name,
-      this.image,
-      this.timer,
-      this.code,
-      this.timerTime,
-      this.deviceId,
-      this.data,
-      this.parameters,
-      this.category});
+      {this.id=0,
+      required this.name,
+      required this.image,
+      required this.timer,
+      required this.code,
+      required this.timerTime,
+      required this.deviceId,
+      required this.data,
+      required this.parameters,
+      required this.category});
 
   factory DeviceModel.fromMap(Map<String, dynamic> json) {
     List<dynamic> d = [];

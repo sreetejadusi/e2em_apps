@@ -1,4 +1,5 @@
 import 'dart:async';
+// import 'dart:js_interop';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ void main() {
     DeviceOrientation.portraitUp,
   ]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: accentColor1,
+    statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
   runApp(
@@ -48,11 +49,12 @@ class MyApp extends StatelessWidget {
         title: "EV2GO",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: 'Poppins',
           brightness: Brightness.light,
           appBarTheme: AppBarTheme(
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
-            iconTheme: const IconThemeData().copyWith(color: Colors.white),
-          ),
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              iconTheme: const IconThemeData().copyWith(color: Colors.white),
+              titleTextStyle: TextStyle(fontFamily: 'Poppins')),
         ),
         //home: const Scaffold(body: DevicesScreen()),
         home: const Extend(),
@@ -159,28 +161,48 @@ class _ExtendState extends State<Extend> {
   @override
   Widget build(BuildContext context) {
     AuthenticationProvider ap = context.watch<AuthenticationProvider>();
-    if (loading) {
+    if (ap.blacklisted && ap.loginType != LoginType.none) {
       return Scaffold(
-        backgroundColor: backgroundColor,
         body: Center(
-            child: CircularProgressIndicator(
-          backgroundColor: accentColor1,
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('You\'re Blacklisted. Please Contact Admin'),
+            SizedBox(
+              height: 24,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  ap.signOut(context);
+                },
+                child: Text('Sign out'))
+          ],
         )),
       );
-    } else if (ap.loginType == LoginType.none) {
-      return const SignIn();
-    } else if (ap.loginType == LoginType.admin) {
-      return const AdminStart();
-    } else if (ap.loginType == LoginType.hub) {
-      return const Start();
     } else {
-      return Scaffold(
-        backgroundColor: backgroundColor,
-        body: Center(
-            child: CircularProgressIndicator(
-          backgroundColor: accentColor1,
-        )),
-      );
+      if (loading) {
+        return Scaffold(
+          backgroundColor: backgroundColor,
+          body: Center(
+              child: CircularProgressIndicator(
+            backgroundColor: accentColor1,
+          )),
+        );
+      } else if (ap.loginType == LoginType.none) {
+        return const SignIn();
+      } else if (ap.loginType == LoginType.admin) {
+        return const AdminStart();
+      } else if (ap.loginType == LoginType.hub) {
+        return const Start();
+      } else {
+        return Scaffold(
+          backgroundColor: backgroundColor,
+          body: Center(
+              child: CircularProgressIndicator(
+            backgroundColor: accentColor1,
+          )),
+        );
+      }
     }
   }
 }

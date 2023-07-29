@@ -7,15 +7,15 @@ class MiscellaneousModel {
   String code, name, image, deviceId, hasControl, timerTime;
   List<dynamic> data;
   MiscellaneousModel(
-      {this.id,
-      this.image,
-      this.code,
-      this.data,
-      this.timer,
-      this.timerTime,
-      this.deviceId,
-      this.hasControl,
-      this.name});
+      {this.id=0,
+      required this.image,
+      required this.code,
+      required this.data,
+      required this.timer,
+      required this.timerTime,
+      required this.deviceId,
+      required this.hasControl,
+      required this.name});
 
   factory MiscellaneousModel.fromMap(Map<String, dynamic> json) {
     List<dynamic> d = [];

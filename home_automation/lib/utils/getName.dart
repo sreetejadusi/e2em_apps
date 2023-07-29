@@ -1,5 +1,5 @@
-String getDeviceName(String code) {
-  String name;
+String? getDeviceName(String code) {
+  String? name;
   switch (code) {
     case 'tl':
       name = 'Tube Light';

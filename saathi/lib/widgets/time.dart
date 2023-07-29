@@ -15,9 +15,9 @@ Widget time() {
     /*secondDigitDecoration: const BoxDecoration(
       color: Colors.transparent,
     ),*/
-    hourMinuteDigitDecoration: const BoxDecoration(
-      color: Colors.transparent,
-    ),
+    // hourMinuteDigitDecoration: const BoxDecoration(
+    //   color: Colors.transparent,
+    // ),
     /*secondDigitTextStyle:
         TextStyle(color: Colors.transparent, fontWeight: FontWeight.bold, fontSize: 25),*/
     hourMinuteDigitTextStyle: GoogleFonts.breeSerif(

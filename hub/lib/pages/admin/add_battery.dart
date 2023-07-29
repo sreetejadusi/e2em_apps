@@ -110,13 +110,13 @@ class _AddBatteryState extends State<AddBattery> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Battery ID Already Exists");
+                            messageDialog(context, "Battery ID Already Exists", false);
                           } else {
                             await batteries.insertOne(BatteryModel(
                               id: "",
                               hubId: widget.hubId!,
                               batteryStatus: "ideal",
-                              batteryId: batteryIdController.text,
+                              batteryId: batteryIdController.text.toUpperCase(),
                             ).toMap());
                             await am.loadHubs(context);
                             setState(() {
@@ -125,7 +125,7 @@ class _AddBatteryState extends State<AddBattery> {
                             // widget.added();
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            messageDialog(context, "Battery Added");
+                            messageDialog(context, "Battery Added", true);
                           }
                         }
                       }
@@ -148,7 +148,7 @@ class _AddBatteryState extends State<AddBattery> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Battery ID Already Exists");
+                            messageDialog(context, "Battery ID Already Exists", false);
                           } else {
                             await batteries.replaceOne(
                                 {"batteryId": batteryIdController.text},
@@ -163,7 +163,7 @@ class _AddBatteryState extends State<AddBattery> {
                             });
                             widget.added();
                             Navigator.pop(context);
-                            messageDialog(context, "Battery Updated");
+                            messageDialog(context, "Battery Updated", true);
                           }
                         }
                       },

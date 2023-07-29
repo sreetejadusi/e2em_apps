@@ -200,7 +200,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             ? const CircularProgressIndicator()
                             : Container(
                                 height: 50,
-                                child: FlatButton(
+                                child: ElevatedButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
@@ -209,10 +209,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                                       await reset();
                                     }
                                   },
-                                  padding: EdgeInsets.all(0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
+                                  // padding: EdgeInsets.all(0),
+                                  // shape: RoundedRectangleBorder(
+                                  //   borderRadius: BorderRadius.circular(6),
+                                  // ),
                                   child: Ink(
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(

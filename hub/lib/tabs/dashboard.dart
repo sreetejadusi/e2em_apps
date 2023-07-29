@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import '../index_files.dart';
@@ -14,61 +16,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: ListView(
-          physics: BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 18),
-          scrollDirection: Axis.vertical,
-          children: [
-            /*tile(
-                title: "Allocate Vehicle",
-                icon: Icons.add_box_outlined,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AllocateVehicle()),
-                  );
-                }),*/
-           /* tile(
-                title: "Financial Review",
-                icon: Icons.rate_review_outlined,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FinancialReview()),
-                  );
-                }),*/
-            tile(
-                title: "Documents View",
-                icon: Icons.sticky_note_2_outlined,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DocumentsView()),
-                  );
-                }),
-            /*tile(
-                title: "Maintenance",
-                icon: Icons.data_saver_on_outlined,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Maintenance(vehicleId: null,)),
-                  );
-                }),*/
-            tile(
-                title: "Alarms",
-                icon: Icons.notifications_outlined,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Alarms()),
-                  );
-                }),
-          ],
-      ),
+      body: DocumentsView(),
     );
   }
 
@@ -84,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(largeRadius),
         ),
-        child:Container(
+        child: Container(
           decoration: BoxDecoration(
             gradient: clg,
             borderRadius: BorderRadius.circular(largeRadius),
@@ -92,29 +40,33 @@ class _DashboardState extends State<Dashboard> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 7),
             child: ListTile(
-            onTap: onTap,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(largeRadius),
+              onTap: onTap,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(largeRadius),
+              ),
+              leading: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(smallRadius),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Icon(
+                      icon,
+                      color: Colors.black,
+                    ),
+                  )),
+              title: Text(
+                title,
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.black,
+                size: 15,
+              ),
             ),
-            leading: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(smallRadius),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Icon(icon,color: Colors.black,),
-                )),
-            title: Text(
-              title,
-              style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.black,
-              size: 15,
-            ),
-          ),
           ),
         ),
       ),

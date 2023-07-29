@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:row_collection/row_collection.dart';
+import 'package:flutter/src/scheduler/ticker.dart';
 
 class LaunchCountdown extends StatefulWidget {
   final DateTime launchDate;
@@ -16,7 +16,7 @@ class LaunchCountdown extends StatefulWidget {
 
 class _LaunchCountdownState extends State<LaunchCountdown>
     with TickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -56,9 +56,9 @@ class Countdown extends AnimatedWidget {
   final DateTime launchDate;
 
   const Countdown({
-    Key key,
-    this.animation,
-    this.launchDate,
+    key,
+    required this.animation,
+    required this.launchDate,
   }) : super(key: key, listenable: animation);
 
   @override
@@ -85,7 +85,7 @@ class Countdown extends AnimatedWidget {
         Text(
           ':',
           style: TextStyle(
-            color: Theme.of(context).textTheme.caption.color,
+            color: Theme.of(context).textTheme.bodySmall!.color,
             shadows: <Shadow>[
               Shadow(
                 offset: Offset(0, 0),
@@ -105,7 +105,7 @@ class Countdown extends AnimatedWidget {
         Text(
           ':',
           style: TextStyle(
-            color: Theme.of(context).textTheme.caption.color,
+            color: Theme.of(context).textTheme.bodySmall!.color,
             shadows: <Shadow>[
               Shadow(
                 offset: Offset(0, 0),
@@ -127,8 +127,8 @@ class Countdown extends AnimatedWidget {
   }
 
   Widget _countdownChild({
-    BuildContext context,
-    String title,
+    required BuildContext context,
+    required String title,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -138,11 +138,11 @@ class Countdown extends AnimatedWidget {
     );
   }
 
-  Widget _countdownText({BuildContext context, String text}) {
+  Widget _countdownText({required BuildContext context, required String text}) {
     return Text(
       text,
       style: TextStyle(
-        color: Theme.of(context).textTheme.caption.color,
+        color: Theme.of(context).textTheme.bodySmall!.color,
         shadows: <Shadow>[
           Shadow(
             offset: Offset(0, 0),

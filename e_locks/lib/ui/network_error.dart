@@ -1,4 +1,4 @@
-import 'package:big_tip/big_tip.dart';
+// import 'package:big_tip/big_tip.dart';
 import 'package:flutter/material.dart';
 
 class NetworkError extends StatelessWidget {
@@ -19,7 +19,7 @@ class NetworkError extends StatelessWidget {
         ),
         const Scaffold(
           backgroundColor: Colors.transparent,
-          body: BigTip(
+          body: ListTile(
             title: Text('NETWORK ERROR'),
             subtitle: Text('You are not connected to internet'),
             /* action: Text(
@@ -32,7 +32,7 @@ class NetworkError extends StatelessWidget {
             MaterialPageRoute(builder: (context) => Welcome()),
           );
         },*/
-            child: Icon(Icons.signal_cellular_connected_no_internet_4_bar),
+            leading: Icon(Icons.signal_cellular_connected_no_internet_4_bar),
           ),
         ),
       ],

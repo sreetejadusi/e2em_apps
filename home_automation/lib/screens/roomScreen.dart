@@ -11,9 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 //import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State, Center;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:simple_animations/simple_animations/controlled_animation.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'index.dart';
 import 'package:intl/intl.dart';
@@ -29,13 +28,13 @@ import '../models/index.dart';
 
 class RoomScreen extends StatefulWidget {
   final int id;
-  RoomScreen({this.id});
+  RoomScreen({required this.id});
   @override
   _RoomScreenState createState() => _RoomScreenState();
 }
 
 class _RoomScreenState extends State<RoomScreen> {
-  Timer timer;
+  late Timer timer;
   bool isLoading = false;
   load() async {
     setState(() {
@@ -70,22 +69,22 @@ class _RoomScreenState extends State<RoomScreen> {
     setState(() {});
     List<dynamic> devices = [];
     List<DeviceModel> allDevices = [];
-    RoomModel room = RoomModel();
+    RoomModel room = RoomModel(image: '', code: '', name: '', devices: []);
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return FutureBuilder<RoomModel>(
         future: DatabaseProvider.db.fetchRoom(widget.id),
         builder: (BuildContext context, AsyncSnapshot<RoomModel> snapshot1) {
           if (snapshot1.hasData) {
-            devices = snapshot1.data.devices;
-            room = snapshot1.data;
+            devices = snapshot1.data!.devices;
+            room = snapshot1.data!;
           }
           return FutureBuilder<List<DeviceModel>>(
               future: DatabaseProvider.db.fetchDevices(),
               builder: (BuildContext context,
                   AsyncSnapshot<List<DeviceModel>> snapshot2) {
                 if (snapshot2.hasData) {
-                  allDevices = snapshot2.data;
+                  allDevices = snapshot2.data!;
                 }
                 return Scaffold(
                   appBar: AppBar(
@@ -465,7 +464,7 @@ class _RoomScreenState extends State<RoomScreen> {
                           snapToMins: 0,
                           duration: _duration,
                           onChange: (val) {
-                            this.setState(() => _duration = val);
+                           this.setState(() => _duration = val);
                             setState(() {
                               // device.data[device.data.length - 1] =
                               //     val.inMinutes.toString();
@@ -530,14 +529,14 @@ class RoomScreenGridItems extends StatelessWidget {
   final Function onClick;
 
   const RoomScreenGridItems(
-      {this.device,
-      this.text1,
-      this.text2,
-      this.img,
-      this.on,
-      this.deviceOnLoad,
-      this.onTap,
-      this.onClick});
+      {required this.device,
+      required this.text1,
+      required this.text2,
+      required this.img,
+      required this.on,
+      required this.deviceOnLoad,
+      required this.onTap,
+      required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -559,7 +558,7 @@ class RoomScreenGridItems extends StatelessWidget {
                       bottomLeft: Radius.circular(20))),
               child: Container(
                 child: ListTile(
-                  onTap: onTap,
+                  onTap: onTap(),
                   isThreeLine: false,
                   // tileColor: Theme.of(context).cardColor,
                   title: Text(
@@ -623,7 +622,7 @@ class RoomScreenGridItems extends StatelessWidget {
                 ? Center(child: CircularProgressIndicator())
                 : InkWell(
                     borderRadius: BorderRadius.circular(50),
-                    onTap: onClick,
+                    onTap: onClick(),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.transparent,

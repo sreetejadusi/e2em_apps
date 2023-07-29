@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import '../providers/mongoDBConnection.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import '../widgets/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -427,7 +427,7 @@ class _ScanState extends State<Scan> {
       },
       overlay: QrScannerOverlayShape(
           overlayColor: Theme.of(context).scaffoldBackgroundColor,
-          borderColor: Theme.of(context).accentColor,
+          borderColor: Theme.of(context).colorScheme.secondary,
           borderRadius: 10,
           borderLength: w * 0.05,
           borderWidth: 8,

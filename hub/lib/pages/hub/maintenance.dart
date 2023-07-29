@@ -134,7 +134,7 @@ class _MaintenanceState extends State<Maintenance> {
                       //clear();
                       await hubManager.init(context);
                       hubManager.vehicleAddingMaintenanceState(false);
-                      messageDialog(context, "Vehicle Moved to maintenance");
+                      messageDialog(context, "Vehicle Moved to maintenance",true);
                       if (widget.vehicleId != null) {
                         Navigator.pop(context);
                         Navigator.pop(context);

@@ -17,7 +17,7 @@ class ProfileListTile extends StatelessWidget {
         width: 45,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).accentColor.withOpacity(0.8),
+          color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
         ),
         child: Center(
           child: Icon(icon, size: 25, color: Colors.white),

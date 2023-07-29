@@ -1,5 +1,6 @@
 import 'dart:async';
 
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -7,9 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_to_act/slide_to_act.dart';
 import '../providers/index.dart';
 import '../utils/index.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +38,7 @@ class _WelcomeState extends State<Welcome>
   late Animation<double> _positionAnimation;
   bool isLoading = false;
   bool hideIcon = false;
+  double sliderValue = 0;
   late Timer internetCheckTimer;
   Future<void> checkConnectivity() async {
     setState(() {
@@ -52,14 +55,12 @@ class _WelcomeState extends State<Welcome>
         MaterialPageRoute(builder: (context) => NetworkError()),
       );
       print("Error in connection");
-
     } else {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => NetworkError()),
       );
       print("Error in connection");
-
     }
   }
 
@@ -168,8 +169,8 @@ class _WelcomeState extends State<Welcome>
     _scale2Controller =
         AnimationController(vsync: this, duration: Duration(microseconds: 100));
 
-    _scale2Animation = Tween<double>(begin: 1.0, end: 32.0).animate(
-        _scale2Controller)
+    _scale2Animation = Tween<double>(begin: 1.0, end: 32.0)
+        .animate(_scale2Controller)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           Navigator.push(context,
@@ -188,14 +189,14 @@ class _WelcomeState extends State<Welcome>
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       //print(message.notification.title);
       //print(message.notification.body);
-      alertDialog(
-          context, message.notification!.title!, message.notification!.body!, "Ok");
+      alertDialog(context, message.notification!.title!,
+          message.notification!.body!, "Ok");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       //print(message.notification.title);
       //print(message.notification.body);
-      alertDialog(
-          context, message.notification!.title!, message.notification!.body!, "Ok");
+      alertDialog(context, message.notification!.title!,
+          message.notification!.body!, "Ok");
     });
     /* final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     FirebaseMessaging.instance.configure(
@@ -217,20 +218,35 @@ class _WelcomeState extends State<Welcome>
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/bg.png"), fit: BoxFit.cover)),
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 45),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Image.asset(
-              'assets/rove.png',
-              alignment: Alignment.centerLeft,
-              height: MediaQuery.of(context).size.width * 0.25,
-              width: MediaQuery.of(context).size.width * 0.25,
+            Spacer(),
+            Transform.flip(
+              flipX: true,
+              child: Image.asset(
+                'assets/av2.png',
+                alignment: Alignment.centerLeft,
+                height: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width * 0.7,
+              ),
             ),
             SizedBox(
               height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(color: Colors.white),
+              child: SizedBox(
+                height: width * 0.012,
+                width: width * 0.15,
+              ),
             ),
             FadeAnimation(
                 1,
@@ -251,88 +267,104 @@ class _WelcomeState extends State<Welcome>
                         color: Colors.white.withOpacity(1), fontSize: 20),
                   ),
                 )),
-            SizedBox(
-              height: 50,
+            Spacer(),
+            // Stack(
+            //   children: [
+            //     Opacity(
+            //       opacity: isLoading ? 1 : 0,
+            //       child: FadeAnimation(
+            //         1,
+            //         Padding(
+            //           padding: const EdgeInsets.all(10),
+            //           child: Center(
+            //             child: LoaderCircular(),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     Opacity(
+            //       opacity: isLoading ? 0 : 1,
+            //       child: FadeAnimation(
+            //           1.6,
+            //           AnimatedBuilder(
+            //             animation: _scaleController,
+            //             builder: (context, child) => Transform.scale(
+            //                 scale: _scaleAnimation.value,
+            //                 child: Center(
+            //                   child: AnimatedBuilder(
+            //                     animation: _widthController,
+            //                     builder: (context, child) => Container(
+            //                       width: _widthAnimation.value,
+            //                       height: 80,
+            //                       padding: EdgeInsets.all(10),
+            //                       decoration: BoxDecoration(
+            //                           borderRadius: BorderRadius.circular(50),
+            //                           color: Colors.blue.withOpacity(.4)),
+            //                       child: InkWell(
+            //                         onTap: !isLoading
+            //                             ? () {
+            //                                 _scaleController.forward();
+            //                               }
+            //                             : () {},
+            //                         child: Stack(children: <Widget>[
+            //                           AnimatedBuilder(
+            //                             animation: _positionController,
+            //                             builder: (context, child) => Positioned(
+            //                               left: _positionAnimation.value,
+            //                               child: AnimatedBuilder(
+            //                                 animation: _scale2Controller,
+            //                                 builder: (context, child) =>
+            //                                     Transform.scale(
+            //                                         scale:
+            //                                             _scale2Animation.value,
+            //                                         child: Container(
+            //                                           width: 60,
+            //                                           height: 60,
+            //                                           decoration: BoxDecoration(
+            //                                               shape:
+            //                                                   BoxShape.circle,
+            //                                               color: Colors.blue),
+            //                                           child: hideIcon == false
+            //                                               ? Icon(
+            //                                                   Icons
+            //                                                       .arrow_forward,
+            //                                                   color:
+            //                                                       Colors.white,
+            //                                                 )
+            //                                               : Container(),
+            //                                         )),
+            //                               ),
+            //                             ),
+            //                           ),
+            //                         ]),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 )),
+            //           )),
+            //     ),
+            //   ],
+            // ),
+            SlideAction(
+              text: 'Buy your dream bike',
+              textStyle: TextStyle(fontSize: 20),
+              alignment: Alignment.centerRight,
+              sliderButtonIcon: Icon(
+                Icons.chevron_right_sharp,
+                color: Color(0xFF187498),
+              ),
+              outerColor: Color(0xFF187498),
+              borderRadius: 12,
+              sliderRotate: false,
+              onSubmit: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.fade, child: SignIn()));
+              },
             ),
-            Stack(
-              children: [
-                Opacity(
-                  opacity: isLoading ? 1 : 0,
-                  child: FadeAnimation(
-                    1,
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Center(
-                        child: LoaderCircular(),
-                      ),
-                    ),
-                  ),
-                ),
-                Opacity(
-                  opacity: isLoading ? 0 : 1,
-                  child: FadeAnimation(
-                      1.6,
-                      AnimatedBuilder(
-                        animation: _scaleController,
-                        builder: (context, child) => Transform.scale(
-                            scale: _scaleAnimation.value,
-                            child: Center(
-                              child: AnimatedBuilder(
-                                animation: _widthController,
-                                builder: (context, child) => Container(
-                                  width: _widthAnimation.value,
-                                  height: 80,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Colors.blue.withOpacity(.4)),
-                                  child: InkWell(
-                                    onTap: !isLoading
-                                        ? () {
-                                            _scaleController.forward();
-                                          }
-                                        : () {},
-                                    child: Stack(children: <Widget>[
-                                      AnimatedBuilder(
-                                        animation: _positionController,
-                                        builder: (context, child) =>
-                                            Positioned(
-                                          left: _positionAnimation.value,
-                                          child: AnimatedBuilder(
-                                            animation: _scale2Controller,
-                                            builder: (context, child) =>
-                                                Transform.scale(
-                                                    scale: _scale2Animation
-                                                        .value,
-                                                    child: Container(
-                                                      width: 60,
-                                                      height: 60,
-                                                      decoration:
-                                                          BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: Colors
-                                                                  .blue),
-                                                      child: hideIcon == false
-                                                          ? Icon(
-                                                              Icons
-                                                                  .arrow_forward,
-                                                              color: Colors
-                                                                  .white,
-                                                            )
-                                                          : Container(),
-                                                    )),
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                            )),
-                      )),
-                ),
-              ],
+            SizedBox(
+              height: 20,
             )
           ],
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import 'package:rove_personnel/utils/index.dart';
 import '../providers/index.dart';
 import 'index.dart';
@@ -16,6 +18,7 @@ class _NoDeviceControlScreenState extends State<NoDeviceControlScreen> {
   ///STATS HEIGHT : H*0.20
   ///WEATHER : H*0.12
   ///
+  double speed = 0;
   onLockUnlock() {
     ///
     print("Lock Unlock Pressed");
@@ -33,6 +36,14 @@ class _NoDeviceControlScreenState extends State<NoDeviceControlScreen> {
   void initState() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     lu.addListener(onLockUnlock);
+    DataProvider dataProvider = context.read<DataProvider>();
+    dataProvider.init();
+    Geolocator.getPositionStream().listen((event) {
+      setState(() {
+        speed = event.speed;
+      });
+      print(speed);
+    });
     //load();
     super.initState();
   }
@@ -41,6 +52,7 @@ class _NoDeviceControlScreenState extends State<NoDeviceControlScreen> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
@@ -49,23 +61,32 @@ class _NoDeviceControlScreenState extends State<NoDeviceControlScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              helloTile(context,false),
-              temp(context),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  helloTile(context),
+                  Spacer(),
+                  temp(context),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
               stats(0, 0, 0),
-              sm(context, 0),
-              Container(
-                decoration: BoxDecoration(
-                  color: accentColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "No Device Connected",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  tileColor: Colors.transparent,
+              Spacer(),
+              sm(context, speed),
+              SizedBox(
+                height: 24,
+              ),
+              Text(
+                "No Device Connected",
+                style: TextStyle(
+                  fontSize: 18,
                 ),
               ),
+              Spacer()
             ],
           ),
         ),

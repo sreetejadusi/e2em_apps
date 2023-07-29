@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide State;
 import 'package:provider/provider.dart';
 
@@ -55,6 +56,7 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
           if (item.getVS() == VehicleStatus.parking) ...[item.vehicleId]
       ];
     }
+    clear();
   }
 
   clear() {
@@ -89,7 +91,7 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
     HubManager hubManager = context.read<HubManager>();
     setState(() {
       driverNameController =
-          TextEditingController(text: value.split("-").toList()[0].trim());
+          TextEditingController(text: value.split("-").first.trim());
       // paymentAmountController.text = "300";
     });
     setState(() {
@@ -137,21 +139,21 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor:
-            widget.vehicleId == null ? Colors.transparent : accentColor1,
-        title: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            "Allocate Vehicle",
-            style: TextStyle(
-                color: widget.vehicleId == null ? Colors.black : Colors.white),
-          ),
-        ),
-        centerTitle: true,
-        actions: [],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor:
+      //       widget.vehicleId == null ? Colors.transparent : accentColor1,
+      //   title: Padding(
+      //     padding: EdgeInsets.symmetric(vertical: 15),
+      //     child: Text(
+      //       "Allocate Vehicle",
+      //       style: TextStyle(
+      //           color: widget.vehicleId == null ? Colors.black : Colors.white),
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      //   actions: [],
+      // ),
       persistentFooterButtons: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -165,8 +167,8 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
                 child: Container(
                   decoration: BoxDecoration(
                     //color: Color(0xFF0079E9),
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: accentColor1),
+                    borderRadius: const BorderRadius.all(Radius.circular(24)),
                   ),
                   height: 40,
                   width: w * 0.35,
@@ -176,168 +178,195 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
               ),
               InkWell(
-                onTap: () async {
-                  AuthenticationProvider ap =
-                      context.read<AuthenticationProvider>();
-                  WalletProvider wp = context.read<WalletProvider>();
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    SystemChannels.textInput.invokeMethod('TextInput.hide');
-                    hubManager.vehicleAllocatingState(true);
-                    bool success = await wp.updateWalletAmount(
-                        context: context,
-                        loginType: LoginType.hub,
-                        loginId: ap.loginId,
-                        amount: totalCost,
-                        credit: false);
-                    if (success) {
-                      HubManager hubManager = context.read<HubManager>();
-                      await mongoDB.maintainMongoDBConnection(context);
-                      DbCollection vehicles = mongoDB.db.collection('vehicles');
-                      DbCollection drivers = mongoDB.db.collection('drivers');
-                      DbCollection batteries =
-                          mongoDB.db.collection('batteries');
-                      DbCollection wallet = mongoDB.db.collection('wallet');
-                      await wallet.insertOne({
-                        'userId': ap.loginId,
-                        'amount': totalCost,
-                        'description': "Vehicle & Battery Allocation",
-                        'timestamp': DateTime.now().toString(),
-                        'type': 'debit'
-                      });
-                      if (!bulkAllocation) {
-                        await vehicles.update(
-                            where.eq("vehicleId", vehicleNoController.text),
-                            modify.set('vehicleStatus', "assigned"));
-                        await vehicles.update(
-                            where.eq("vehicleId", vehicleNoController.text),
-                            modify.set('driverId', driverNameController.text));
-                        await batteries.update(
-                            where.eq("batteryId", batteryIdController.text),
-                            modify.set('batteryStatus', "assigned"));
-                        await batteries.update(
-                            where.eq("batteryId", allocatedBattery),
-                            modify.set('batteryStatus', "ideal"));
-                        await vehicles.update(
-                            where.eq("vehicleId", vehicleNoController.text),
-                            modify.set('batteryId', batteryIdController.text));
-
-                        ///Frequency Update
-                        await drivers
-                            .find({"driverId": driverNameController.text})
-                            .toList()
-                            .then((res) async {
-                              if (res.isNotEmpty) {
-                                List<dynamic> al = res[0]['vehicleFrequency'];
-                                List<List<dynamic>> all = [];
-                                for (var item in al) {
-                                  all.add([item[0], item[1]]);
-                                }
-                                bool exist = false;
-                                for (var item in all) {
-                                  if (item[0] == vehicleNoController.text) {
-                                    int nf = item[1] + 1;
-                                    item[1] = nf;
-                                    exist = true;
-                                    break;
-                                  }
-                                }
-                                if (!exist) {
-                                  all.add([vehicleNoController.text, 1]);
-                                }
-                                print(all);
-                                await drivers.update(
-                                    where.eq(
-                                        "driverId", driverNameController.text),
-                                    modify.set('vehicleFrequency', all));
-                              }
+                onTap: driverNameController.text.isNotEmpty ||
+                        vehicleNoController.text.isNotEmpty ||
+                        batteryIdController.text.isNotEmpty
+                    ? () async {
+                        AuthenticationProvider ap =
+                            context.read<AuthenticationProvider>();
+                        WalletProvider wp = context.read<WalletProvider>();
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          SystemChannels.textInput
+                              .invokeMethod('TextInput.hide');
+                          hubManager.vehicleAllocatingState(true);
+                          bool success = await wp.updateWalletAmount(
+                              context: context,
+                              loginType: LoginType.hub,
+                              loginId: ap.loginId,
+                              amount: totalCost,
+                              credit: false);
+                          if (success) {
+                            HubManager hubManager = context.read<HubManager>();
+                            await mongoDB.maintainMongoDBConnection(context);
+                            DbCollection vehicles =
+                                mongoDB.db.collection('vehicles');
+                            DbCollection drivers =
+                                mongoDB.db.collection('drivers');
+                            DbCollection batteries =
+                                mongoDB.db.collection('batteries');
+                            DbCollection wallet =
+                                mongoDB.db.collection('wallet');
+                            await wallet.insertOne({
+                              'userId': ap.loginId,
+                              'amount': totalCost,
+                              'description': "Vehicle & Battery Allocation",
+                              'timestamp': DateTime.now().toString(),
+                              'type': 'debit',
+                              'metadata': vehicleNoController.text
+                              // '${vehicleNoController.text} - ${batteryIdController.text} - ${driverNameController.text}'
                             });
+                            if (!bulkAllocation) {
+                              await vehicles.update(
+                                  where.eq(
+                                      "vehicleId", vehicleNoController.text),
+                                  modify.set('vehicleStatus', "assigned"));
+                              await vehicles.update(
+                                  where.eq(
+                                      "vehicleId", vehicleNoController.text),
+                                  modify.set(
+                                      'driverId', driverNameController.text));
+                              await batteries.update(
+                                  where.eq(
+                                      "batteryId", batteryIdController.text),
+                                  modify.set('batteryStatus', "assigned"));
+                              await batteries.update(
+                                  where.eq("batteryId", allocatedBattery),
+                                  modify.set('batteryStatus', "ideal"));
+                              await vehicles.update(
+                                  where.eq(
+                                      "vehicleId", vehicleNoController.text),
+                                  modify.set(
+                                      'batteryId', batteryIdController.text));
 
-                        ///
-                        clear();
-                        await hubManager.init(context);
-                        hubManager.vehicleAllocatingState(false);
-                        widget.tabChange(0);
-                        messageDialog(context, "Vehicle allocated");
-                        if (widget.vehicleId != null) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        }
-                      } else {}
-                      if (bulkAllocation) {
-                        for (int i = 0; i < bulkAllocationList.length; i++) {
-                          List<String> l = bulkAllocationList[i];
-                          await vehicles.update(where.eq("vehicleId", l[1]),
-                              modify.set('vehicleStatus', "assigned"));
-                          await vehicles.update(where.eq("vehicleId", l[1]),
-                              modify.set('driverId', l[0]));
-                          await batteries.update(where.eq("batteryId", l[2]),
-                              modify.set('batteryStatus', "assigned"));
-                          await vehicles.update(where.eq("vehicleId", l[1]),
-                              modify.set('batteryId', l[2]));
-
-                          ///Frequency Update
-                          await drivers
-                              .find({"driverId": l[0]})
-                              .toList()
-                              .then((res) async {
-                                if (res.isNotEmpty) {
-                                  List<dynamic> al =
-                                      res[0]['vehicleFrequency'] ?? [];
-                                  List<List<dynamic>> all = [];
-                                  for (var item in al) {
-                                    all.add([item[0], item[1]]);
-                                  }
-                                  bool exist = false;
-                                  for (var item in all) {
-                                    if (item[0] == l[1]) {
-                                      int nf = item[1] + 1;
-                                      item[1] = nf;
-                                      exist = true;
-                                      break;
+                              ///Frequency Update
+                              await drivers
+                                  .find({"driverId": driverNameController.text})
+                                  .toList()
+                                  .then((res) async {
+                                    if (res.isNotEmpty) {
+                                      List<dynamic> al =
+                                          res[0]['vehicleFrequency'];
+                                      List<List<dynamic>> all = [];
+                                      for (var item in al) {
+                                        all.add([item[0], item[1]]);
+                                      }
+                                      bool exist = false;
+                                      for (var item in all) {
+                                        if (item[0] ==
+                                            vehicleNoController.text) {
+                                          int nf = item[1] + 1;
+                                          item[1] = nf;
+                                          exist = true;
+                                          break;
+                                        }
+                                      }
+                                      if (!exist) {
+                                        all.add([vehicleNoController.text, 1]);
+                                      }
+                                      print(all);
+                                      await drivers.update(
+                                          where.eq("driverId",
+                                              driverNameController.text),
+                                          modify.set('vehicleFrequency', all));
                                     }
-                                  }
-                                  if (!exist) {
-                                    all.add([l[1], 1]);
-                                  }
-                                  print("-----------all-----------");
-                                  print(all);
-                                  await drivers.update(
-                                      where.eq("driverId", l[0]),
-                                      modify.set('vehicleFrequency', all));
-                                }
-                              });
+                                  });
 
-                          ///
+                              ///
+                              clear();
+                              await hubManager.init(context);
+                              hubManager.vehicleAllocatingState(false);
+                              widget.tabChange(0);
+                              messageDialog(context, "Vehicle allocated", true);
+                              if (widget.vehicleId != null) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
+                            } else {}
+                            if (bulkAllocation) {
+                              for (int i = 0;
+                                  i < bulkAllocationList.length;
+                                  i++) {
+                                List<String> l = bulkAllocationList[i];
+                                await vehicles.update(
+                                    where.eq("vehicleId", l[1]),
+                                    modify.set('vehicleStatus', "assigned"));
+                                await vehicles.update(
+                                    where.eq("vehicleId", l[1]),
+                                    modify.set('driverId', l[0]));
+                                await batteries.update(
+                                    where.eq("batteryId", l[2]),
+                                    modify.set('batteryStatus', "assigned"));
+                                await vehicles.update(
+                                    where.eq("vehicleId", l[1]),
+                                    modify.set('batteryId', l[2]));
+
+                                ///Frequency Update
+                                await drivers
+                                    .find({"driverId": l[0]})
+                                    .toList()
+                                    .then((res) async {
+                                      if (res.isNotEmpty) {
+                                        List<dynamic> al =
+                                            res[0]['vehicleFrequency'] ?? [];
+                                        List<List<dynamic>> all = [];
+                                        for (var item in al) {
+                                          all.add([item[0], item[1]]);
+                                        }
+                                        bool exist = false;
+                                        for (var item in all) {
+                                          if (item[0] == l[1]) {
+                                            int nf = item[1] + 1;
+                                            item[1] = nf;
+                                            exist = true;
+                                            break;
+                                          }
+                                        }
+                                        if (!exist) {
+                                          all.add([l[1], 1]);
+                                        }
+                                        print("-----------all-----------");
+                                        print(all);
+                                        await drivers.update(
+                                            where.eq("driverId", l[0]),
+                                            modify.set(
+                                                'vehicleFrequency', all));
+                                      }
+                                    });
+
+                                ///
+                              }
+                              clear();
+                              await hubManager.init(context);
+                              hubManager.vehicleAllocatingState(false);
+                              widget.tabChange(0);
+                              messageDialog(context, "Vehicle allocated", true);
+                              if (widget.vehicleId != null) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
+                            } else {}
+                          } else {
+                            hubManager.vehicleAllocatingState(false);
+                            messageDialog(
+                                context,
+                                "Error in vehicle allocation(Check Wallet Balance)",
+                                false);
+                          }
                         }
-                        clear();
-                        await hubManager.init(context);
-                        hubManager.vehicleAllocatingState(false);
-                        widget.tabChange(0);
-                        messageDialog(context, "Vehicle allocated");
-                        if (widget.vehicleId != null) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        }
-                      } else {}
-                    } else {
-                      hubManager.vehicleAllocatingState(false);
-                      messageDialog(context,
-                          "Error in vehicle allocation(Check Wallet Balance)");
-                    }
-                  }
-                },
+                      }
+                    : null,
                 child: Container(
                   decoration: BoxDecoration(
                     color: accentColor1,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(24)),
                   ),
                   height: 40,
                   width: w * 0.35,
@@ -346,8 +375,8 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
                       "Allocate",
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -374,47 +403,50 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       children: [
-                        ListTile(
-                          title: Text("Usable Balance"),
-                          trailing: Text(
-                            wp.walletBalance.toString(),
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ),
+                        // ListTile(
+                        //   title: Text("Usable Balance"),
+                        //   trailing: Text(
+                        //     wp.walletBalance.toString(),
+                        //     style: TextStyle(fontSize: 25),
+                        //   ),
+                        // ),
+                        tileItem(
+                            num: wp.walletBalance,
+                            title: 'Usable Balance',
+                            icon: FontAwesomeIcons.indianRupeeSign,
+                            onTap: () {},
+                            context: context),
                         textFieldTitle("Allocation Type"),
                         Padding(
                           padding: EdgeInsets.all(0.0),
                           child: Row(
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: InputChip(
-                                  label: Text("Single Allocation"),
-                                  selected: !bulkAllocation,
-                                  onPressed: () {
-                                    clear();
-                                    setState(() {
-                                      bulkAllocation = !bulkAllocation;
-                                      bulkAllocationList.clear();
-                                      //paymentAmountController.clear();
-                                    });
-                                  },
-                                ),
+                              inputChip(
+                                title: ("Single Allocation"),
+                                selected: !bulkAllocation,
+                                onPressed: () {
+                                  clear();
+                                  setState(() {
+                                    bulkAllocation = !bulkAllocation;
+                                    bulkAllocationList.clear();
+                                    //paymentAmountController.clear();
+                                  });
+                                },
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: InputChip(
-                                  label: Text("Bulk Allocation"),
-                                  selected: bulkAllocation,
-                                  onPressed: () {
-                                    clear();
-                                    setState(() {
-                                      bulkAllocation = !bulkAllocation;
-                                      bulkAllocationList.clear();
-                                      // paymentAmountController.clear();
-                                    });
-                                  },
-                                ),
+                              SizedBox(
+                                width: 24,
+                              ),
+                              inputChip(
+                                title: "Bulk Allocation",
+                                selected: bulkAllocation,
+                                onPressed: () {
+                                  clear();
+                                  setState(() {
+                                    bulkAllocation = !bulkAllocation;
+                                    bulkAllocationList.clear();
+                                    // paymentAmountController.clear();
+                                  });
+                                },
                               ),
                             ],
                           ),
@@ -443,105 +475,110 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
                         ),*/
                         Row(
                           children: [
-                            Expanded(
-                              child: ListTile(
-                                title: Text(
-                                    "Vehicle Cost-${ap.hub!.allocationCost}"),
-                              ),
-                            ),
-                            Expanded(
-                              child: ListTile(
-                                title: Text(
-                                    "Battery Cost-${ap.hub!.batterySwapCost}"),
-                              ),
-                            ),
+                            pricingParams(
+                                'Vehicle Cost: ${ap.hub!.allocationCost}'),
+                            pricingParams(
+                                "Battery Cost-${ap.hub!.batterySwapCost}")
                           ],
                         ),
-                        ListTile(
-                          title: Text("Total Cost- $totalCost"),
-                        ),
+                        pricingParams("Total Cost- $totalCost"),
                         if (!bulkAllocation) ...[
-                          CustomTextField(
-                            labelText: 'Driver Id',
-                            controller: driverNameController,
-                            items: [
-                              for (final item in hubManager.drivers)
-                                if (!([
-                                  for (var v in hubManager.vehicles)
-                                    v.driverId ?? " "
-                                ].contains(item.driverId)))
-                                  ("${item.driverId}")
-                            ],
-                            type: TextFieldType.dropdown,
-                            hintText: 'Select Driver Id',
-                            suffixIcon: Icons.arrow_drop_down,
-                            onChanged: (String value) {
-                              driverChanged(value);
-                            },
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return "Driver Id cannot be empty";
-                              }
-                              return null;
-                            },
-                          ),
+                          textFieldTitle('Driver ID'),
+                          // CustomTextField(
+                          //   labelText: 'Driver Id',
+                          //   controller: driverNameController,
+                          //   items: [
+                          //     for (final item in hubManager.drivers)
+                          //       if (!([
+                          //         for (var v in hubManager.vehicles)
+                          //           v.driverId ?? " "
+                          //       ].contains(item.driverId)))
+                          //         ("${item.driverId}")
+                          //   ],
+                          //   type: TextFieldType.dropdown,
+                          //   hintText: 'Select Driver Id',
+                          //   suffixIcon: Icons.arrow_drop_down,
+                          //   onChanged: (String value) {
+                          //     driverChanged(value);
+                          //   },
+                          //   validator: (String? value) {
+                          //     if (value!.isEmpty) {
+                          //       return "Driver Id cannot be empty";
+                          //     }
+                          //     return null;
+                          //   },
+                          // ),
+                          selectionDD(
+                              controller: driverNameController,
+                              hint: 'Select Driver ID',
+                              items: [
+                                for (final item in hubManager.drivers)
+                                  if (!([
+                                    for (var v in hubManager.vehicles)
+                                      v.driverId ?? ""
+                                  ].contains(item.driverId)))
+                                    (DropdownMenuEntry(
+                                        value: "${item.driverId}",
+                                        label:
+                                            "${item.driverId}".toUpperCase()))
+                              ],
+                              onSelected: (value) {
+                                driverChanged(value.toString());
+                              },
+                              w: w),
+
                           SizedBox(
                             height: h * 0.01,
                           ),
-                          CustomTextField(
-                            labelText: 'Vehicle No',
-                            controller: vehicleNoController,
-                            type: TextFieldType.dropdown,
-                            items: vl,
-                            hintText: 'Select Vehicle No',
-                            suffixIcon: Icons.arrow_drop_down,
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return "Vehicle No cannot be empty";
-                              }
-                              return null;
-                            },
-                            onChanged: (String value) {
-                              vehicleChanged(value);
-                            },
-                          ),
+                          textFieldTitle('Vehicle NO'),
+                          selectionDD(
+                              controller: vehicleNoController,
+                              hint: 'Select Vehicle No',
+                              items: [
+                                for (String item in vl)
+                                  DropdownMenuEntry(
+                                      value: item, label: item.toUpperCase())
+                              ],
+                              onSelected: (value) {
+                                vehicleChanged(value);
+                              },
+                              w: w),
+
                           if (vehicleNoController.text.isNotEmpty) ...[
+                            textFieldTitle('Battery ID'),
                             SizedBox(
                               height: h * 0.01,
                             ),
-                            CustomTextField(
-                              labelText: 'Battery Id',
-                              controller: batteryIdController,
-                              items: [
-                                    for (var item in hubManager.batteries
-                                        .where((element) =>
-                                            element.getBS() ==
-                                            BatteryStatus.ideal)
-                                        .toList())
-                                      item.batteryId
-                                  ] +
-                                  [
-                                    if (allocatedBattery != null) ...[
-                                      allocatedBattery!
-                                    ]
-                                  ],
-                              hintText: 'Select Battery Id',
-                              suffixIcon: Icons.arrow_drop_down,
-                              type: TextFieldType.dropdown,
-                              validator: (String? value) {
-                                /*if (value!.isEmpty) {
-                              return "Battery Id cannot be empty";
-                            }*/
-                                return null;
-                              },
-                              readOnly: true,
-                              onChanged: (String value) {
-                                setState(() {
-                                  batteryIdController =
-                                      TextEditingController(text: value);
-                                });
-                              },
-                            ),
+                            selectionDD(
+                                hint: 'Select Battery Id',
+                                items: [
+                                      for (var item in hubManager.batteries
+                                          .where((element) =>
+                                              element.getBS() ==
+                                              BatteryStatus.ideal)
+                                          .toList())
+                                        DropdownMenuEntry(
+                                            label: item.batteryId
+                                                .toString()
+                                                .toUpperCase(),
+                                            value: item.batteryId.toString())
+                                    ] +
+                                    [
+                                      if (allocatedBattery != null) ...[
+                                        DropdownMenuEntry(
+                                            value: allocatedBattery!,
+                                            label:
+                                                allocatedBattery!.toUpperCase())
+                                      ]
+                                    ],
+                                onSelected: (value) {
+                                  setState(() {
+                                    batteryIdController =
+                                        TextEditingController(text: value);
+                                  });
+                                },
+                                w: w,
+                                controller: batteryIdController)
                           ],
                         ],
                         if (bulkAllocation) ...[
@@ -593,7 +630,15 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
                                   i < bulkAllocationList.length;
                                   i++) ...[
                                 Chip(
-                                  label: Text(bulkAllocationList[i].join("-")),
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(48),
+                                      side:
+                                          BorderSide(color: Color(0xFF1bb273))),
+                                  label: Text(
+                                    bulkAllocationList[i].join("-"),
+                                    style: TextStyle(color: Color(0xFF1bb273)),
+                                  ),
                                 ),
                               ],
                             ],
@@ -708,4 +753,114 @@ class _AllocateVehicleState extends State<AllocateVehicle> {
       ),
     );
   }
+
+  Widget inputChip(
+      {required Function() onPressed,
+      required bool selected,
+      required String title}) {
+    return InputChip(
+        showCheckmark: false,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(48),
+            side: BorderSide(color: Color(0xFF1bb273))),
+        selectedColor: Color(0xFF1bb273),
+        labelStyle:
+            TextStyle(color: selected ? Colors.white : Color(0xFF1bb273)),
+        label: Text(title),
+        selected: selected,
+        onPressed: onPressed);
+  }
+
+  Widget pricingParams(
+    String title,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child:
+          Text(title, style: TextStyle(fontSize: 14, color: Color(0xFF818181))),
+    );
+  }
+
+  Widget selectionDD({
+    required String hint,
+    required List<DropdownMenuEntry> items,
+    required Function(dynamic)? onSelected,
+    required double w,
+    required TextEditingController controller,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          // border: Border.all(color: Colors.black),
+          boxShadow: [
+            BoxShadow(
+                color: Color(0xFF7d7d7d).withOpacity(0.25), blurRadius: 10)
+          ],
+          color: Colors.white),
+      child: DropdownMenu(
+        inputDecorationTheme: InputDecorationTheme(border: InputBorder.none),
+        width: w * 0.9,
+        controller: controller,
+        hintText: hint,
+        onSelected: onSelected,
+        dropdownMenuEntries: items,
+      ),
+    );
+  }
+}
+
+tileItem(
+    {required int num,
+    required String title,
+    required IconData icon,
+    required Function() onTap,
+    required BuildContext context}) {
+  final w = MediaQuery.of(context).size.width;
+  final h = MediaQuery.of(context).size.height;
+  return Padding(
+    padding: const EdgeInsets.all(0.0),
+    child: InkWell(
+        onTap: onTap,
+        radius: largeRadius,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          margin: EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100), color: accentColor1),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100)),
+                child: Icon(
+                  icon,
+                ),
+              ),
+              SizedBox(
+                width: 18,
+              ),
+              Text(
+                title,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 14),
+                child: Text(
+                  num.toString(),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+        )),
+  );
 }

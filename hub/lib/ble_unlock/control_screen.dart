@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_elves/flutter_blue_elves.dart';
+import 'package:mongo_dart/mongo_dart.dart' hide State;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,10 +14,11 @@ class ControlScreen extends StatefulWidget {
   // final String macAddress;
   //final String name;
   final Device device;
+  final String name;
 
   const ControlScreen(
       {Key? key,
-      // required this.name,
+      required this.name,
       // required this.macAddress,
       required this.device})
       : super(key: key);
@@ -40,6 +42,7 @@ class _ControlScreenState extends State<ControlScreen>
   late StreamSubscription<DeviceState> _stateStream;
   late StreamSubscription<DeviceSignalResult> _deviceSignalResultStream;
   bool isLoading = false;
+  bool isAuth = false;
 
   //bool unLockWaiting = false;
   load() async {
@@ -57,6 +60,7 @@ class _ControlScreenState extends State<ControlScreen>
 
   @override
   void initState() {
+    // showSnackBar('init called');
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     BluetoothDevicesProvider bdp = context.read<BluetoothDevicesProvider>();
     load();
@@ -126,7 +130,9 @@ class _ControlScreenState extends State<ControlScreen>
     deviceState = widget.device.state;
     if (deviceState == DeviceState.connected) {
       if (!widget.device.isWatchingRssi) widget.device.startWatchRssi();
-      widget.device.discoveryService();
+      {
+        widget.device.discoveryService();
+      }
     }
     _stateStream = widget.device.stateStream.listen((event) {
       if (event == DeviceState.connected) {
@@ -140,6 +146,7 @@ class _ControlScreenState extends State<ControlScreen>
         deviceState = event;
       });
     });
+
     _deviceSignalResultStream =
         widget.device.deviceSignalResultStream.listen((event) {
       String data = "";
@@ -148,12 +155,14 @@ class _ControlScreenState extends State<ControlScreen>
           data = data + String.fromCharCode(event.data![i]);
         }
       }
-      onMessage(data);
+      if (!isAuth) {
+        onMessage(data);
+      }
     });
   }
 
   sendUnlock() async {
-    String mes = "el:1:";
+    String mes = '${widget.name}2023';
     send(mes.toString().trim());
     /* Future.delayed(const Duration(seconds: 5), () {
       if (dp.unlockWaiting) {
@@ -162,16 +171,30 @@ class _ControlScreenState extends State<ControlScreen>
     });*/
   }
 
-  onMessage(String mes) {
+  onMessage(String mes) async {
     List<String> m = mes.toString().trim().split(':');
-    String unLock = m[1].toString();
+    HubManager hubManager = context.read<HubManager>();
+    // String unLock = m[1].toString();
+    isAuth = (mes.toString() == 'OY8KiqdS');
+    // messageDialog(context, isAuth.toString(), true);
     try {
-      if (unLock == "1") {
-        messageDialog(context, "Unlocked");
+      if (isAuth) {
+        // messageDialog(context, "Vehicle Unlocked", true);
+        DbCollection vehicles = mongoDB.db.collection('vehicles');
+        await vehicles.update(
+            where.eq('vehicleId', widget.name), modify.set('unlocked', true));
+        hubManager.init(context);
       } else {}
     } catch (e) {
-      messageDialog(context, "Error in Unlocking");
+      messageDialog(context, "Error in Unlocking", false);
       print(e);
+    }
+    if (isAuth) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Start(),
+          ));
     }
   }
 
@@ -211,12 +234,28 @@ class _ControlScreenState extends State<ControlScreen>
     bool connected = deviceState == DeviceState.connected;
     bool connecting = deviceState == DeviceState.connecting;
     bool disconnected = deviceState == DeviceState.disconnected;
+    _deviceSignalResultStream =
+        widget.device.deviceSignalResultStream.listen((event) {
+      // print('helllo');
+      // showSnackBar('listening to signal result stream');
+      String data = "";
+      if (event.data != null && event.data!.isNotEmpty) {
+        for (int i = 0; i < event.data!.length; i++) {
+          data = data + String.fromCharCode(event.data![i]);
+        }
+      }
+      if (!isAuth) {
+        onMessage(data);
+      }
+    });
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: accentColor1,
         title: Text(
           bdp.lastDevice,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
         ),
         /*  actions: [
           IconButton(
@@ -238,7 +277,8 @@ class _ControlScreenState extends State<ControlScreen>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             connecting
-                ? connection(context, () {}, "Connecting....", Colors.white)
+                ? connection(
+                    context, () {}, "Connecting....", Colors.transparent)
                 : connection(context, () {
                     if (connected) {
                       widget.device.disConnect();
@@ -256,14 +296,18 @@ class _ControlScreenState extends State<ControlScreen>
               height: w * 0.6,
               child: FloatingActionButton(
                 elevation: 5,
-                backgroundColor: accentColor1.withOpacity(0.7),
-                onPressed: () {
-                  sendUnlock();
-                },
+                backgroundColor:
+                    connected ? accentColor1.withOpacity(0.7) : Colors.grey,
+                onPressed: connected
+                    ? () {
+                        sendUnlock();
+                      }
+                    : null,
                 tooltip: 'Unlock',
                 child: Icon(
                   Icons.lock_open,
-                  size: w * 0.4,
+                  color: Colors.black,
+                  size: w * 0.3,
                 ),
               ),
             )),

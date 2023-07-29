@@ -65,6 +65,7 @@ class BluetoothDevicesProvider with ChangeNotifier {
 
   Future<void> scan(BuildContext context) async {
     _openedControl = false;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     notifyListeners();
     try {
       if (_scanning) {
@@ -84,7 +85,9 @@ class BluetoothDevicesProvider with ChangeNotifier {
           String ss = event.name ?? "-----";
           String s = ss.trim();
 
-          if (!_openedControl && s == _lastDevice.trim()) {
+          if (!_openedControl &&
+              s == _lastDevice.trim() &&
+              (prefs.getBool('autoConnect') ?? false)) {
             stopScan();
             Device toConnectDevice = event.connect(connectTimeout: 10000);
             changeConnectedDevice(toConnectDevice);

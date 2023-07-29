@@ -3,17 +3,17 @@ import 'package:rove_personnel/utils/index.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 Widget speedometer(double v) {
-  double fw = 20;
+  double fw = 30;
   double sw = 10;
-  return
-      SfRadialGauge(
+  double maximum = 30;
+  return SfRadialGauge(
     enableLoadingAnimation: false,
     axes: <RadialAxis>[
       RadialAxis(
           showLabels: false,
           showTicks: false,
           radiusFactor: 0.9,
-          maximum: 240,
+          maximum: maximum,
           axisLineStyle: AxisLineStyle(
               cornerStyle: CornerStyle.bothCurve,
               thickness: sw,
@@ -40,12 +40,14 @@ Widget speedometer(double v) {
             GaugeAnnotation(
               angle: 124,
               positionFactor: 1.2,
-              widget: Text('0', style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700)),
+              widget: Text('0',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
             ),
             GaugeAnnotation(
               angle: 54,
               positionFactor: 1.2,
-              widget: Text('240', style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700)),
+              widget: Text(maximum.toInt().toString(),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
             ),
           ],
           pointers: <GaugePointer>[
@@ -60,10 +62,10 @@ Widget speedometer(double v) {
                   stops: <double>[0.25, 0.75]),
             ),
             MarkerPointer(
-              value: v - (fw / 3),
-              borderWidth: (fw / 5),
-              color: Colors.black,
-              borderColor: Colors.black,
+              value: v - (fw / 26),
+              borderWidth: (fw / 3),
+              color: accentColor,
+              borderColor: accentColor,
               markerType: MarkerType.circle,
             ),
           ]),

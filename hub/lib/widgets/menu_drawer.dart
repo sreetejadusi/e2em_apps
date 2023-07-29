@@ -102,7 +102,7 @@ class MenuDrawer extends StatelessWidget {
                       ),
                     ],*/
 
-                   /* if (ap.loginType == LoginType.driver) ...[
+                    /* if (ap.loginType == LoginType.driver) ...[
                       tile(
                         title: "Documents",
                         onTap: () {
@@ -141,11 +141,13 @@ class MenuDrawer extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HubProfile(appBar: true,)),
+                                builder: (context) => const HubProfile(
+                                      appBar: true,
+                                    )),
                           );
                         },
                       ),
-                     /* tile(
+                      /* tile(
                         title: "Maintenance",
                         onTap: () {
                           Navigator.push(

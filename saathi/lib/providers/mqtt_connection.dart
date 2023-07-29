@@ -49,6 +49,7 @@ class MQTTConnection {
   }
 
   Future<void> init() async {
+    print(clientIdentifier);
     /*final MqttConnectMessage connMess = MqttConnectMessage()
         .authenticateAs('guna0027', '00270027')
         .withClientIdentifier('guna0027')

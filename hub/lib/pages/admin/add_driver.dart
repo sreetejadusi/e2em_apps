@@ -111,13 +111,13 @@ class _AddDriverState extends State<AddDriver> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Driver ID Already Exists");
+                            messageDialog(context, "Driver ID Already Exists", false);
                           } else {
                             await drivers.insertOne(DriverModel(
                               id: "",
                               hubId: widget.hubId!,
                               vehicleFrequency: [],
-                              driverId: driverIdController.text,
+                              driverId: driverIdController.text.toUpperCase(),
                             ).toMap());
                             await am.loadHubs(context);
                             setState(() {
@@ -126,7 +126,7 @@ class _AddDriverState extends State<AddDriver> {
                             // widget.added();
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            messageDialog(context, "Driver Added");
+                            messageDialog(context, "Driver Added", true);
                           }
                         }
                       }
@@ -149,7 +149,7 @@ class _AddDriverState extends State<AddDriver> {
                             setState(() {
                               l = false;
                             });
-                            messageDialog(context, "Driver ID Already Exists");
+                            messageDialog(context, "Driver ID Already Exists", false);
                           } else {
                             await drivers.replaceOne(
                                 {"driverId": driverIdController.text},
@@ -157,7 +157,7 @@ class _AddDriverState extends State<AddDriver> {
                                   id: "",
                                   hubId: widget.hubId!,
                                   vehicleFrequency: [],
-                                  driverId: driverIdController.text,
+                                  driverId: driverIdController.text.toUpperCase(),
                                 ).toMap());
                             /* DbCollection batteries =
                               mongoDB.db.collection('batteries');
@@ -186,7 +186,7 @@ class _AddDriverState extends State<AddDriver> {
                             });
                             widget.added();
                             Navigator.pop(context);
-                            messageDialog(context, "Driver Updated");
+                            messageDialog(context, "Driver Updated", true);
                           }
                         }
                       },

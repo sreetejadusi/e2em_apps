@@ -42,7 +42,8 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
         setState(() {
           lt = LoginType.admin;
         });
-      } */else {
+      } */
+      else {
         setState(() {
           lt = LoginType.none;
         });
@@ -92,27 +93,27 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
             ),
           ),*/
         ),
-        bottomNavigationBar: InkWell(
-          onTap: () {
-            /* Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Start()),
-            );*/
-          },
-          child: Container(
-            decoration: BoxDecoration(gradient: lg),
-            child: const ListTile(
-              title: Text(
-                "Forgot Password?",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    // fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
-              ),
-            ),
-          ),
-        ),
+        // bottomNavigationBar: InkWell(
+        //   onTap: () {
+        //     /* Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => const Start()),
+        //     );*/
+        //   },
+        //   child: Container(
+        //     decoration: BoxDecoration(gradient: lg),
+        //     child: const ListTile(
+        //       title: Text(
+        //         "Forgot Password?",
+        //         textAlign: TextAlign.center,
+        //         style: TextStyle(
+        //             // fontSize: 16,
+        //             fontWeight: FontWeight.w500,
+        //             color: Colors.white),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         body: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -122,118 +123,135 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      //gradient: lg,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(35),
-                        bottomRight: Radius.circular(35),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Image.asset(
+                        'assets/logo.png',
+                        height: 124,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            "assets/logo.png",
-                            height: 200,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          /*SizedBox(
-                            height: h * 0.15,
-                            child: Center(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.circular(largeRadius),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Text(
-                                      "EV2GO ${lt == LoginType.driver ? "Driver" : lt == LoginType.hub ? "Hub" : lt == LoginType.admin ? "Admin" : ""}",
-                                      style: const TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                ),
-                                /* Icon(
-                                  Icons.login,
-                                  size: 55,
-                                  color: Colors.white,
-                                ),*/
-                              ),
-                            ),
-                          ),*/
-                          SizedBox(
-                            height: h * 0.010,
-                          ),
-                          /* Text(
-                            "Login",
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
-                          ),*/
-                          /* SizedBox(
-                            height: h * 0.02,
-                          ),
-                          Text(
-                            "Please enter your details",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),*/
-                          SizedBox(
-                            height: h * 0.00,
-                          ),
-                        ],
+                  ),
+                  // Container(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 24),
+                  //     child: Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       children: [
+                  //         SizedBox(
+                  //           height: 0.05 * h,
+                  //         ),
+                  //         // Image.asset(
+                  //         //   "assets/logo.png",
+                  //         //   height: 200,
+                  //         // ),
+                  //         Center(
+                  //           child: Text(
+                  //             'Login',
+                  //             style: TextStyle(fontSize: 28),
+                  //           ),
+                  //         ),
+                  //         // SizedBox(
+                  //         //   height: 36,
+                  //         // ),
+                  //         /*SizedBox(
+                  //           height: h * 0.15,
+                  //           child: Center(
+                  //             child: Padding(
+                  //               padding:
+                  //                   const EdgeInsets.symmetric(vertical: 15),
+                  //               child: Container(
+                  //                 decoration: BoxDecoration(
+                  //                   color: Colors.white,
+                  //                   borderRadius:
+                  //                       BorderRadius.circular(largeRadius),
+                  //                 ),
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.all(15.0),
+                  //                   child: Text(
+                  //                     "EV2GO ${lt == LoginType.driver ? "Driver" : lt == LoginType.hub ? "Hub" : lt == LoginType.admin ? "Admin" : ""}",
+                  //                     style: const TextStyle(
+                  //                         fontSize: 30,
+                  //                         fontWeight: FontWeight.bold,
+                  //                         color: Colors.blue),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //               /* Icon(
+                  //                 Icons.login,
+                  //                 size: 55,
+                  //                 color: Colors.white,
+                  //               ),*/
+                  //             ),
+                  //           ),
+                  //         ),*/
+                  //         // SizedBox(
+                  //         //   height: h * 0.010,
+                  //         // ),
+                  //         /* Text(
+                  //           "Login",
+                  //           style: TextStyle(
+                  //               fontSize: 24,
+                  //               fontWeight: FontWeight.w700,
+                  //               color: Colors.white),
+                  //         ),*/
+                  //         /* SizedBox(
+                  //           height: h * 0.02,
+                  //         ),
+                  //         Text(
+                  //           "Please enter your details",
+                  //           style: TextStyle(
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w500,
+                  //               color: Colors.white),
+                  //         ),*/
+                  //         SizedBox(
+                  //           height: h * 0.05,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: h * 0.08,
+                  ),
+                  Container(
+                    child: TabBar(
+                      controller: tabController,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.black,
+                      indicator: BoxDecoration(
+                        color: accentColor1,
+                        borderRadius: BorderRadius.circular(500),
                       ),
+                      indicatorPadding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      tabs: const [
+                        /* Tab(
+                          child: Text(
+                            "Driver",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),*/
+                        Tab(
+                          child: Text(
+                            "Hub",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            "Admin",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
-                    height: h * 0.00,
-                  ),
-                  TabBar(
-                    controller: tabController,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.black,
-                    indicator: BoxDecoration(
-                      color: accentColor1,
-                      borderRadius: BorderRadius.circular(500),
-                    ),
-                    indicatorPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    tabs: const [
-                     /* Tab(
-                        child: Text(
-                          "Driver",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),*/
-                      Tab(
-                        child: Text(
-                          "Hub",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          "Admin",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+                    height: h * 0.02,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -244,60 +262,85 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                         SizedBox(
                           height: h * 0.02,
                         ),
-                        textFieldTitle("Username"),
-                        TextFormField(
-                          keyboardType: TextInputType.text,
-                          cursorColor: cursorColor,
-                          onChanged: (value) {},
-                          controller: username,
-                          onTap: () {
-                            print("tap");
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Username field cannot be empty";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: border,
-                            labelStyle: labelStyle,
-                            errorBorder: errorBorder,
-                            enabledBorder: enabledBorder,
-                            focusedBorder: focusedBorder,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            hintText: "Enter Username",
-                            //labelText: "Name"
+                        textFieldTitle("Enter a username"),
+                        Container(
+                          decoration: formDecoration,
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            cursorColor: cursorColor,
+                            onChanged: (value) {},
+                            controller: username,
+                            onTap: () {
+                              print("tap");
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Username field cannot be empty";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 12),
+                                border: border,
+                                labelStyle: labelStyle,
+                                errorBorder: errorBorder,
+                                enabledBorder: enabledBorder,
+                                focusedBorder: focusedBorder,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                hintText: "eg: Sakshy@18",
+                                fillColor: Colors.white
+                                //labelText: "Name"
+                                ),
                           ),
                         ),
                         SizedBox(
                           height: h * 0.01,
                         ),
                         textFieldTitle("Password"),
-                        TextFormField(
-                          keyboardType: TextInputType.text,
-                          cursorColor: cursorColor,
-                          onChanged: (value) {},
-                          controller: password,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Password field cannot be empty";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: border,
-                            labelStyle: labelStyle,
-                            errorBorder: errorBorder,
-                            enabledBorder: enabledBorder,
-                            focusedBorder: focusedBorder,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            hintText: "Enter Password",
-                            //labelText: "Password"
+                        Container(
+                          decoration: formDecoration,
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            cursorColor: cursorColor,
+                            onChanged: (value) {},
+                            controller: password,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Password field cannot be empty";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left: 12),
+                                border: border,
+                                labelStyle: labelStyle,
+                                errorBorder: errorBorder,
+                                enabledBorder: enabledBorder,
+                                focusedBorder: focusedBorder,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                hintText: "Enter a password",
+                                fillColor: Colors.white
+                                //labelText: "Name"
+                                ),
                           ),
                         ),
+                        // Container(
+                        //   alignment: Alignment.topRight,
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.only(top: 12),
+                        //     child: TextButton(
+                        //       onPressed: () {},
+                        //       child: Text(
+                        //         'Forgot password?',
+                        //         textAlign: TextAlign.right,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
-                          height: h * 0.02,
+                          height: h * 0.001,
                         ),
                         /*MaterialButton(
                   onPressed: () {},

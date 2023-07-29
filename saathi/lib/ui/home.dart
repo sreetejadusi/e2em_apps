@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State, Switch;
+import 'package:mongo_dart/mongo_dart.dart' hide State, Switch, Center;
 import 'package:provider/provider.dart';
 import '../providers/index.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide State;
 import 'package:provider/provider.dart';
 
@@ -52,6 +53,7 @@ class _AdminHomeState extends State<AdminHome> {
         backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
           backgroundColor: accentColor1,
+          foregroundColor: Colors.white,
           onPressed: () {
             Navigator.push(
               context,
@@ -67,13 +69,39 @@ class _AdminHomeState extends State<AdminHome> {
         ),
         body: am.hubsLoading || l
             ? const Center(child: CircularProgressIndicator())
-            : ListView(
+            : Column(
                 children: [
-                  for (var i = 0; i < am.hubs.length; i++) ...[
-                    hubItem(
-                      hubModel: am.hubs[i],
-                    ),
-                  ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Hubs',
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600,
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .fontSize),
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  ListView(
+                    shrinkWrap: true,
+                    children: [
+                      for (var i = 0; i < am.hubs.length; i++) ...[
+                        hubItem(
+                          hubModel: am.hubs[i],
+                        ),
+                      ],
+                    ],
+                  ),
                 ],
               ),
       ),
@@ -111,7 +139,7 @@ class _AdminHomeState extends State<AdminHome> {
           setState(() {
             l = false;
           });
-          messageDialog(context, "Hub Deleted");
+          messageDialog(context, "Hub Deleted", true);
           print("Hub Deleted");
         } catch (e) {
           print(e);
@@ -148,68 +176,78 @@ class _AdminHomeState extends State<AdminHome> {
     AdminManager am = context.read<AdminManager>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-      child: CustomContainer(
-        context: context,
-        widget: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HubDetail(
-                          hubId: hubModel.hubId,
-                          pop: () {},
-                        )),
-              );
-            },
-            title: Text(
-              hubModel.name,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Text(
-                hubModel.hubId,
-                //up.userDetails[1],
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+            color: accentColor1,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                spreadRadius: 1,
+                color: Colors.black12,
               ),
+            ],
+            borderRadius: BorderRadius.circular(12)),
+        child: ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HubDetail(
+                        hubId: hubModel.hubId,
+                        pop: () {},
+                      )),
+            );
+          },
+          title: Text(
+            capitalize(hubModel.name),
+            style: TextStyle(fontSize: 20),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              hubModel.hubId,
+              //up.userDetails[1],
+              style: TextStyle(fontSize: 15),
             ),
-            leading: Icon(
-              Icons.admin_panel_settings,
-              size: 35,
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Icon(
+              FontAwesomeIcons.shop,
+              size: 24,
               color: Colors.black,
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                    ),
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddHub(
-                                hubModel: hubModel,
-                                added: () {
-                                  am.loadHubs(context);
-                                })),
-                      );
-                    }),
-                IconButton(
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
                   icon: const Icon(
-                    Icons.delete_outline,
+                    Icons.edit,
                     color: Colors.black,
                   ),
                   onPressed: () async {
-                    deleteHubConfirmation(hubModel: hubModel);
-                  },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddHub(
+                              hubModel: hubModel,
+                              added: () {
+                                am.loadHubs(context);
+                              })),
+                    );
+                  }),
+              IconButton(
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.black,
                 ),
-              ],
-            ),
+                onPressed: () async {
+                  deleteHubConfirmation(hubModel: hubModel);
+                },
+              ),
+            ],
           ),
         ),
       ),

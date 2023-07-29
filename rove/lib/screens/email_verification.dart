@@ -10,7 +10,7 @@ import '../widgets/index.dart';
 import 'package:provider/provider.dart';
 import '../providers/index.dart';
 import 'index.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State hide Center;
 import '../utils/index.dart';
 class EmailVerification extends StatefulWidget {
 

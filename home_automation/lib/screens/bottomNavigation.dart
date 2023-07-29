@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_automation/sidebar/bloc.navigation_bloc/navigation_bloc.dart';
 import 'package:home_automation/widgets/index.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide State;
+import 'package:mongo_dart/mongo_dart.dart' hide State, Center;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'index.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class BottomNavigation extends StatefulWidget with NavigationStates {
 class _BottomNavigationState extends State<BottomNavigation>
     with SingleTickerProviderStateMixin {
   bool hw = false;
-  AnimationController animationController;
+  late AnimationController animationController;
   int currentIndex = 1;
   bool isLoading = false;
   final List<Widget> _children = [
@@ -87,7 +87,7 @@ class _BottomNavigationState extends State<BottomNavigation>
                   one: l[1].toString(),
                   two: l[2].toString(),
                   three: l[3].toString()));
-          await dataProvider.waitingDeviceStatus(context, '', null);
+          await dataProvider.waitingDeviceStatus(context, '', DateTime.now());
           await home.update(
             where.eq('deviceId', l[0].toString()),
             modify.set(
@@ -120,7 +120,7 @@ class _BottomNavigationState extends State<BottomNavigation>
                 two: l[2].toString(),
                 three: l[3].toString()),
           );
-          await dataProvider.waitingDeviceStatus(context, '', null);
+          await dataProvider.waitingDeviceStatus(context, '', DateTime.now());
           await home.update(
               where.eq('deviceId', l[0].toString()),
               modify.set(

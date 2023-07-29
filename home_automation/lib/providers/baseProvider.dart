@@ -6,14 +6,14 @@ enum Status { loading, error, loaded }
 /// This class serves as the building blocks of a repository.
 /// A repository has the purpose to load and parse the data
 abstract class BaseProvider with ChangeNotifier {
-  final BuildContext context;
+  late final BuildContext context;
 
   /// Status regarding data loading capabilities
-  Status _status;
+  late Status _status;
 
-  BaseProvider([this.context]) {
-    //init();
-  }
+  // BaseProvider([this.context]) {
+  //   //init();
+  // }
 
   /// Overridable method, used to load the model's data.
   Future<void> init();
